@@ -1,4 +1,9 @@
-import { Link, Navigate, useParams } from "react-router-dom"
+import {
+  Link,
+  Navigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   ArrowLeft01Icon,
@@ -32,6 +37,8 @@ import { translate, withParams } from "@/lib/translate"
 export function KidPage() {
   const { auth } = useAuth()
   const { kidId } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const activeTab = searchParams.get("tab") ?? "temperature"
   const data = useKidPageData(auth, kidId)
   const locks = useActionLocks()
 
@@ -139,7 +146,11 @@ export function KidPage() {
       ) : null}
 
       {data.kid ? (
-        <Tabs defaultValue="temperature" className="gap-4">
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setSearchParams({ tab: value })}
+          className="gap-4"
+        >
           <TabsList variant="line">
             <TabsTrigger value="temperature">
               <HugeiconsIcon
