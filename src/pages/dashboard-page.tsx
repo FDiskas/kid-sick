@@ -26,7 +26,7 @@ import {
   listKids,
   updateKid,
 } from "@/features/sheets/health-repository"
-import { cn } from "@/lib/utils"
+import { cn, calculateAge } from "@/lib/utils"
 
 function isoDateOnly(value: string) {
   return value.slice(0, 10)
@@ -159,7 +159,12 @@ export function DashboardPage() {
                 <CardTitle className="text-lg">{kid.name}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
-                <div className="text-muted-foreground">Birthday: {kid.birthDate}</div>
+                <div className="text-muted-foreground">
+                  Birthday {kid.birthDate}
+                  {calculateAge(kid.birthDate) !== null && (
+                    <span> ({calculateAge(kid.birthDate)})</span>
+                  )}
+                </div>
                 <div className="text-muted-foreground">
                   Latest: {kid.currentHeightCm ?? "-"} cm / {kid.currentWeightKg ?? "-"} kg
                 </div>

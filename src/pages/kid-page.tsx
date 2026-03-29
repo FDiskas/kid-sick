@@ -31,26 +31,39 @@ import { useAuth } from "@/features/auth/auth-context"
 import {
   growthSchema,
   medicationSchema,
+  noteSchema,
   temperatureSchema,
   type GrowthFormInput,
   type MedicationFormInput,
+  type NoteFormInput,
   type TemperatureFormInput,
 } from "@/features/health/schemas"
 import type {
   GrowthRecord,
   KidProfile,
   MedicationRecord,
+  NoteRecord,
   TemperatureRecord,
 } from "@/features/health/types"
 import {
+  addNote,
   addGrowthRecord,
   addMedicationRecord,
   addTemperatureRecord,
+  deleteGrowthRecord,
+  deleteMedicationRecord,
+  deleteNote,
+  deleteTemperatureRecord,
   listGrowthRecords,
   listKids,
+  listNotes,
   listMedicationRecords,
   listTemperatureRecords,
+  updateGrowthRecord,
   updateKid,
+  updateMedicationRecord,
+  updateNote,
+  updateTemperatureRecord,
 } from "@/features/sheets/health-repository"
 import { cn } from "@/lib/utils"
 
@@ -74,12 +87,20 @@ export function KidPage() {
   const [temperatures, setTemperatures] = useState<TemperatureRecord[]>([])
   const [medications, setMedications] = useState<MedicationRecord[]>([])
   const [growthRecords, setGrowthRecords] = useState<GrowthRecord[]>([])
+  const [notes, setNotes] = useState<NoteRecord[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const [isTempOpen, setIsTempOpen] = useState(false)
   const [isMedOpen, setIsMedOpen] = useState(false)
   const [isGrowthOpen, setIsGrowthOpen] = useState(false)
+  const [isNoteOpen, setIsNoteOpen] = useState(false)
+
+  const [editingTemperatureId, setEditingTemperatureId] = useState<string | null>(null)
+  const [editingMedicationId, setEditingMedicationId] = useState<string | null>(null)
+  const [editingGrowthId, setEditingGrowthId] = useState<string | null>(null)
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
+  const [deletingRecordId, setDeletingRecordId] = useState<string | null>(null)
 
   const temperatureForm = useForm<TemperatureFormInput>({
     defaultValues: {
@@ -110,6 +131,49 @@ export function KidPage() {
     },
   })
 
+  const noteForm = useForm<NoteFormInput>({
+    defaultValues: {
+      recordedAt: toInputDateTime(new Date().toISOString()),
+      content: "",
+    },
+  })
+
+  function resetTemperatureForm() {
+    temperatureForm.reset({
+      measuredAt: toInputDateTime(new Date().toISOString()),
+      value: undefined,
+      unit: "C",
+      method: "",
+      notes: "",
+    })
+  }
+
+  function resetMedicationForm() {
+    medicationForm.reset({
+      takenAt: toInputDateTime(new Date().toISOString()),
+      medicationName: "",
+      dose: undefined,
+      unit: "ml",
+      notes: "",
+    })
+  }
+
+  function resetGrowthForm() {
+    growthForm.reset({
+      measuredAt: toInputDateTime(new Date().toISOString()),
+      heightCm: undefined,
+      weightKg: undefined,
+      notes: "",
+    })
+  }
+
+  function resetNoteForm() {
+    noteForm.reset({
+      recordedAt: toInputDateTime(new Date().toISOString()),
+      content: "",
+    })
+  }
+
   useEffect(() => {
     if (!auth || !kidId) {
       return
@@ -124,7 +188,7 @@ export function KidPage() {
       setIsLoading(true)
       setError(null)
       try {
-        const [kids, tempRows, medRows, growthRows] = await Promise.all([
+        const [kids, tempRows, medRows, growthRows, noteRows] = await Promise.all([
           listKids(currentAuth.accessToken, currentAuth.spreadsheet.spreadsheetId),
           listTemperatureRecords(
             currentAuth.accessToken,
@@ -141,6 +205,11 @@ export function KidPage() {
             currentAuth.spreadsheet.spreadsheetId,
             currentKidId
           ),
+          listNotes(
+            currentAuth.accessToken,
+            currentAuth.spreadsheet.spreadsheetId,
+            currentKidId
+          ),
         ])
 
         const currentKid = kids.find((item) => item.id === currentKidId) ?? null
@@ -150,6 +219,7 @@ export function KidPage() {
           setTemperatures(tempRows)
           setMedications(medRows)
           setGrowthRecords(growthRows)
+          setNotes(noteRows)
         }
       } catch (loadError) {
         if (isMounted) {
@@ -221,13 +291,22 @@ export function KidPage() {
             <TabsTrigger value="temperature">Temperature</TabsTrigger>
             <TabsTrigger value="medication">Medication</TabsTrigger>
             <TabsTrigger value="growth">Growth</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           <TabsContent value="temperature" className="space-y-3">
             <Card>
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Temperature logs</CardTitle>
-                <Button onClick={() => setIsTempOpen(true)}>Add temperature</Button>
+                <Button
+                  onClick={() => {
+                    setEditingTemperatureId(null)
+                    resetTemperatureForm()
+                    setIsTempOpen(true)
+                  }}
+                >
+                  Add temperature
+                </Button>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -237,6 +316,7 @@ export function KidPage() {
                       <TableHead>Value</TableHead>
                       <TableHead>Method</TableHead>
                       <TableHead>Notes</TableHead>
+                      <TableHead className="w-40">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -246,6 +326,63 @@ export function KidPage() {
                         <TableCell>{row.value} {row.unit}</TableCell>
                         <TableCell>{row.method || "-"}</TableCell>
                         <TableCell>{row.notes || "-"}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setEditingTemperatureId(row.id)
+                                temperatureForm.reset({
+                                  measuredAt: toInputDateTime(row.measuredAt),
+                                  value: row.value,
+                                  unit: row.unit,
+                                  method: row.method ?? "",
+                                  notes: row.notes ?? "",
+                                })
+                                setIsTempOpen(true)
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={deletingRecordId === row.id}
+                              onClick={async () => {
+                                if (!window.confirm("Delete this temperature record?")) {
+                                  return
+                                }
+
+                                setDeletingRecordId(row.id)
+                                try {
+                                  await deleteTemperatureRecord(
+                                    auth.accessToken,
+                                    auth.spreadsheet.spreadsheetId,
+                                    row.id
+                                  )
+                                  setTemperatures((current) => current.filter((item) => item.id !== row.id))
+                                  if (editingTemperatureId === row.id) {
+                                    setEditingTemperatureId(null)
+                                    setIsTempOpen(false)
+                                    resetTemperatureForm()
+                                  }
+                                  toast.success("Temperature deleted")
+                                } catch (deleteError) {
+                                  toast.error(
+                                    deleteError instanceof Error
+                                      ? deleteError.message
+                                      : "Failed to delete temperature"
+                                  )
+                                } finally {
+                                  setDeletingRecordId(null)
+                                }
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -258,7 +395,15 @@ export function KidPage() {
             <Card>
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Medication logs</CardTitle>
-                <Button onClick={() => setIsMedOpen(true)}>Add medication</Button>
+                <Button
+                  onClick={() => {
+                    setEditingMedicationId(null)
+                    resetMedicationForm()
+                    setIsMedOpen(true)
+                  }}
+                >
+                  Add medication
+                </Button>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -268,6 +413,7 @@ export function KidPage() {
                       <TableHead>Medication</TableHead>
                       <TableHead>Dose</TableHead>
                       <TableHead>Notes</TableHead>
+                      <TableHead className="w-40">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -277,6 +423,63 @@ export function KidPage() {
                         <TableCell>{row.medicationName}</TableCell>
                         <TableCell>{row.dose} {row.unit}</TableCell>
                         <TableCell>{row.notes || "-"}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setEditingMedicationId(row.id)
+                                medicationForm.reset({
+                                  takenAt: toInputDateTime(row.takenAt),
+                                  medicationName: row.medicationName,
+                                  dose: row.dose,
+                                  unit: row.unit,
+                                  notes: row.notes ?? "",
+                                })
+                                setIsMedOpen(true)
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={deletingRecordId === row.id}
+                              onClick={async () => {
+                                if (!window.confirm("Delete this medication record?")) {
+                                  return
+                                }
+
+                                setDeletingRecordId(row.id)
+                                try {
+                                  await deleteMedicationRecord(
+                                    auth.accessToken,
+                                    auth.spreadsheet.spreadsheetId,
+                                    row.id
+                                  )
+                                  setMedications((current) => current.filter((item) => item.id !== row.id))
+                                  if (editingMedicationId === row.id) {
+                                    setEditingMedicationId(null)
+                                    setIsMedOpen(false)
+                                    resetMedicationForm()
+                                  }
+                                  toast.success("Medication deleted")
+                                } catch (deleteError) {
+                                  toast.error(
+                                    deleteError instanceof Error
+                                      ? deleteError.message
+                                      : "Failed to delete medication"
+                                  )
+                                } finally {
+                                  setDeletingRecordId(null)
+                                }
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -289,7 +492,15 @@ export function KidPage() {
             <Card>
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Growth history</CardTitle>
-                <Button onClick={() => setIsGrowthOpen(true)}>Add growth measurement</Button>
+                <Button
+                  onClick={() => {
+                    setEditingGrowthId(null)
+                    resetGrowthForm()
+                    setIsGrowthOpen(true)
+                  }}
+                >
+                  Add growth measurement
+                </Button>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -299,6 +510,7 @@ export function KidPage() {
                       <TableHead>Height (cm)</TableHead>
                       <TableHead>Weight (kg)</TableHead>
                       <TableHead>Notes</TableHead>
+                      <TableHead className="w-40">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -308,6 +520,148 @@ export function KidPage() {
                         <TableCell>{row.heightCm ?? "-"}</TableCell>
                         <TableCell>{row.weightKg ?? "-"}</TableCell>
                         <TableCell>{row.notes || "-"}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setEditingGrowthId(row.id)
+                                growthForm.reset({
+                                  measuredAt: toInputDateTime(row.measuredAt),
+                                  heightCm: row.heightCm,
+                                  weightKg: row.weightKg,
+                                  notes: row.notes ?? "",
+                                })
+                                setIsGrowthOpen(true)
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={deletingRecordId === row.id}
+                              onClick={async () => {
+                                if (!window.confirm("Delete this growth record?")) {
+                                  return
+                                }
+
+                                setDeletingRecordId(row.id)
+                                try {
+                                  await deleteGrowthRecord(
+                                    auth.accessToken,
+                                    auth.spreadsheet.spreadsheetId,
+                                    row.id
+                                  )
+                                  setGrowthRecords((current) => current.filter((item) => item.id !== row.id))
+                                  if (editingGrowthId === row.id) {
+                                    setEditingGrowthId(null)
+                                    setIsGrowthOpen(false)
+                                    resetGrowthForm()
+                                  }
+                                  toast.success("Growth record deleted")
+                                } catch (deleteError) {
+                                  toast.error(
+                                    deleteError instanceof Error
+                                      ? deleteError.message
+                                      : "Failed to delete growth record"
+                                  )
+                                } finally {
+                                  setDeletingRecordId(null)
+                                }
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="notes" className="space-y-3">
+            <Card>
+              <CardHeader className="flex-row items-center justify-between">
+                <CardTitle>Notes</CardTitle>
+                <Button
+                  onClick={() => {
+                    setEditingNoteId(null)
+                    resetNoteForm()
+                    setIsNoteOpen(true)
+                  }}
+                >
+                  Add note
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>When</TableHead>
+                      <TableHead>Content</TableHead>
+                      <TableHead className="w-40">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {notes.map((row) => (
+                      <TableRow key={row.id}>
+                        <TableCell>{renderDateTime(row.recordedAt)}</TableCell>
+                        <TableCell>{row.content}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setEditingNoteId(row.id)
+                                noteForm.reset({
+                                  recordedAt: toInputDateTime(row.recordedAt),
+                                  content: row.content,
+                                })
+                                setIsNoteOpen(true)
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={deletingRecordId === row.id}
+                              onClick={async () => {
+                                if (!window.confirm("Delete this note?")) {
+                                  return
+                                }
+
+                                setDeletingRecordId(row.id)
+                                try {
+                                  await deleteNote(auth.accessToken, auth.spreadsheet.spreadsheetId, row.id)
+                                  setNotes((current) => current.filter((item) => item.id !== row.id))
+                                  if (editingNoteId === row.id) {
+                                    setEditingNoteId(null)
+                                    setIsNoteOpen(false)
+                                    resetNoteForm()
+                                  }
+                                  toast.success("Note deleted")
+                                } catch (deleteError) {
+                                  toast.error(
+                                    deleteError instanceof Error
+                                      ? deleteError.message
+                                      : "Failed to delete note"
+                                  )
+                                } finally {
+                                  setDeletingRecordId(null)
+                                }
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -318,11 +672,24 @@ export function KidPage() {
         </Tabs>
       ) : null}
 
-      <Dialog open={isTempOpen} onOpenChange={setIsTempOpen}>
+      <Dialog
+        open={isTempOpen}
+        onOpenChange={(open) => {
+          setIsTempOpen(open)
+          if (!open) {
+            setEditingTemperatureId(null)
+            resetTemperatureForm()
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add temperature</DialogTitle>
-            <DialogDescription>Record a new body temperature measurement.</DialogDescription>
+            <DialogTitle>{editingTemperatureId ? "Edit temperature" : "Add temperature"}</DialogTitle>
+            <DialogDescription>
+              {editingTemperatureId
+                ? "Update the body temperature measurement."
+                : "Record a new body temperature measurement."}
+            </DialogDescription>
           </DialogHeader>
           <form
             className="space-y-3"
@@ -340,27 +707,57 @@ export function KidPage() {
               }
 
               try {
-                const saved = await addTemperatureRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                  kidId: kid.id,
-                  measuredAt: toIso(parsed.data.measuredAt),
-                  value: parsed.data.value,
-                  unit: parsed.data.unit,
-                  method: parsed.data.method,
-                  notes: parsed.data.notes,
-                })
+                if (editingTemperatureId) {
+                  const existing = temperatures.find((item) => item.id === editingTemperatureId)
+                  if (!existing) {
+                    toast.error("Temperature record not found")
+                    return
+                  }
 
-                setTemperatures((current) => [saved, ...current])
+                  const updated = await updateTemperatureRecord(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      ...existing,
+                      measuredAt: toIso(parsed.data.measuredAt),
+                      value: parsed.data.value,
+                      unit: parsed.data.unit,
+                      method: parsed.data.method,
+                      notes: parsed.data.notes,
+                    }
+                  )
+
+                  setTemperatures((current) =>
+                    current
+                      .map((item) => (item.id === updated.id ? updated : item))
+                      .sort((a, b) => b.measuredAt.localeCompare(a.measuredAt))
+                  )
+                  toast.success("Temperature updated")
+                } else {
+                  const saved = await addTemperatureRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
+                    kidId: kid.id,
+                    measuredAt: toIso(parsed.data.measuredAt),
+                    value: parsed.data.value,
+                    unit: parsed.data.unit,
+                    method: parsed.data.method,
+                    notes: parsed.data.notes,
+                  })
+
+                  setTemperatures((current) => [saved, ...current])
+                  toast.success("Temperature added")
+                }
+
                 setIsTempOpen(false)
-                temperatureForm.reset({
-                  measuredAt: toInputDateTime(new Date().toISOString()),
-                  value: undefined,
-                  unit: parsed.data.unit,
-                  method: "",
-                  notes: "",
-                })
-                toast.success("Temperature added")
+                setEditingTemperatureId(null)
+                resetTemperatureForm()
               } catch (saveError) {
-                toast.error(saveError instanceof Error ? saveError.message : "Failed to add temperature")
+                toast.error(
+                  saveError instanceof Error
+                    ? saveError.message
+                    : editingTemperatureId
+                      ? "Failed to update temperature"
+                      : "Failed to add temperature"
+                )
               }
             })}
           >
@@ -390,17 +787,30 @@ export function KidPage() {
               <Textarea id="temp-notes" rows={3} {...temperatureForm.register("notes")} />
             </div>
             <DialogFooter>
-              <Button type="submit">Save</Button>
+              <Button type="submit">{editingTemperatureId ? "Update" : "Add"}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isMedOpen} onOpenChange={setIsMedOpen}>
+      <Dialog
+        open={isMedOpen}
+        onOpenChange={(open) => {
+          setIsMedOpen(open)
+          if (!open) {
+            setEditingMedicationId(null)
+            resetMedicationForm()
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add medication record</DialogTitle>
-            <DialogDescription>Track meds taken and dosage for this child.</DialogDescription>
+            <DialogTitle>{editingMedicationId ? "Edit medication record" : "Add medication record"}</DialogTitle>
+            <DialogDescription>
+              {editingMedicationId
+                ? "Update meds taken and dosage for this child."
+                : "Track meds taken and dosage for this child."}
+            </DialogDescription>
           </DialogHeader>
           <form
             className="space-y-3"
@@ -418,27 +828,57 @@ export function KidPage() {
               }
 
               try {
-                const saved = await addMedicationRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                  kidId: kid.id,
-                  takenAt: toIso(parsed.data.takenAt),
-                  medicationName: parsed.data.medicationName,
-                  dose: parsed.data.dose,
-                  unit: parsed.data.unit,
-                  notes: parsed.data.notes,
-                })
+                if (editingMedicationId) {
+                  const existing = medications.find((item) => item.id === editingMedicationId)
+                  if (!existing) {
+                    toast.error("Medication record not found")
+                    return
+                  }
 
-                setMedications((current) => [saved, ...current])
+                  const updated = await updateMedicationRecord(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      ...existing,
+                      takenAt: toIso(parsed.data.takenAt),
+                      medicationName: parsed.data.medicationName,
+                      dose: parsed.data.dose,
+                      unit: parsed.data.unit,
+                      notes: parsed.data.notes,
+                    }
+                  )
+
+                  setMedications((current) =>
+                    current
+                      .map((item) => (item.id === updated.id ? updated : item))
+                      .sort((a, b) => b.takenAt.localeCompare(a.takenAt))
+                  )
+                  toast.success("Medication updated")
+                } else {
+                  const saved = await addMedicationRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
+                    kidId: kid.id,
+                    takenAt: toIso(parsed.data.takenAt),
+                    medicationName: parsed.data.medicationName,
+                    dose: parsed.data.dose,
+                    unit: parsed.data.unit,
+                    notes: parsed.data.notes,
+                  })
+
+                  setMedications((current) => [saved, ...current])
+                  toast.success("Medication added")
+                }
+
                 setIsMedOpen(false)
-                medicationForm.reset({
-                  takenAt: toInputDateTime(new Date().toISOString()),
-                  medicationName: "",
-                  dose: undefined,
-                  unit: "ml",
-                  notes: "",
-                })
-                toast.success("Medication added")
+                setEditingMedicationId(null)
+                resetMedicationForm()
               } catch (saveError) {
-                toast.error(saveError instanceof Error ? saveError.message : "Failed to add medication")
+                toast.error(
+                  saveError instanceof Error
+                    ? saveError.message
+                    : editingMedicationId
+                      ? "Failed to update medication"
+                      : "Failed to add medication"
+                )
               }
             })}
           >
@@ -469,17 +909,30 @@ export function KidPage() {
               <Textarea id="med-notes" rows={3} {...medicationForm.register("notes")} />
             </div>
             <DialogFooter>
-              <Button type="submit">Save</Button>
+              <Button type="submit">{editingMedicationId ? "Update" : "Add"}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isGrowthOpen} onOpenChange={setIsGrowthOpen}>
+      <Dialog
+        open={isGrowthOpen}
+        onOpenChange={(open) => {
+          setIsGrowthOpen(open)
+          if (!open) {
+            setEditingGrowthId(null)
+            resetGrowthForm()
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add growth measurement</DialogTitle>
-            <DialogDescription>Save historical growth and refresh profile latest values.</DialogDescription>
+            <DialogTitle>{editingGrowthId ? "Edit growth measurement" : "Add growth measurement"}</DialogTitle>
+            <DialogDescription>
+              {editingGrowthId
+                ? "Update historical growth values for this child."
+                : "Save historical growth and refresh profile latest values."}
+            </DialogDescription>
           </DialogHeader>
           <form
             className="space-y-3"
@@ -495,35 +948,61 @@ export function KidPage() {
               }
 
               try {
-                const saved = await addGrowthRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                  kidId: kid.id,
-                  measuredAt: toIso(parsed.data.measuredAt),
-                  heightCm: parsed.data.heightCm,
-                  weightKg: parsed.data.weightKg,
-                  notes: parsed.data.notes,
-                })
+                if (editingGrowthId) {
+                  const existing = growthRecords.find((item) => item.id === editingGrowthId)
+                  if (!existing) {
+                    toast.error("Growth record not found")
+                    return
+                  }
 
-                const updatedKid = await updateKid(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                  ...kid,
-                  currentHeightCm: parsed.data.heightCm ?? kid.currentHeightCm,
-                  currentWeightKg: parsed.data.weightKg ?? kid.currentWeightKg,
-                })
+                  const updated = await updateGrowthRecord(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      ...existing,
+                      measuredAt: toIso(parsed.data.measuredAt),
+                      heightCm: parsed.data.heightCm,
+                      weightKg: parsed.data.weightKg,
+                      notes: parsed.data.notes,
+                    }
+                  )
 
-                setGrowthRecords((current) => [saved, ...current])
-                setKid(updatedKid)
+                  setGrowthRecords((current) =>
+                    current
+                      .map((item) => (item.id === updated.id ? updated : item))
+                      .sort((a, b) => b.measuredAt.localeCompare(a.measuredAt))
+                  )
+                  toast.success("Growth measurement updated")
+                } else {
+                  const saved = await addGrowthRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
+                    kidId: kid.id,
+                    measuredAt: toIso(parsed.data.measuredAt),
+                    heightCm: parsed.data.heightCm,
+                    weightKg: parsed.data.weightKg,
+                    notes: parsed.data.notes,
+                  })
+
+                  const updatedKid = await updateKid(auth.accessToken, auth.spreadsheet.spreadsheetId, {
+                    ...kid,
+                    currentHeightCm: parsed.data.heightCm ?? kid.currentHeightCm,
+                    currentWeightKg: parsed.data.weightKg ?? kid.currentWeightKg,
+                  })
+
+                  setGrowthRecords((current) => [saved, ...current])
+                  setKid(updatedKid)
+                  toast.success("Growth measurement added")
+                }
+
                 setIsGrowthOpen(false)
-                growthForm.reset({
-                  measuredAt: toInputDateTime(new Date().toISOString()),
-                  heightCm: undefined,
-                  weightKg: undefined,
-                  notes: "",
-                })
-                toast.success("Growth measurement added")
+                setEditingGrowthId(null)
+                resetGrowthForm()
               } catch (saveError) {
                 toast.error(
                   saveError instanceof Error
                     ? saveError.message
-                    : "Failed to add growth measurement"
+                    : editingGrowthId
+                      ? "Failed to update growth measurement"
+                      : "Failed to add growth measurement"
                 )
               }
             })}
@@ -550,7 +1029,105 @@ export function KidPage() {
               <Textarea id="growth-notes" rows={3} {...growthForm.register("notes")} />
             </div>
             <DialogFooter>
-              <Button type="submit">Save</Button>
+              <Button type="submit">{editingGrowthId ? "Update" : "Add"}</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isNoteOpen}
+        onOpenChange={(open) => {
+          setIsNoteOpen(open)
+          if (!open) {
+            setEditingNoteId(null)
+            resetNoteForm()
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editingNoteId ? "Edit note" : "Add note"}</DialogTitle>
+            <DialogDescription>
+              {editingNoteId
+                ? "Update an existing note for this child."
+                : "Record a new note for this child."}
+            </DialogDescription>
+          </DialogHeader>
+          <form
+            className="space-y-3"
+            onSubmit={noteForm.handleSubmit(async (values) => {
+              if (!kid) {
+                return
+              }
+
+              const parsed = noteSchema.safeParse(values)
+              if (!parsed.success) {
+                toast.error(parsed.error.issues[0]?.message ?? "Invalid note input")
+                return
+              }
+
+              try {
+                if (editingNoteId) {
+                  const existing = notes.find((item) => item.id === editingNoteId)
+                  if (!existing) {
+                    toast.error("Note record not found")
+                    return
+                  }
+
+                  const updated = await updateNote(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      ...existing,
+                      recordedAt: toIso(parsed.data.recordedAt),
+                      content: parsed.data.content,
+                    }
+                  )
+
+                  setNotes((current) =>
+                    current
+                      .map((item) => (item.id === updated.id ? updated : item))
+                      .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))
+                  )
+                  toast.success("Note updated")
+                } else {
+                  const saved = await addNote(auth.accessToken, auth.spreadsheet.spreadsheetId, {
+                    kidId: kid.id,
+                    recordedAt: toIso(parsed.data.recordedAt),
+                    content: parsed.data.content,
+                  })
+
+                  setNotes((current) => [saved, ...current])
+                  toast.success("Note added")
+                }
+
+                setIsNoteOpen(false)
+                setEditingNoteId(null)
+                resetNoteForm()
+              } catch (saveError) {
+                toast.error(
+                  saveError instanceof Error
+                    ? saveError.message
+                    : editingNoteId
+                      ? "Failed to update note"
+                      : "Failed to add note"
+                )
+              }
+            })}
+          >
+            <div className="space-y-1.5">
+              <Label htmlFor="note-time">Date and time</Label>
+              <Input id="note-time" type="datetime-local" {...noteForm.register("recordedAt")} />
+              <p className="text-xs text-destructive">{noteForm.formState.errors.recordedAt?.message}</p>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="note-content">Content</Label>
+              <Textarea id="note-content" rows={4} {...noteForm.register("content")} />
+              <p className="text-xs text-destructive">{noteForm.formState.errors.content?.message}</p>
+            </div>
+            <DialogFooter>
+              <Button type="submit">{editingNoteId ? "Update" : "Add"}</Button>
             </DialogFooter>
           </form>
         </DialogContent>

@@ -3,6 +3,7 @@ export const SHEET_NAMES = {
   temperatureLogs: "TemperatureLogs",
   medicationLogs: "MedicationLogs",
   growthLogs: "GrowthLogs",
+  notes: "Notes",
 } as const
 
 export const SHEET_HEADERS = {
@@ -41,6 +42,14 @@ export const SHEET_HEADERS = {
     "heightCm",
     "weightKg",
     "notes",
+  ],
+  [SHEET_NAMES.notes]: [
+    "id",
+    "kidId",
+    "content",
+    "recordedAt",
+    "createdAt",
+    "updatedAt",
   ],
 } as const
 

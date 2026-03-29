@@ -38,6 +38,15 @@ export type GrowthRecord = {
   notes?: string
 }
 
+export type NoteRecord = {
+  id: string
+  kidId: string
+  content: string
+  recordedAt: string
+  createdAt: string
+  updatedAt: string
+}
+
 export type SpreadsheetContext = {
   spreadsheetId: string
   spreadsheetUrl: string
