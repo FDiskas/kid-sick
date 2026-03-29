@@ -36,16 +36,38 @@ export const kidSchema = z.object({
   notes: z.string().max(500, "Notes are too long").optional(),
 })
 
-export const temperatureSchema = z.object({
-  measuredAt: z.string().min(1, "Measurement date/time is required"),
-  value: z.coerce
-    .number()
-    .min(30, "Temperature is too low")
-    .max(45, "Temperature is too high"),
-  unit: z.enum(["C", "F"]),
-  method: z.string().max(80, "Method is too long").optional(),
-  notes: z.string().max(500, "Notes are too long").optional(),
-})
+const TEMPERATURE_RANGE_BY_UNIT = {
+  C: { min: 30, max: 45 },
+  F: { min: 86, max: 113 },
+} as const
+
+export const temperatureSchema = z
+  .object({
+    measuredAt: z.string().min(1, "Measurement date/time is required"),
+    value: z.coerce.number(),
+    unit: z.enum(["C", "F"]),
+    method: z.string().max(80, "Method is too long").optional(),
+    notes: z.string().max(500, "Notes are too long").optional(),
+  })
+  .superRefine((value, context) => {
+    const range = TEMPERATURE_RANGE_BY_UNIT[value.unit]
+
+    if (value.value < range.min) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["value"],
+        message: "Temperature is too low",
+      })
+    }
+
+    if (value.value > range.max) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["value"],
+        message: "Temperature is too high",
+      })
+    }
+  })
 
 export const noteSchema = z.object({
   recordedAt: z.string().min(1, "Date and time is required"),

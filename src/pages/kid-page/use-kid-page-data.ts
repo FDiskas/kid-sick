@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type SetStateAction } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 
 import type {
   GrowthRecord,
@@ -15,6 +16,7 @@ import {
   listNotes,
   listTemperatureRecords,
 } from "@/features/sheets/health-repository"
+import { sheetsQueryKeys } from "@/features/sheets/query-keys"
 import {
   buildGrowthTrend,
   buildMedicationPerDay,
@@ -32,85 +34,210 @@ export function useKidPageData(
   auth: KidAuth | null,
   kidId: string | undefined
 ) {
-  const [kid, setKid] = useState<KidProfile | null>(null)
-  const [temperatures, setTemperatures] = useState<TemperatureRecord[]>([])
-  const [medications, setMedications] = useState<MedicationRecord[]>([])
-  const [growthRecords, setGrowthRecords] = useState<GrowthRecord[]>([])
-  const [notes, setNotes] = useState<NoteRecord[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [deletingRecordId, setDeletingRecordId] = useState<string | null>(null)
+  const queryClient = useQueryClient()
+  const spreadsheetId = auth?.spreadsheet.spreadsheetId ?? ""
+  const isEnabled = Boolean(auth && kidId)
 
-  useEffect(() => {
-    if (!auth || !kidId) {
-      return
-    }
+  const kidsQuery = useQuery({
+    queryKey: sheetsQueryKeys.kids(spreadsheetId),
+    queryFn: async () => {
+      if (!auth) {
+        throw new Error("Could not load kid data")
+      }
 
-    const currentAuth: NonNullable<typeof auth> = auth
-    const currentKidId: string = kidId
+      return listKids(auth.accessToken, auth.spreadsheet.spreadsheetId)
+    },
+    enabled: isEnabled,
+  })
 
-    let isMounted = true
+  const temperaturesQuery = useQuery({
+    queryKey: sheetsQueryKeys.temperatures(spreadsheetId, kidId ?? ""),
+    queryFn: async () => {
+      if (!auth || !kidId) {
+        throw new Error("Could not load kid data")
+      }
 
-    async function load() {
-      setIsLoading(true)
-      setError(null)
-      try {
-        const [kids, tempRows, medRows, growthRows, noteRows] =
-          await Promise.all([
-            listKids(
-              currentAuth.accessToken,
-              currentAuth.spreadsheet.spreadsheetId
-            ),
-            listTemperatureRecords(
-              currentAuth.accessToken,
-              currentAuth.spreadsheet.spreadsheetId,
-              currentKidId
-            ),
-            listMedicationRecords(
-              currentAuth.accessToken,
-              currentAuth.spreadsheet.spreadsheetId,
-              currentKidId
-            ),
-            listGrowthRecords(
-              currentAuth.accessToken,
-              currentAuth.spreadsheet.spreadsheetId,
-              currentKidId
-            ),
-            listNotes(
-              currentAuth.accessToken,
-              currentAuth.spreadsheet.spreadsheetId,
-              currentKidId
-            ),
-          ])
+      return listTemperatureRecords(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        kidId
+      )
+    },
+    enabled: isEnabled,
+  })
 
-        if (isMounted) {
-          setKid(kids.find((item) => item.id === currentKidId) ?? null)
-          setTemperatures(tempRows)
-          setMedications(medRows)
-          setGrowthRecords(growthRows)
-          setNotes(noteRows)
-        }
-      } catch (loadError) {
-        if (isMounted) {
-          setError(
-            loadError instanceof Error
-              ? loadError.message
-              : "Could not load kid data"
+  const medicationsQuery = useQuery({
+    queryKey: sheetsQueryKeys.medications(spreadsheetId, kidId ?? ""),
+    queryFn: async () => {
+      if (!auth || !kidId) {
+        throw new Error("Could not load kid data")
+      }
+
+      return listMedicationRecords(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        kidId
+      )
+    },
+    enabled: isEnabled,
+  })
+
+  const growthRecordsQuery = useQuery({
+    queryKey: sheetsQueryKeys.growthRecords(spreadsheetId, kidId ?? ""),
+    queryFn: async () => {
+      if (!auth || !kidId) {
+        throw new Error("Could not load kid data")
+      }
+
+      return listGrowthRecords(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        kidId
+      )
+    },
+    enabled: isEnabled,
+  })
+
+  const notesQuery = useQuery({
+    queryKey: sheetsQueryKeys.notes(spreadsheetId, kidId ?? ""),
+    queryFn: async () => {
+      if (!auth || !kidId) {
+        throw new Error("Could not load kid data")
+      }
+
+      return listNotes(auth.accessToken, auth.spreadsheet.spreadsheetId, kidId)
+    },
+    enabled: isEnabled,
+  })
+
+  const kid = useMemo(
+    () => kidsQuery.data?.find((item) => item.id === kidId) ?? null,
+    [kidId, kidsQuery.data]
+  )
+  const temperatures = useMemo(
+    () => temperaturesQuery.data ?? [],
+    [temperaturesQuery.data]
+  )
+  const medications = useMemo(
+    () => medicationsQuery.data ?? [],
+    [medicationsQuery.data]
+  )
+  const growthRecords = useMemo(
+    () => growthRecordsQuery.data ?? [],
+    [growthRecordsQuery.data]
+  )
+  const notes = useMemo(() => notesQuery.data ?? [], [notesQuery.data])
+
+  const setKid = useCallback(
+    (nextValue: SetStateAction<KidProfile | null>) => {
+      if (!kidId) {
+        return
+      }
+
+      queryClient.setQueryData<KidProfile[]>(
+        sheetsQueryKeys.kids(spreadsheetId),
+        (current = []) => {
+          const currentKid = current.find((item) => item.id === kidId) ?? null
+          const nextKid =
+            typeof nextValue === "function"
+              ? (nextValue as (value: KidProfile | null) => KidProfile | null)(
+                  currentKid
+                )
+              : nextValue
+
+          if (!nextKid) {
+            return current
+          }
+
+          return current.map((item) =>
+            item.id === nextKid.id ? nextKid : item
           )
         }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false)
-        }
+      )
+    },
+    [kidId, queryClient, spreadsheetId]
+  )
+
+  const setTemperatures = useCallback(
+    (nextValue: SetStateAction<TemperatureRecord[]>) => {
+      if (!kidId) {
+        return
       }
-    }
 
-    void load()
+      queryClient.setQueryData<TemperatureRecord[]>(
+        sheetsQueryKeys.temperatures(spreadsheetId, kidId),
+        (current = []) =>
+          typeof nextValue === "function"
+            ? (
+                nextValue as (value: TemperatureRecord[]) => TemperatureRecord[]
+              )(current)
+            : nextValue
+      )
+    },
+    [kidId, queryClient, spreadsheetId]
+  )
 
-    return () => {
-      isMounted = false
-    }
-  }, [auth, kidId])
+  const setMedications = useCallback(
+    (nextValue: SetStateAction<MedicationRecord[]>) => {
+      if (!kidId) {
+        return
+      }
+
+      queryClient.setQueryData<MedicationRecord[]>(
+        sheetsQueryKeys.medications(spreadsheetId, kidId),
+        (current = []) =>
+          typeof nextValue === "function"
+            ? (nextValue as (value: MedicationRecord[]) => MedicationRecord[])(
+                current
+              )
+            : nextValue
+      )
+    },
+    [kidId, queryClient, spreadsheetId]
+  )
+
+  const setGrowthRecords = useCallback(
+    (nextValue: SetStateAction<GrowthRecord[]>) => {
+      if (!kidId) {
+        return
+      }
+
+      queryClient.setQueryData<GrowthRecord[]>(
+        sheetsQueryKeys.growthRecords(spreadsheetId, kidId),
+        (current = []) =>
+          typeof nextValue === "function"
+            ? (nextValue as (value: GrowthRecord[]) => GrowthRecord[])(current)
+            : nextValue
+      )
+    },
+    [kidId, queryClient, spreadsheetId]
+  )
+
+  const setNotes = useCallback(
+    (nextValue: SetStateAction<NoteRecord[]>) => {
+      if (!kidId) {
+        return
+      }
+
+      queryClient.setQueryData<NoteRecord[]>(
+        sheetsQueryKeys.notes(spreadsheetId, kidId),
+        (current = []) =>
+          typeof nextValue === "function"
+            ? (nextValue as (value: NoteRecord[]) => NoteRecord[])(current)
+            : nextValue
+      )
+    },
+    [kidId, queryClient, spreadsheetId]
+  )
+
+  const error = [
+    kidsQuery.error,
+    temperaturesQuery.error,
+    medicationsQuery.error,
+    growthRecordsQuery.error,
+    notesQuery.error,
+  ].find((queryError) => queryError instanceof Error)
 
   const latestGrowth = useMemo(() => growthRecords[0], [growthRecords])
   const latestTemperature = useMemo(
@@ -158,8 +285,13 @@ export function useKidPageData(
     setGrowthRecords,
     notes,
     setNotes,
-    isLoading,
-    error,
+    isLoading:
+      kidsQuery.isPending ||
+      temperaturesQuery.isPending ||
+      medicationsQuery.isPending ||
+      growthRecordsQuery.isPending ||
+      notesQuery.isPending,
+    error: error instanceof Error ? error.message : null,
     deletingRecordId,
     setDeletingRecordId,
     latestGrowth,

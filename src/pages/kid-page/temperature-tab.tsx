@@ -1,12 +1,7 @@
 import { HugeiconsIcon } from "@hugeicons/react"
-import {
-  Add01Icon,
-  Delete02Icon,
-  Edit01Icon,
-  Loading03Icon,
-  ThermometerIcon,
-} from "@hugeicons/core-free-icons"
+import { Add01Icon, ThermometerIcon } from "@hugeicons/core-free-icons"
 
+import { RecordActionsMenu } from "@/components/record-actions-menu"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,7 +21,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import type { MiniChartPoint } from "@/pages/kid-page/utils"
-import { normalizeTemperatureToCelsius, renderDateTime } from "@/pages/kid-page/utils"
+import {
+  normalizeTemperatureToCelsius,
+  renderDateTime,
+} from "@/pages/kid-page/utils"
 import type { TemperatureRecord } from "@/features/health/types"
 
 type TemperatureTabProps = {
@@ -45,7 +43,10 @@ function formatTemperatureDegrees(value: number) {
 }
 
 function getTemperatureBadgeClassName(record: TemperatureRecord) {
-  const valueInCelsius = normalizeTemperatureToCelsius(record.value, record.unit)
+  const valueInCelsius = normalizeTemperatureToCelsius(
+    record.value,
+    record.unit
+  )
 
   if (valueInCelsius > 41) {
     return "bg-red-600 text-white animate-pulse"
@@ -160,7 +161,7 @@ export function TemperatureTab({
                 <TableHead>Value</TableHead>
                 <TableHead>Method</TableHead>
                 <TableHead>Notes</TableHead>
-                <TableHead className="w-40">Actions</TableHead>
+                <TableHead className="w-32">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -178,47 +179,11 @@ export function TemperatureTab({
                   <TableCell>{row.method || "-"}</TableCell>
                   <TableCell>{row.notes || "-"}</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        disabled={deletingRecordId === row.id}
-                        onClick={() => onEdit(row)}
-                      >
-                        <HugeiconsIcon
-                          icon={Edit01Icon}
-                          strokeWidth={2}
-                          className="size-4"
-                        />
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        disabled={deletingRecordId === row.id}
-                        onClick={() => void onDelete(row)}
-                      >
-                        {deletingRecordId === row.id ? (
-                          <>
-                            <HugeiconsIcon
-                              icon={Loading03Icon}
-                              strokeWidth={2}
-                              className="size-4 animate-spin"
-                            />
-                            Deleting...
-                          </>
-                        ) : (
-                          <>
-                            <HugeiconsIcon
-                              icon={Delete02Icon}
-                              strokeWidth={2}
-                              className="size-4"
-                            />
-                            Delete
-                          </>
-                        )}
-                      </Button>
-                    </div>
+                    <RecordActionsMenu
+                      isDeleting={deletingRecordId === row.id}
+                      onEdit={() => onEdit(row)}
+                      onDelete={() => void onDelete(row)}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from "react"
+import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -32,6 +33,117 @@ export function useNoteRecords({
   const [isNoteOpen, setIsNoteOpen] = useState(false)
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
 
+  const saveNoteMutation = useMutation({
+    mutationFn: async (payload: {
+      values: NoteFormInput
+      editingNoteId: string | null
+    }) => {
+      if (!kid || !auth) {
+        throw new Error("Failed to save note")
+      }
+
+      if (payload.editingNoteId) {
+        const existing = notes.find((item) => item.id === payload.editingNoteId)
+        if (!existing) {
+          throw new Error("Note record not found")
+        }
+
+        const updated = await updateNote(
+          auth.accessToken,
+          auth.spreadsheet.spreadsheetId,
+          {
+            ...existing,
+            recordedAt: toIso(payload.values.recordedAt),
+            content: payload.values.content,
+          }
+        )
+
+        return {
+          kind: "update" as const,
+          record: updated,
+        }
+      }
+
+      const saved = await addNote(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        {
+          kidId: kid.id,
+          recordedAt: toIso(payload.values.recordedAt),
+          content: payload.values.content,
+        }
+      )
+
+      return {
+        kind: "create" as const,
+        record: saved,
+      }
+    },
+    onSuccess: (result) => {
+      if (result.kind === "update") {
+        setNotes((current) =>
+          current
+            .map((item) =>
+              item.id === result.record.id ? result.record : item
+            )
+            .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))
+        )
+        toast.success("Note updated")
+      } else {
+        setNotes((current) => [result.record, ...current])
+        toast.success("Note added")
+      }
+
+      setIsNoteOpen(false)
+      setEditingNoteId(null)
+      resetForm()
+    },
+    onError: (saveError) => {
+      toast.error(
+        saveError instanceof Error
+          ? saveError.message
+          : editingNoteId
+            ? "Failed to update note"
+            : "Failed to add note"
+      )
+    },
+  })
+
+  const deleteNoteMutation = useMutation({
+    mutationFn: async (record: NoteRecord) => {
+      if (!auth) {
+        throw new Error("Failed to delete note")
+      }
+
+      await deleteNote(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        record.id
+      )
+
+      return record
+    },
+    onSuccess: (record) => {
+      setNotes((current) => current.filter((item) => item.id !== record.id))
+      if (editingNoteId === record.id) {
+        setEditingNoteId(null)
+        setIsNoteOpen(false)
+        resetForm()
+      }
+      toast.success("Note deleted")
+    },
+    onError: (deleteError) => {
+      toast.error(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Failed to delete note"
+      )
+    },
+    onSettled: () => {
+      setDeletingRecordId(null)
+    },
+  })
+
   const form = useForm<NoteFormInput>({
     defaultValues: {
       recordedAt: toInputDateTime(new Date().toISOString()),
@@ -64,54 +176,10 @@ export function useNoteRecords({
     }
 
     try {
-      if (editingNoteId) {
-        const existing = notes.find((item) => item.id === editingNoteId)
-        if (!existing) {
-          toast.error("Note record not found")
-          return
-        }
-
-        const updated = await updateNote(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          {
-            ...existing,
-            recordedAt: toIso(parsed.data.recordedAt),
-            content: parsed.data.content,
-          }
-        )
-
-        setNotes((current) =>
-          current
-            .map((item) => (item.id === updated.id ? updated : item))
-            .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))
-        )
-        toast.success("Note updated")
-      } else {
-        const saved = await addNote(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          {
-            kidId: kid.id,
-            recordedAt: toIso(parsed.data.recordedAt),
-            content: parsed.data.content,
-          }
-        )
-        setNotes((current) => [saved, ...current])
-        toast.success("Note added")
-      }
-
-      setIsNoteOpen(false)
-      setEditingNoteId(null)
-      resetForm()
-    } catch (saveError) {
-      toast.error(
-        saveError instanceof Error
-          ? saveError.message
-          : editingNoteId
-            ? "Failed to update note"
-            : "Failed to add note"
-      )
+      await saveNoteMutation.mutateAsync({
+        values: parsed.data,
+        editingNoteId,
+      })
     } finally {
       locks.releaseActionLock(actionKey)
     }
@@ -131,26 +199,8 @@ export function useNoteRecords({
 
     setDeletingRecordId(record.id)
     try {
-      await deleteNote(
-        auth.accessToken,
-        auth.spreadsheet.spreadsheetId,
-        record.id
-      )
-      setNotes((current) => current.filter((item) => item.id !== record.id))
-      if (editingNoteId === record.id) {
-        setEditingNoteId(null)
-        setIsNoteOpen(false)
-        resetForm()
-      }
-      toast.success("Note deleted")
-    } catch (deleteError) {
-      toast.error(
-        deleteError instanceof Error
-          ? deleteError.message
-          : "Failed to delete note"
-      )
+      await deleteNoteMutation.mutateAsync(record)
     } finally {
-      setDeletingRecordId(null)
       locks.releaseActionLock(actionKey)
     }
   }

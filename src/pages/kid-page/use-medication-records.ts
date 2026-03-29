@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from "react"
+import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -36,6 +37,127 @@ export function useMedicationRecords({
   const [editingMedicationId, setEditingMedicationId] = useState<string | null>(
     null
   )
+
+  const saveMedicationMutation = useMutation({
+    mutationFn: async (payload: {
+      values: MedicationFormInput
+      editingMedicationId: string | null
+    }) => {
+      if (!kid || !auth) {
+        throw new Error("Failed to save medication")
+      }
+
+      if (payload.editingMedicationId) {
+        const existing = medications.find(
+          (item) => item.id === payload.editingMedicationId
+        )
+        if (!existing) {
+          throw new Error("Medication record not found")
+        }
+
+        const updated = await updateMedicationRecord(
+          auth.accessToken,
+          auth.spreadsheet.spreadsheetId,
+          {
+            ...existing,
+            takenAt: toIso(payload.values.takenAt),
+            medicationName: payload.values.medicationName,
+            dose: payload.values.dose,
+            unit: payload.values.unit,
+            notes: payload.values.notes,
+          }
+        )
+
+        return {
+          kind: "update" as const,
+          record: updated,
+        }
+      }
+
+      const saved = await addMedicationRecord(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        {
+          kidId: kid.id,
+          takenAt: toIso(payload.values.takenAt),
+          medicationName: payload.values.medicationName,
+          dose: payload.values.dose,
+          unit: payload.values.unit,
+          notes: payload.values.notes,
+        }
+      )
+
+      return {
+        kind: "create" as const,
+        record: saved,
+      }
+    },
+    onSuccess: (result) => {
+      if (result.kind === "update") {
+        setMedications((current) =>
+          current
+            .map((item) =>
+              item.id === result.record.id ? result.record : item
+            )
+            .sort((a, b) => b.takenAt.localeCompare(a.takenAt))
+        )
+        toast.success("Medication updated")
+      } else {
+        setMedications((current) => [result.record, ...current])
+        toast.success("Medication added")
+      }
+
+      setIsMedOpen(false)
+      setEditingMedicationId(null)
+      resetForm()
+    },
+    onError: (saveError) => {
+      toast.error(
+        saveError instanceof Error
+          ? saveError.message
+          : editingMedicationId
+            ? "Failed to update medication"
+            : "Failed to add medication"
+      )
+    },
+  })
+
+  const deleteMedicationMutation = useMutation({
+    mutationFn: async (record: MedicationRecord) => {
+      if (!auth) {
+        throw new Error("Failed to delete medication")
+      }
+
+      await deleteMedicationRecord(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        record.id
+      )
+
+      return record
+    },
+    onSuccess: (record) => {
+      setMedications((current) =>
+        current.filter((item) => item.id !== record.id)
+      )
+      if (editingMedicationId === record.id) {
+        setEditingMedicationId(null)
+        setIsMedOpen(false)
+        resetForm()
+      }
+      toast.success("Medication deleted")
+    },
+    onError: (deleteError) => {
+      toast.error(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Failed to delete medication"
+      )
+    },
+    onSettled: () => {
+      setDeletingRecordId(null)
+    },
+  })
 
   const form = useForm<MedicationFormInput>({
     defaultValues: {
@@ -75,62 +197,10 @@ export function useMedicationRecords({
     }
 
     try {
-      if (editingMedicationId) {
-        const existing = medications.find(
-          (item) => item.id === editingMedicationId
-        )
-        if (!existing) {
-          toast.error("Medication record not found")
-          return
-        }
-
-        const updated = await updateMedicationRecord(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          {
-            ...existing,
-            takenAt: toIso(parsed.data.takenAt),
-            medicationName: parsed.data.medicationName,
-            dose: parsed.data.dose,
-            unit: parsed.data.unit,
-            notes: parsed.data.notes,
-          }
-        )
-
-        setMedications((current) =>
-          current
-            .map((item) => (item.id === updated.id ? updated : item))
-            .sort((a, b) => b.takenAt.localeCompare(a.takenAt))
-        )
-        toast.success("Medication updated")
-      } else {
-        const saved = await addMedicationRecord(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          {
-            kidId: kid.id,
-            takenAt: toIso(parsed.data.takenAt),
-            medicationName: parsed.data.medicationName,
-            dose: parsed.data.dose,
-            unit: parsed.data.unit,
-            notes: parsed.data.notes,
-          }
-        )
-        setMedications((current) => [saved, ...current])
-        toast.success("Medication added")
-      }
-
-      setIsMedOpen(false)
-      setEditingMedicationId(null)
-      resetForm()
-    } catch (saveError) {
-      toast.error(
-        saveError instanceof Error
-          ? saveError.message
-          : editingMedicationId
-            ? "Failed to update medication"
-            : "Failed to add medication"
-      )
+      await saveMedicationMutation.mutateAsync({
+        values: parsed.data,
+        editingMedicationId,
+      })
     } finally {
       locks.releaseActionLock(actionKey)
     }
@@ -150,28 +220,8 @@ export function useMedicationRecords({
 
     setDeletingRecordId(record.id)
     try {
-      await deleteMedicationRecord(
-        auth.accessToken,
-        auth.spreadsheet.spreadsheetId,
-        record.id
-      )
-      setMedications((current) =>
-        current.filter((item) => item.id !== record.id)
-      )
-      if (editingMedicationId === record.id) {
-        setEditingMedicationId(null)
-        setIsMedOpen(false)
-        resetForm()
-      }
-      toast.success("Medication deleted")
-    } catch (deleteError) {
-      toast.error(
-        deleteError instanceof Error
-          ? deleteError.message
-          : "Failed to delete medication"
-      )
+      await deleteMedicationMutation.mutateAsync(record)
     } finally {
-      setDeletingRecordId(null)
       locks.releaseActionLock(actionKey)
     }
   }

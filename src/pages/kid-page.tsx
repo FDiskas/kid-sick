@@ -1,6 +1,12 @@
 import { Link, Navigate, useParams } from "react-router-dom"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowLeft01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft01Icon,
+  Note04Icon,
+  PillIcon,
+  ThermometerIcon,
+  WeightScale01Icon,
+} from "@hugeicons/core-free-icons"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { buttonVariants } from "@/components/ui/button"
@@ -125,11 +131,39 @@ export function KidPage() {
 
       {data.kid ? (
         <Tabs defaultValue="temperature" className="gap-4">
-          <TabsList>
-            <TabsTrigger value="temperature">Temperature</TabsTrigger>
-            <TabsTrigger value="medication">Medication</TabsTrigger>
-            <TabsTrigger value="growth">Growth</TabsTrigger>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
+          <TabsList variant="line">
+            <TabsTrigger value="temperature">
+              <HugeiconsIcon
+                icon={ThermometerIcon}
+                strokeWidth={2}
+                className="size-4"
+              />
+              Temperature
+            </TabsTrigger>
+            <TabsTrigger value="medication">
+              <HugeiconsIcon
+                icon={PillIcon}
+                strokeWidth={2}
+                className="size-4"
+              />
+              Medication
+            </TabsTrigger>
+            <TabsTrigger value="growth">
+              <HugeiconsIcon
+                icon={WeightScale01Icon}
+                strokeWidth={2}
+                className="size-4"
+              />
+              Growth
+            </TabsTrigger>
+            <TabsTrigger value="notes">
+              <HugeiconsIcon
+                icon={Note04Icon}
+                strokeWidth={2}
+                className="size-4"
+              />
+              Notes
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="temperature">
             <TemperatureTab

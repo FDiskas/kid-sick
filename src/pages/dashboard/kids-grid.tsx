@@ -1,16 +1,11 @@
 import { Link } from "react-router-dom"
 import { HugeiconsIcon } from "@hugeicons/react"
-import {
-  Add01Icon,
-  ArrowRight01Icon,
-  Delete02Icon,
-  Edit01Icon,
-  Loading03Icon,
-} from "@hugeicons/core-free-icons"
+import { Add01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { RecordActionsMenu } from "@/components/record-actions-menu"
 import type { KidProfile } from "@/features/health/types"
 import { cn, calculateAge } from "@/lib/utils"
 
@@ -84,45 +79,11 @@ export function KidsGrid({
                 />
                 Open details
               </Link>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={deletingKidId === kid.id}
-                onClick={() => onEdit(kid)}
-              >
-                <HugeiconsIcon
-                  icon={Edit01Icon}
-                  strokeWidth={2}
-                  className="size-4"
-                />
-                Edit
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                disabled={deletingKidId === kid.id}
-                onClick={() => void onDelete(kid)}
-              >
-                {deletingKidId === kid.id ? (
-                  <>
-                    <HugeiconsIcon
-                      icon={Loading03Icon}
-                      strokeWidth={2}
-                      className="size-4 animate-spin"
-                    />
-                    Deleting...
-                  </>
-                ) : (
-                  <>
-                    <HugeiconsIcon
-                      icon={Delete02Icon}
-                      strokeWidth={2}
-                      className="size-4"
-                    />
-                    Delete
-                  </>
-                )}
-              </Button>
+              <RecordActionsMenu
+                isDeleting={deletingKidId === kid.id}
+                onEdit={() => onEdit(kid)}
+                onDelete={() => void onDelete(kid)}
+              />
             </div>
           </CardContent>
         </Card>

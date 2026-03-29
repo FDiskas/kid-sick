@@ -6,6 +6,7 @@ import {
   Logout01Icon,
 } from "@hugeicons/core-free-icons"
 
+import { useTheme } from "@/components/theme-provider"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -23,13 +24,22 @@ import {
   TEMPERATURE_UNIT_OPTIONS,
   type TemperatureUnit,
 } from "@/features/health/temperature-unit-preference"
+import { type Theme } from "@/components/theme-utils"
 import { cn } from "@/lib/utils"
+
+const THEME_OPTIONS: ReadonlyArray<{ value: Theme; label: string }> = [
+  { value: "system", label: "System" },
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+]
 
 export function SettingsPage() {
   const { auth, signOut } = useAuth()
+  const { theme, setTheme } = useTheme()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
-  const [temperatureUnit, setTemperatureUnit] =
-    useState<TemperatureUnit>(getTemperatureUnitPreference)
+  const [temperatureUnit, setTemperatureUnit] = useState<TemperatureUnit>(
+    getTemperatureUnitPreference
+  )
 
   if (!auth) {
     return null
@@ -48,9 +58,44 @@ export function SettingsPage() {
     setTemperatureUnitPreference(nextValue)
   }
 
+  function handleThemeChange(nextValue: Theme | null) {
+    if (!nextValue) {
+      return
+    }
+
+    setTheme(nextValue)
+  }
+
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-semibold">Settings</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>Appearance</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm">
+          <p className="text-muted-foreground">
+            Choose how the app theme should render for this browser.
+          </p>
+          <div className="max-w-xs space-y-1.5">
+            <label className="text-sm font-medium" htmlFor="theme-select">
+              Theme
+            </label>
+            <Select value={theme} onValueChange={handleThemeChange}>
+              <SelectTrigger id="theme-select" className="w-full">
+                <SelectValue placeholder="Select a theme" />
+              </SelectTrigger>
+              <SelectContent>
+                {THEME_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
       <Card>
         <CardHeader>
           <CardTitle>Temperature</CardTitle>

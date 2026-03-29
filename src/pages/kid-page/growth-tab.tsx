@@ -1,12 +1,7 @@
 import { HugeiconsIcon } from "@hugeicons/react"
-import {
-  Add01Icon,
-  Delete02Icon,
-  Edit01Icon,
-  Loading03Icon,
-  RulerIcon,
-} from "@hugeicons/core-free-icons"
+import { Add01Icon, RulerIcon } from "@hugeicons/core-free-icons"
 
+import { RecordActionsMenu } from "@/components/record-actions-menu"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -147,7 +142,7 @@ export function GrowthTab({
                 <TableHead>Height (cm)</TableHead>
                 <TableHead>Weight (kg)</TableHead>
                 <TableHead>Notes</TableHead>
-                <TableHead className="w-40">Actions</TableHead>
+                <TableHead className="w-32">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -158,47 +153,11 @@ export function GrowthTab({
                   <TableCell>{row.weightKg ?? "-"}</TableCell>
                   <TableCell>{row.notes || "-"}</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        disabled={deletingRecordId === row.id}
-                        onClick={() => onEdit(row)}
-                      >
-                        <HugeiconsIcon
-                          icon={Edit01Icon}
-                          strokeWidth={2}
-                          className="size-4"
-                        />
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        disabled={deletingRecordId === row.id}
-                        onClick={() => void onDelete(row)}
-                      >
-                        {deletingRecordId === row.id ? (
-                          <>
-                            <HugeiconsIcon
-                              icon={Loading03Icon}
-                              strokeWidth={2}
-                              className="size-4 animate-spin"
-                            />
-                            Deleting...
-                          </>
-                        ) : (
-                          <>
-                            <HugeiconsIcon
-                              icon={Delete02Icon}
-                              strokeWidth={2}
-                              className="size-4"
-                            />
-                            Delete
-                          </>
-                        )}
-                      </Button>
-                    </div>
+                    <RecordActionsMenu
+                      isDeleting={deletingRecordId === row.id}
+                      onEdit={() => onEdit(row)}
+                      onDelete={() => void onDelete(row)}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

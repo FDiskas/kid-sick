@@ -1,34 +1,10 @@
-import { Link, NavLink, Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Logout01Icon, Moon01Icon, Sun01Icon } from "@hugeicons/core-free-icons"
+import { Logout01Icon, Settings01Icon } from "@hugeicons/core-free-icons"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useTheme } from "@/components/theme-provider"
 import { useAuth } from "@/features/auth/auth-context"
-
-function ThemeToggleButton() {
-  const { theme, setTheme } = useTheme()
-  const isDark = theme === "dark"
-
-  return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={() => {
-        setTheme(isDark ? "light" : "dark")
-      }}
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      title={isDark ? "Switch to light theme" : "Switch to dark theme"}
-    >
-      <HugeiconsIcon
-        icon={isDark ? Sun01Icon : Moon01Icon}
-        strokeWidth={2}
-        className="size-4"
-      />
-    </Button>
-  )
-}
 
 export function AppShell() {
   const { auth, signOut } = useAuth()
@@ -40,29 +16,6 @@ export function AppShell() {
           <Link to="/" className="text-lg font-semibold tracking-tight">
             Kid Sick Tracker
           </Link>
-          <nav className="flex items-center gap-2 text-sm">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive
-                  ? "font-medium text-foreground"
-                  : "text-muted-foreground"
-              }
-            >
-              Dashboard
-            </NavLink>
-            <span className="text-muted-foreground">/</span>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                isActive
-                  ? "font-medium text-foreground"
-                  : "text-muted-foreground"
-              }
-            >
-              Settings
-            </NavLink>
-          </nav>
           <div className="flex items-center gap-2">
             {auth ? (
               <Badge
@@ -86,7 +39,18 @@ export function AppShell() {
                 Logout
               </Button>
             ) : null}
-            <ThemeToggleButton />
+            <Link
+              to="/settings"
+              className={buttonVariants({ variant: "outline", size: "icon" })}
+              aria-label="Open settings"
+              title="Open settings"
+            >
+              <HugeiconsIcon
+                icon={Settings01Icon}
+                strokeWidth={2}
+                className="size-4"
+              />
+            </Link>
           </div>
         </div>
       </header>

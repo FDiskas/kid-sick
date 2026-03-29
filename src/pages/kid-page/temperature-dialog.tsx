@@ -60,7 +60,7 @@ export function TemperatureDialog({
         </DialogHeader>
         <form
           className="space-y-3"
-          onSubmit={form.handleSubmit((values) => void onSubmit(values))}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="space-y-1.5">
             <Label htmlFor="temp-time">Date and time</Label>

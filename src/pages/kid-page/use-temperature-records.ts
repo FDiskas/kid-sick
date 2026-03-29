@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from "react"
+import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -48,6 +49,127 @@ export function useTemperatureRecords({
     string | null
   >(null)
 
+  const saveTemperatureMutation = useMutation({
+    mutationFn: async (payload: {
+      values: TemperatureFormInput
+      editingTemperatureId: string | null
+    }) => {
+      if (!kid || !auth) {
+        throw new Error("Failed to save temperature")
+      }
+
+      if (payload.editingTemperatureId) {
+        const existing = temperatures.find(
+          (item) => item.id === payload.editingTemperatureId
+        )
+        if (!existing) {
+          throw new Error("Temperature record not found")
+        }
+
+        const updated = await updateTemperatureRecord(
+          auth.accessToken,
+          auth.spreadsheet.spreadsheetId,
+          {
+            ...existing,
+            measuredAt: toIso(payload.values.measuredAt),
+            value: payload.values.value,
+            unit: payload.values.unit,
+            method: payload.values.method,
+            notes: payload.values.notes,
+          }
+        )
+
+        return {
+          kind: "update" as const,
+          record: updated,
+        }
+      }
+
+      const saved = await addTemperatureRecord(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        {
+          kidId: kid.id,
+          measuredAt: toIso(payload.values.measuredAt),
+          value: payload.values.value,
+          unit: payload.values.unit,
+          method: payload.values.method,
+          notes: payload.values.notes,
+        }
+      )
+
+      return {
+        kind: "create" as const,
+        record: saved,
+      }
+    },
+    onSuccess: (result) => {
+      if (result.kind === "update") {
+        setTemperatures((current) =>
+          current
+            .map((item) =>
+              item.id === result.record.id ? result.record : item
+            )
+            .sort((a, b) => b.measuredAt.localeCompare(a.measuredAt))
+        )
+        toast.success("Temperature updated")
+      } else {
+        setTemperatures((current) => [result.record, ...current])
+        toast.success("Temperature added")
+      }
+
+      setIsTempOpen(false)
+      setEditingTemperatureId(null)
+      resetForm()
+    },
+    onError: (saveError) => {
+      toast.error(
+        saveError instanceof Error
+          ? saveError.message
+          : editingTemperatureId
+            ? "Failed to update temperature"
+            : "Failed to add temperature"
+      )
+    },
+  })
+
+  const deleteTemperatureMutation = useMutation({
+    mutationFn: async (record: TemperatureRecord) => {
+      if (!auth) {
+        throw new Error("Failed to delete temperature")
+      }
+
+      await deleteTemperatureRecord(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        record.id
+      )
+
+      return record
+    },
+    onSuccess: (record) => {
+      setTemperatures((current) =>
+        current.filter((item) => item.id !== record.id)
+      )
+      if (editingTemperatureId === record.id) {
+        setEditingTemperatureId(null)
+        setIsTempOpen(false)
+        resetForm()
+      }
+      toast.success("Temperature deleted")
+    },
+    onError: (deleteError) => {
+      toast.error(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Failed to delete temperature"
+      )
+    },
+    onSettled: () => {
+      setDeletingRecordId(null)
+    },
+  })
+
   const form = useForm<TemperatureFormInput>({
     defaultValues: getDefaultTemperatureFormValues(),
   })
@@ -79,62 +201,10 @@ export function useTemperatureRecords({
     }
 
     try {
-      if (editingTemperatureId) {
-        const existing = temperatures.find(
-          (item) => item.id === editingTemperatureId
-        )
-        if (!existing) {
-          toast.error("Temperature record not found")
-          return
-        }
-
-        const updated = await updateTemperatureRecord(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          {
-            ...existing,
-            measuredAt: toIso(parsed.data.measuredAt),
-            value: parsed.data.value,
-            unit: parsed.data.unit,
-            method: parsed.data.method,
-            notes: parsed.data.notes,
-          }
-        )
-
-        setTemperatures((current) =>
-          current
-            .map((item) => (item.id === updated.id ? updated : item))
-            .sort((a, b) => b.measuredAt.localeCompare(a.measuredAt))
-        )
-        toast.success("Temperature updated")
-      } else {
-        const saved = await addTemperatureRecord(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          {
-            kidId: kid.id,
-            measuredAt: toIso(parsed.data.measuredAt),
-            value: parsed.data.value,
-            unit: parsed.data.unit,
-            method: parsed.data.method,
-            notes: parsed.data.notes,
-          }
-        )
-        setTemperatures((current) => [saved, ...current])
-        toast.success("Temperature added")
-      }
-
-      setIsTempOpen(false)
-      setEditingTemperatureId(null)
-      resetForm()
-    } catch (saveError) {
-      toast.error(
-        saveError instanceof Error
-          ? saveError.message
-          : editingTemperatureId
-            ? "Failed to update temperature"
-            : "Failed to add temperature"
-      )
+      await saveTemperatureMutation.mutateAsync({
+        values: parsed.data,
+        editingTemperatureId,
+      })
     } finally {
       locks.releaseActionLock(actionKey)
     }
@@ -158,28 +228,8 @@ export function useTemperatureRecords({
 
     setDeletingRecordId(record.id)
     try {
-      await deleteTemperatureRecord(
-        auth.accessToken,
-        auth.spreadsheet.spreadsheetId,
-        record.id
-      )
-      setTemperatures((current) =>
-        current.filter((item) => item.id !== record.id)
-      )
-      if (editingTemperatureId === record.id) {
-        setEditingTemperatureId(null)
-        setIsTempOpen(false)
-        resetForm()
-      }
-      toast.success("Temperature deleted")
-    } catch (deleteError) {
-      toast.error(
-        deleteError instanceof Error
-          ? deleteError.message
-          : "Failed to delete temperature"
-      )
+      await deleteTemperatureMutation.mutateAsync(record)
     } finally {
-      setDeletingRecordId(null)
       locks.releaseActionLock(actionKey)
     }
   }

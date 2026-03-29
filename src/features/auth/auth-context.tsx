@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
+import { useMutation } from "@tanstack/react-query"
 
 import {
   AUTH_STORAGE_KEY,
@@ -25,12 +26,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [auth, setAuth] = React.useState<AuthState | null>(() =>
     readPersistedAuth()
   )
-  const [isLoading, setIsLoading] = React.useState(false)
 
-  const signIn = React.useCallback(async () => {
-    setIsLoading(true)
-
-    try {
+  const signInMutation = useMutation({
+    mutationFn: async () => {
       const tokenResult = await requestAccessToken("consent")
       const spreadsheet = await findOrCreateSpreadsheet(tokenResult.accessToken)
       await ensureSpreadsheetShape(
@@ -38,15 +36,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         spreadsheet.spreadsheetId
       )
 
-      setAuth({
+      return {
         accessToken: tokenResult.accessToken,
         expiresAt: Date.now() + tokenResult.expiresIn * 1000,
         spreadsheet,
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
+      }
+    },
+    onSuccess: (nextAuth) => {
+      setAuth(nextAuth)
+    },
+  })
+
+  const signIn = React.useCallback(async () => {
+    await signInMutation.mutateAsync()
+  }, [signInMutation])
 
   const signOut = React.useCallback(() => {
     if (auth?.accessToken && window.google?.accounts?.oauth2?.revoke) {
@@ -91,11 +94,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = React.useMemo(
     () => ({
       auth,
-      isLoading,
+      isLoading: signInMutation.isPending,
       signIn,
       signOut,
     }),
-    [auth, isLoading, signIn, signOut]
+    [auth, signInMutation.isPending, signIn, signOut]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

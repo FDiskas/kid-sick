@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -10,6 +11,7 @@ import {
   listKids,
   updateKid,
 } from "@/features/sheets/health-repository"
+import { sheetsQueryKeys } from "@/features/sheets/query-keys"
 
 export const defaultKidValues: KidFormInput = {
   name: "",
@@ -29,62 +31,136 @@ export function useDashboardController(
     spreadsheet: SpreadsheetContext
   } | null
 ) {
-  const [kids, setKids] = useState<KidProfile[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingKid, setEditingKid] = useState<KidProfile | null>(null)
   const [deletingKidId, setDeletingKidId] = useState<string | null>(null)
   const deleteLocksRef = useRef<Set<string>>(new Set())
+  const queryClient = useQueryClient()
+  const spreadsheetId = auth?.spreadsheet.spreadsheetId ?? ""
 
   const form = useForm<KidFormInput>({ defaultValues: defaultKidValues })
+
+  const kidsQuery = useQuery({
+    queryKey: sheetsQueryKeys.kids(spreadsheetId),
+    queryFn: async () => {
+      if (!auth) {
+        throw new Error("Unable to load kids")
+      }
+
+      return listKids(auth.accessToken, auth.spreadsheet.spreadsheetId)
+    },
+    enabled: Boolean(auth),
+  })
+
+  const saveKidMutation = useMutation({
+    mutationFn: async (payload: {
+      values: KidFormInput
+      editingKid: KidProfile | null
+    }) => {
+      if (!auth) {
+        throw new Error("Failed to save kid profile")
+      }
+
+      if (payload.editingKid) {
+        const updatedKid = await updateKid(
+          auth.accessToken,
+          auth.spreadsheet.spreadsheetId,
+          {
+            ...payload.editingKid,
+            ...payload.values,
+          }
+        )
+
+        return {
+          kind: "update" as const,
+          kid: updatedKid,
+        }
+      }
+
+      const createdKid = await createKid(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        payload.values
+      )
+
+      return {
+        kind: "create" as const,
+        kid: createdKid,
+      }
+    },
+    onSuccess: (result) => {
+      queryClient.setQueryData<KidProfile[]>(
+        sheetsQueryKeys.kids(spreadsheetId),
+        (current = []) =>
+          result.kind === "create"
+            ? [result.kid, ...current]
+            : current.map((item) =>
+                item.id === result.kid.id ? result.kid : item
+              )
+      )
+
+      toast.success(
+        result.kind === "create" ? "Kid profile created" : "Kid profile updated"
+      )
+      setIsDialogOpen(false)
+      setEditingKid(null)
+      form.reset(defaultKidValues)
+    },
+    onError: (saveError) => {
+      toast.error(
+        saveError instanceof Error
+          ? saveError.message
+          : "Failed to save kid profile"
+      )
+    },
+  })
+
+  const deleteKidMutation = useMutation({
+    mutationFn: async (kid: KidProfile) => {
+      if (!auth) {
+        throw new Error("Failed to delete kid")
+      }
+
+      await deleteKidCascade(
+        auth.accessToken,
+        auth.spreadsheet.spreadsheetId,
+        kid.id
+      )
+
+      return kid
+    },
+    onSuccess: (kid) => {
+      queryClient.setQueryData<KidProfile[]>(
+        sheetsQueryKeys.kids(spreadsheetId),
+        (current = []) => current.filter((item) => item.id !== kid.id)
+      )
+      queryClient.removeQueries({
+        queryKey: sheetsQueryKeys.kid(spreadsheetId, kid.id),
+      })
+
+      if (editingKid?.id === kid.id) {
+        setEditingKid(null)
+        setIsDialogOpen(false)
+      }
+
+      toast.success("Kid and related records deleted")
+    },
+    onError: (deleteError) => {
+      toast.error(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Failed to delete kid"
+      )
+    },
+    onSettled: () => {
+      setDeletingKidId(null)
+    },
+  })
 
   const dialogTitle = useMemo(
     () => (editingKid ? "Edit kid profile" : "Add kid profile"),
     [editingKid]
   )
-
-  useEffect(() => {
-    if (!auth) {
-      return
-    }
-
-    const currentAuth: NonNullable<typeof auth> = auth
-
-    let isMounted = true
-
-    async function load() {
-      setIsLoading(true)
-      setError(null)
-      try {
-        const result = await listKids(
-          currentAuth.accessToken,
-          currentAuth.spreadsheet.spreadsheetId
-        )
-        if (isMounted) {
-          setKids(result)
-        }
-      } catch (loadError) {
-        if (isMounted) {
-          setError(
-            loadError instanceof Error
-              ? loadError.message
-              : "Unable to load kids"
-          )
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    void load()
-
-    return () => {
-      isMounted = false
-    }
-  }, [auth])
 
   function openCreateDialog() {
     setEditingKid(null)
@@ -117,43 +193,10 @@ export function useDashboardController(
       return
     }
 
-    const payload = { ...parsed.data, notes: parsed.data.notes ?? "" }
-
-    try {
-      if (editingKid) {
-        const updatedKid = await updateKid(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          {
-            ...editingKid,
-            ...payload,
-          }
-        )
-        setKids((existing) =>
-          existing.map((item) =>
-            item.id === updatedKid.id ? updatedKid : item
-          )
-        )
-        toast.success("Kid profile updated")
-      } else {
-        const createdKid = await createKid(
-          auth.accessToken,
-          auth.spreadsheet.spreadsheetId,
-          payload
-        )
-        setKids((existing) => [createdKid, ...existing])
-        toast.success("Kid profile created")
-      }
-
-      setIsDialogOpen(false)
-      setEditingKid(null)
-    } catch (saveError) {
-      toast.error(
-        saveError instanceof Error
-          ? saveError.message
-          : "Failed to save kid profile"
-      )
-    }
+    await saveKidMutation.mutateAsync({
+      values: { ...parsed.data, notes: parsed.data.notes ?? "" },
+      editingKid,
+    })
   }
 
   async function deleteKid(kid: KidProfile) {
@@ -178,35 +221,16 @@ export function useDashboardController(
 
     setDeletingKidId(kid.id)
     try {
-      await deleteKidCascade(
-        auth.accessToken,
-        auth.spreadsheet.spreadsheetId,
-        kid.id
-      )
-      setKids((existing) => existing.filter((item) => item.id !== kid.id))
-
-      if (editingKid?.id === kid.id) {
-        setEditingKid(null)
-        setIsDialogOpen(false)
-      }
-
-      toast.success("Kid and related records deleted")
-    } catch (deleteError) {
-      toast.error(
-        deleteError instanceof Error
-          ? deleteError.message
-          : "Failed to delete kid"
-      )
+      await deleteKidMutation.mutateAsync(kid)
     } finally {
-      setDeletingKidId(null)
       deleteLocksRef.current.delete(actionKey)
     }
   }
 
   return {
-    kids,
-    isLoading,
-    error,
+    kids: kidsQuery.data ?? [],
+    isLoading: kidsQuery.isPending,
+    error: kidsQuery.error instanceof Error ? kidsQuery.error.message : null,
     form,
     dialogTitle,
     isDialogOpen,
