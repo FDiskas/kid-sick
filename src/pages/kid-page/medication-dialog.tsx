@@ -48,10 +48,7 @@ export function MedicationDialog({
               : "Track meds taken and dosage for this child."}
           </DialogDescription>
         </DialogHeader>
-        <form
-          className="space-y-3"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-1.5">
             <Label htmlFor="med-time">Date and time</Label>
             <Input

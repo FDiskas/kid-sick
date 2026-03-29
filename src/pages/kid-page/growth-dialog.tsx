@@ -48,10 +48,7 @@ export function GrowthDialog({
               : "Save historical growth and refresh profile latest values."}
           </DialogDescription>
         </DialogHeader>
-        <form
-          className="space-y-3"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-1.5">
             <Label htmlFor="growth-time">Date and time</Label>
             <Input

@@ -67,3 +67,4 @@ pnpm dev
 - Re-auth is required after token expiry.
 - Data is written directly to Google APIs from the browser.
 - If OAuth verification requirements become strict for production, consider moving API writes behind a Google Apps Script proxy while keeping UI and domain modules unchanged.
+- Themes are used from https://tweakcn.com/editor/theme
