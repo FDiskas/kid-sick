@@ -1,20 +1,27 @@
-import { Button } from "@/components/ui/button"
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom"
 
-export function App() {
+import { AppShell } from "@/components/app-shell"
+import { RequireAuth } from "@/features/auth/require-auth"
+import { AuthPage } from "@/pages/auth-page"
+import { DashboardPage } from "@/pages/dashboard-page"
+import { KidPage } from "@/pages/kid-page"
+import { SettingsPage } from "@/pages/settings-page"
+
+function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route element={<RequireAuth />}>
+          <Route element={<AppShell />}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/kids/:kidId" element={<KidPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   )
 }
 
