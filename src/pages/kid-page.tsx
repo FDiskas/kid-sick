@@ -1,12 +1,32 @@
 import { format } from "date-fns"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Link, Navigate, useParams } from "react-router-dom"
 import { toast } from "sonner"
+import { HugeiconsIcon } from "@hugeicons/react"
+import {
+  Add01Icon,
+  ArrowLeft01Icon,
+  Delete02Icon,
+  Edit01Icon,
+  FloppyDiskIcon,
+  Loading03Icon,
+  MedicineBottleIcon,
+  NoteAddIcon,
+  RulerIcon,
+  ThermometerIcon,
+} from "@hugeicons/core-free-icons"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -27,6 +47,7 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
+import { BarMiniChart, LineMiniChart } from "@/components/ui/simple-charts"
 import { useAuth } from "@/features/auth/auth-context"
 import {
   growthSchema,
@@ -79,6 +100,14 @@ function renderDateTime(value: string) {
   return format(new Date(value), "yyyy-MM-dd HH:mm")
 }
 
+function normalizeTemperatureToCelsius(value: number, unit: "C" | "F") {
+  if (unit === "F") {
+    return ((value - 32) * 5) / 9
+  }
+
+  return value
+}
+
 export function KidPage() {
   const { auth } = useAuth()
   const { kidId } = useParams()
@@ -101,6 +130,20 @@ export function KidPage() {
   const [editingGrowthId, setEditingGrowthId] = useState<string | null>(null)
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
   const [deletingRecordId, setDeletingRecordId] = useState<string | null>(null)
+  const actionLocksRef = useRef<Set<string>>(new Set())
+
+  function acquireActionLock(key: string) {
+    if (actionLocksRef.current.has(key)) {
+      return false
+    }
+
+    actionLocksRef.current.add(key)
+    return true
+  }
+
+  function releaseActionLock(key: string) {
+    actionLocksRef.current.delete(key)
+  }
 
   const temperatureForm = useForm<TemperatureFormInput>({
     defaultValues: {
@@ -241,6 +284,86 @@ export function KidPage() {
 
   const latestGrowth = useMemo(() => growthRecords[0], [growthRecords])
 
+  const latestTemperature = useMemo(() => temperatures[0] ?? null, [temperatures])
+
+  const temperatureTrend = useMemo(() => {
+    return temperatures
+      .slice()
+      .sort((a, b) => a.measuredAt.localeCompare(b.measuredAt))
+      .slice(-12)
+      .map((entry) => ({
+        label: format(new Date(entry.measuredAt), "MM/dd"),
+        value: Number(normalizeTemperatureToCelsius(entry.value, entry.unit).toFixed(2)),
+      }))
+  }, [temperatures])
+
+  const feverCount = useMemo(
+    () =>
+      temperatures.filter(
+        (entry) => normalizeTemperatureToCelsius(entry.value, entry.unit) >= 38
+      ).length,
+    [temperatures]
+  )
+
+  const medicationPerDay = useMemo(() => {
+    const countByDay = new Map<string, number>()
+
+    for (const entry of medications) {
+      const dayKey = entry.takenAt.slice(0, 10)
+      countByDay.set(dayKey, (countByDay.get(dayKey) ?? 0) + 1)
+    }
+
+    return Array.from(countByDay.entries())
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .slice(-10)
+      .map(([day, value]) => ({
+        label: format(new Date(day), "MM/dd"),
+        value,
+      }))
+  }, [medications])
+
+  const mostUsedMedication = useMemo(() => {
+    const countByMedication = new Map<string, number>()
+
+    for (const entry of medications) {
+      const key = entry.medicationName.trim() || "Unnamed"
+      countByMedication.set(key, (countByMedication.get(key) ?? 0) + 1)
+    }
+
+    let winner: { name: string; count: number } | null = null
+    for (const [name, count] of countByMedication) {
+      if (!winner || count > winner.count) {
+        winner = { name, count }
+      }
+    }
+
+    return winner
+  }, [medications])
+
+  const growthHeightTrend = useMemo(() => {
+    return growthRecords
+      .slice()
+      .sort((a, b) => a.measuredAt.localeCompare(b.measuredAt))
+      .filter((entry) => typeof entry.heightCm === "number")
+      .slice(-10)
+      .map((entry) => ({
+        label: format(new Date(entry.measuredAt), "MM/dd"),
+        value: entry.heightCm ?? 0,
+      }))
+  }, [growthRecords])
+
+  const growthWeightTrend = useMemo(() => {
+    return growthRecords
+      .slice()
+      .sort((a, b) => a.measuredAt.localeCompare(b.measuredAt))
+      .filter((entry) => typeof entry.weightKg === "number")
+      .slice(-10)
+      .map((entry) => ({
+        label: format(new Date(entry.measuredAt), "MM/dd"),
+        value: entry.weightKg ?? 0,
+      }))
+  }, [growthRecords])
+
   if (!auth) {
     return null
   }
@@ -257,9 +380,10 @@ export function KidPage() {
             to="/"
             className={cn(
               buttonVariants({ variant: "link" }),
-              "mb-2 inline-flex px-0 text-muted-foreground"
+              "mb-2 inline-flex items-center gap-2 px-0 text-muted-foreground"
             )}
           >
+            <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="size-4" />
             Back to dashboard
           </Link>
           <h1 className="text-2xl font-semibold">{kid?.name ?? "Kid details"}</h1>
@@ -295,7 +419,60 @@ export function KidPage() {
           </TabsList>
 
           <TabsContent value="temperature" className="space-y-3">
-            <Card>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Latest measurement</CardDescription>
+                  <CardTitle className="text-2xl">
+                    {latestTemperature
+                      ? `${latestTemperature.value.toFixed(1)} ${latestTemperature.unit}`
+                      : "-"}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">
+                    {latestTemperature ? renderDateTime(latestTemperature.measuredAt) : "No data"}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Fever episodes</CardDescription>
+                  <CardTitle className="text-2xl">{feverCount}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant={feverCount > 0 ? "destructive" : "secondary"}>
+                    {feverCount > 0 ? "At least 38.0 C" : "No fever recorded"}
+                  </Badge>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Total logs</CardDescription>
+                  <CardTitle className="text-2xl">{temperatures.length}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">Across all recorded days</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+              <CardHeader>
+                <CardTitle>Temperature trend</CardTitle>
+                <CardDescription>Last 12 measurements, normalized to C for consistency</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <LineMiniChart
+                  data={temperatureTrend}
+                  emptyLabel="Add temperature records to see a trend line"
+                />
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Temperature logs</CardTitle>
                 <Button
@@ -305,6 +482,8 @@ export function KidPage() {
                     setIsTempOpen(true)
                   }}
                 >
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon icon={ThermometerIcon} strokeWidth={2} className="size-4" />
                   Add temperature
                 </Button>
               </CardHeader>
@@ -331,6 +510,7 @@ export function KidPage() {
                             <Button
                               size="sm"
                               variant="outline"
+                              disabled={deletingRecordId === row.id}
                               onClick={() => {
                                 setEditingTemperatureId(row.id)
                                 temperatureForm.reset({
@@ -343,6 +523,7 @@ export function KidPage() {
                                 setIsTempOpen(true)
                               }}
                             >
+                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
                               Edit
                             </Button>
                             <Button
@@ -350,7 +531,13 @@ export function KidPage() {
                               variant="destructive"
                               disabled={deletingRecordId === row.id}
                               onClick={async () => {
+                                const actionKey = `delete-temperature-${row.id}`
+                                if (!acquireActionLock(actionKey)) {
+                                  return
+                                }
+
                                 if (!window.confirm("Delete this temperature record?")) {
+                                  releaseActionLock(actionKey)
                                   return
                                 }
 
@@ -376,10 +563,21 @@ export function KidPage() {
                                   )
                                 } finally {
                                   setDeletingRecordId(null)
+                                  releaseActionLock(actionKey)
                                 }
                               }}
                             >
-                              Delete
+                              {deletingRecordId === row.id ? (
+                                <>
+                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  Deleting...
+                                </>
+                              ) : (
+                                <>
+                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  Delete
+                                </>
+                              )}
                             </Button>
                           </div>
                         </TableCell>
@@ -392,7 +590,58 @@ export function KidPage() {
           </TabsContent>
 
           <TabsContent value="medication" className="space-y-3">
-            <Card>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Total doses logged</CardDescription>
+                  <CardTitle className="text-2xl">{medications.length}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">All medication records for this child</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Most used medication</CardDescription>
+                  <CardTitle className="truncate text-2xl">
+                    {mostUsedMedication?.name ?? "-"}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">
+                    {mostUsedMedication
+                      ? `${mostUsedMedication.count} doses`
+                      : "No medication records yet"}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Days with medication</CardDescription>
+                  <CardTitle className="text-2xl">{medicationPerDay.length}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">Unique treatment days</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+              <CardHeader>
+                <CardTitle>Medication activity</CardTitle>
+                <CardDescription>Doses recorded per day</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <BarMiniChart
+                  data={medicationPerDay}
+                  emptyLabel="Add medication logs to see daily activity"
+                />
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Medication logs</CardTitle>
                 <Button
@@ -402,6 +651,8 @@ export function KidPage() {
                     setIsMedOpen(true)
                   }}
                 >
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon icon={MedicineBottleIcon} strokeWidth={2} className="size-4" />
                   Add medication
                 </Button>
               </CardHeader>
@@ -428,6 +679,7 @@ export function KidPage() {
                             <Button
                               size="sm"
                               variant="outline"
+                              disabled={deletingRecordId === row.id}
                               onClick={() => {
                                 setEditingMedicationId(row.id)
                                 medicationForm.reset({
@@ -440,6 +692,7 @@ export function KidPage() {
                                 setIsMedOpen(true)
                               }}
                             >
+                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
                               Edit
                             </Button>
                             <Button
@@ -447,7 +700,13 @@ export function KidPage() {
                               variant="destructive"
                               disabled={deletingRecordId === row.id}
                               onClick={async () => {
+                                const actionKey = `delete-medication-${row.id}`
+                                if (!acquireActionLock(actionKey)) {
+                                  return
+                                }
+
                                 if (!window.confirm("Delete this medication record?")) {
+                                  releaseActionLock(actionKey)
                                   return
                                 }
 
@@ -473,10 +732,21 @@ export function KidPage() {
                                   )
                                 } finally {
                                   setDeletingRecordId(null)
+                                  releaseActionLock(actionKey)
                                 }
                               }}
                             >
-                              Delete
+                              {deletingRecordId === row.id ? (
+                                <>
+                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  Deleting...
+                                </>
+                              ) : (
+                                <>
+                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  Delete
+                                </>
+                              )}
                             </Button>
                           </div>
                         </TableCell>
@@ -489,7 +759,72 @@ export function KidPage() {
           </TabsContent>
 
           <TabsContent value="growth" className="space-y-3">
-            <Card>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Latest height</CardDescription>
+                  <CardTitle className="text-2xl">
+                    {kid.currentHeightCm ?? latestGrowth?.heightCm ?? "-"} cm
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">From profile or latest growth row</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Latest weight</CardDescription>
+                  <CardTitle className="text-2xl">
+                    {kid.currentWeightKg ?? latestGrowth?.weightKg ?? "-"} kg
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">Most recent known measurement</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader className="pb-2">
+                  <CardDescription>Growth checkpoints</CardDescription>
+                  <CardTitle className="text-2xl">{growthRecords.length}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">Historical growth entries</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid gap-3 lg:grid-cols-2">
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader>
+                  <CardTitle>Height trend</CardTitle>
+                  <CardDescription>Most recent 10 height values</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <LineMiniChart
+                    data={growthHeightTrend}
+                    emptyLabel="Add growth records with height to see a trend"
+                  />
+                </CardContent>
+              </Card>
+              <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+                <CardHeader>
+                  <CardTitle>Weight trend</CardTitle>
+                  <CardDescription>Most recent 10 weight values</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <LineMiniChart
+                    data={growthWeightTrend}
+                    strokeClassName="text-chart-3"
+                    areaClassName="text-chart-3/15"
+                    emptyLabel="Add growth records with weight to see a trend"
+                  />
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Growth history</CardTitle>
                 <Button
@@ -499,6 +834,8 @@ export function KidPage() {
                     setIsGrowthOpen(true)
                   }}
                 >
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon icon={RulerIcon} strokeWidth={2} className="size-4" />
                   Add growth measurement
                 </Button>
               </CardHeader>
@@ -525,6 +862,7 @@ export function KidPage() {
                             <Button
                               size="sm"
                               variant="outline"
+                              disabled={deletingRecordId === row.id}
                               onClick={() => {
                                 setEditingGrowthId(row.id)
                                 growthForm.reset({
@@ -536,6 +874,7 @@ export function KidPage() {
                                 setIsGrowthOpen(true)
                               }}
                             >
+                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
                               Edit
                             </Button>
                             <Button
@@ -543,7 +882,13 @@ export function KidPage() {
                               variant="destructive"
                               disabled={deletingRecordId === row.id}
                               onClick={async () => {
+                                const actionKey = `delete-growth-${row.id}`
+                                if (!acquireActionLock(actionKey)) {
+                                  return
+                                }
+
                                 if (!window.confirm("Delete this growth record?")) {
+                                  releaseActionLock(actionKey)
                                   return
                                 }
 
@@ -569,10 +914,21 @@ export function KidPage() {
                                   )
                                 } finally {
                                   setDeletingRecordId(null)
+                                  releaseActionLock(actionKey)
                                 }
                               }}
                             >
-                              Delete
+                              {deletingRecordId === row.id ? (
+                                <>
+                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  Deleting...
+                                </>
+                              ) : (
+                                <>
+                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  Delete
+                                </>
+                              )}
                             </Button>
                           </div>
                         </TableCell>
@@ -585,7 +941,7 @@ export function KidPage() {
           </TabsContent>
 
           <TabsContent value="notes" className="space-y-3">
-            <Card>
+            <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
               <CardHeader className="flex-row items-center justify-between">
                 <CardTitle>Notes</CardTitle>
                 <Button
@@ -595,6 +951,8 @@ export function KidPage() {
                     setIsNoteOpen(true)
                   }}
                 >
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon icon={NoteAddIcon} strokeWidth={2} className="size-4" />
                   Add note
                 </Button>
               </CardHeader>
@@ -617,6 +975,7 @@ export function KidPage() {
                             <Button
                               size="sm"
                               variant="outline"
+                              disabled={deletingRecordId === row.id}
                               onClick={() => {
                                 setEditingNoteId(row.id)
                                 noteForm.reset({
@@ -626,6 +985,7 @@ export function KidPage() {
                                 setIsNoteOpen(true)
                               }}
                             >
+                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
                               Edit
                             </Button>
                             <Button
@@ -633,7 +993,13 @@ export function KidPage() {
                               variant="destructive"
                               disabled={deletingRecordId === row.id}
                               onClick={async () => {
+                                const actionKey = `delete-note-${row.id}`
+                                if (!acquireActionLock(actionKey)) {
+                                  return
+                                }
+
                                 if (!window.confirm("Delete this note?")) {
+                                  releaseActionLock(actionKey)
                                   return
                                 }
 
@@ -655,10 +1021,21 @@ export function KidPage() {
                                   )
                                 } finally {
                                   setDeletingRecordId(null)
+                                  releaseActionLock(actionKey)
                                 }
                               }}
                             >
-                              Delete
+                              {deletingRecordId === row.id ? (
+                                <>
+                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  Deleting...
+                                </>
+                              ) : (
+                                <>
+                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  Delete
+                                </>
+                              )}
                             </Button>
                           </div>
                         </TableCell>
@@ -694,7 +1071,15 @@ export function KidPage() {
           <form
             className="space-y-3"
             onSubmit={temperatureForm.handleSubmit(async (values) => {
+              const actionKey = editingTemperatureId
+                ? `save-temperature-${editingTemperatureId}`
+                : "save-temperature-new"
+              if (!acquireActionLock(actionKey)) {
+                return
+              }
+
               if (!kid) {
+                releaseActionLock(actionKey)
                 return
               }
 
@@ -703,6 +1088,7 @@ export function KidPage() {
                 toast.error(
                   parsed.error.issues[0]?.message ?? "Invalid temperature input"
                 )
+                releaseActionLock(actionKey)
                 return
               }
 
@@ -758,6 +1144,8 @@ export function KidPage() {
                       ? "Failed to update temperature"
                       : "Failed to add temperature"
                 )
+              } finally {
+                releaseActionLock(actionKey)
               }
             })}
           >
@@ -787,7 +1175,24 @@ export function KidPage() {
               <Textarea id="temp-notes" rows={3} {...temperatureForm.register("notes")} />
             </div>
             <DialogFooter>
-              <Button type="submit">{editingTemperatureId ? "Update" : "Add"}</Button>
+              <Button type="submit" disabled={temperatureForm.formState.isSubmitting}>
+                {temperatureForm.formState.isSubmitting ? (
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                ) : (
+                  <HugeiconsIcon
+                    icon={editingTemperatureId ? FloppyDiskIcon : Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                )}
+                {temperatureForm.formState.isSubmitting
+                  ? editingTemperatureId
+                    ? "Updating..."
+                    : "Adding..."
+                  : editingTemperatureId
+                    ? "Update"
+                    : "Add"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -815,7 +1220,15 @@ export function KidPage() {
           <form
             className="space-y-3"
             onSubmit={medicationForm.handleSubmit(async (values) => {
+              const actionKey = editingMedicationId
+                ? `save-medication-${editingMedicationId}`
+                : "save-medication-new"
+              if (!acquireActionLock(actionKey)) {
+                return
+              }
+
               if (!kid) {
+                releaseActionLock(actionKey)
                 return
               }
 
@@ -824,6 +1237,7 @@ export function KidPage() {
                 toast.error(
                   parsed.error.issues[0]?.message ?? "Invalid medication input"
                 )
+                releaseActionLock(actionKey)
                 return
               }
 
@@ -879,6 +1293,8 @@ export function KidPage() {
                       ? "Failed to update medication"
                       : "Failed to add medication"
                 )
+              } finally {
+                releaseActionLock(actionKey)
               }
             })}
           >
@@ -909,7 +1325,24 @@ export function KidPage() {
               <Textarea id="med-notes" rows={3} {...medicationForm.register("notes")} />
             </div>
             <DialogFooter>
-              <Button type="submit">{editingMedicationId ? "Update" : "Add"}</Button>
+              <Button type="submit" disabled={medicationForm.formState.isSubmitting}>
+                {medicationForm.formState.isSubmitting ? (
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                ) : (
+                  <HugeiconsIcon
+                    icon={editingMedicationId ? FloppyDiskIcon : Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                )}
+                {medicationForm.formState.isSubmitting
+                  ? editingMedicationId
+                    ? "Updating..."
+                    : "Adding..."
+                  : editingMedicationId
+                    ? "Update"
+                    : "Add"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -937,13 +1370,22 @@ export function KidPage() {
           <form
             className="space-y-3"
             onSubmit={growthForm.handleSubmit(async (values) => {
+              const actionKey = editingGrowthId
+                ? `save-growth-${editingGrowthId}`
+                : "save-growth-new"
+              if (!acquireActionLock(actionKey)) {
+                return
+              }
+
               if (!kid) {
+                releaseActionLock(actionKey)
                 return
               }
 
               const parsed = growthSchema.safeParse(values)
               if (!parsed.success) {
                 toast.error(parsed.error.issues[0]?.message ?? "Invalid growth input")
+                releaseActionLock(actionKey)
                 return
               }
 
@@ -1004,6 +1446,8 @@ export function KidPage() {
                       ? "Failed to update growth measurement"
                       : "Failed to add growth measurement"
                 )
+              } finally {
+                releaseActionLock(actionKey)
               }
             })}
           >
@@ -1029,7 +1473,24 @@ export function KidPage() {
               <Textarea id="growth-notes" rows={3} {...growthForm.register("notes")} />
             </div>
             <DialogFooter>
-              <Button type="submit">{editingGrowthId ? "Update" : "Add"}</Button>
+              <Button type="submit" disabled={growthForm.formState.isSubmitting}>
+                {growthForm.formState.isSubmitting ? (
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                ) : (
+                  <HugeiconsIcon
+                    icon={editingGrowthId ? FloppyDiskIcon : Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                )}
+                {growthForm.formState.isSubmitting
+                  ? editingGrowthId
+                    ? "Updating..."
+                    : "Adding..."
+                  : editingGrowthId
+                    ? "Update"
+                    : "Add"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -1057,13 +1518,22 @@ export function KidPage() {
           <form
             className="space-y-3"
             onSubmit={noteForm.handleSubmit(async (values) => {
+              const actionKey = editingNoteId
+                ? `save-note-${editingNoteId}`
+                : "save-note-new"
+              if (!acquireActionLock(actionKey)) {
+                return
+              }
+
               if (!kid) {
+                releaseActionLock(actionKey)
                 return
               }
 
               const parsed = noteSchema.safeParse(values)
               if (!parsed.success) {
                 toast.error(parsed.error.issues[0]?.message ?? "Invalid note input")
+                releaseActionLock(actionKey)
                 return
               }
 
@@ -1113,6 +1583,8 @@ export function KidPage() {
                       ? "Failed to update note"
                       : "Failed to add note"
                 )
+              } finally {
+                releaseActionLock(actionKey)
               }
             })}
           >
@@ -1127,7 +1599,24 @@ export function KidPage() {
               <p className="text-xs text-destructive">{noteForm.formState.errors.content?.message}</p>
             </div>
             <DialogFooter>
-              <Button type="submit">{editingNoteId ? "Update" : "Add"}</Button>
+              <Button type="submit" disabled={noteForm.formState.isSubmitting}>
+                {noteForm.formState.isSubmitting ? (
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                ) : (
+                  <HugeiconsIcon
+                    icon={editingNoteId ? FloppyDiskIcon : Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                )}
+                {noteForm.formState.isSubmitting
+                  ? editingNoteId
+                    ? "Updating..."
+                    : "Adding..."
+                  : editingNoteId
+                    ? "Update"
+                    : "Add"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>

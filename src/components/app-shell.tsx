@@ -1,4 +1,10 @@
 import { Link, NavLink, Outlet } from "react-router-dom"
+import { HugeiconsIcon } from "@hugeicons/react"
+import {
+  Logout01Icon,
+  Moon01Icon,
+  Sun01Icon,
+} from "@hugeicons/core-free-icons"
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -7,15 +13,23 @@ import { useAuth } from "@/features/auth/auth-context"
 
 function ThemeToggleButton() {
   const { theme, setTheme } = useTheme()
+  const isDark = theme === "dark"
 
   return (
     <Button
       variant="outline"
+      size="icon"
       onClick={() => {
-        setTheme(theme === "dark" ? "light" : "dark")
+        setTheme(isDark ? "light" : "dark")
       }}
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      title={isDark ? "Switch to light theme" : "Switch to dark theme"}
     >
-      Theme: {theme}
+      <HugeiconsIcon
+        icon={isDark ? Sun01Icon : Moon01Icon}
+        strokeWidth={2}
+        className="size-4"
+      />
     </Button>
   )
 }
@@ -50,9 +64,15 @@ export function AppShell() {
             </NavLink>
           </nav>
           <div className="flex items-center gap-2">
-            {auth ? <Badge variant="secondary">Google Connected</Badge> : null}
+            {auth ? (
+              <Badge variant="secondary" className="inline-flex items-center gap-2">
+                <span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" />
+                Google Connected
+              </Badge>
+            ) : null}
             {auth ? (
               <Button variant="outline" onClick={signOut}>
+                <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} className="size-4" />
                 Logout
               </Button>
             ) : null}

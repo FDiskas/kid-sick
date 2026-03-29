@@ -1,7 +1,16 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
+import { HugeiconsIcon } from "@hugeicons/react"
+import {
+  Add01Icon,
+  ArrowRight01Icon,
+  Delete02Icon,
+  Edit01Icon,
+  FloppyDiskIcon,
+  Loading03Icon,
+} from "@hugeicons/core-free-icons"
 
 import {
   Dialog,
@@ -40,7 +49,10 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
         Start by adding your first child profile to begin tracking temperature, medication, and growth logs.
       </AlertDescription>
       <div className="mt-3">
-        <Button onClick={onCreate}>Add First Kid</Button>
+        <Button onClick={onCreate}>
+          <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
+          Add First Kid
+        </Button>
       </div>
     </Alert>
   )
@@ -54,6 +66,7 @@ export function DashboardPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingKid, setEditingKid] = useState<KidProfile | null>(null)
   const [deletingKidId, setDeletingKidId] = useState<string | null>(null)
+  const deleteLocksRef = useRef<Set<string>>(new Set())
 
   const form = useForm<KidFormInput>({
     defaultValues: {
@@ -136,6 +149,7 @@ export function DashboardPage() {
             setIsDialogOpen(true)
           }}
         >
+          <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
           Add Kid
         </Button>
       </div>
@@ -171,13 +185,15 @@ export function DashboardPage() {
                 <div className="flex gap-2">
                   <Link
                     to={`/kids/${kid.id}`}
-                    className={cn(buttonVariants({ size: "sm" }))}
+                    className={cn(buttonVariants({ size: "sm" }), "inline-flex items-center gap-2")}
                   >
+                    <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="size-4" />
                     Open details
                   </Link>
                   <Button
                     variant="outline"
                     size="sm"
+                    disabled={deletingKidId === kid.id}
                     onClick={() => {
                       setEditingKid(kid)
                       form.reset({
@@ -190,6 +206,7 @@ export function DashboardPage() {
                       setIsDialogOpen(true)
                     }}
                   >
+                    <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
                     Edit
                   </Button>
                   <Button
@@ -197,11 +214,18 @@ export function DashboardPage() {
                     size="sm"
                     disabled={deletingKidId === kid.id}
                     onClick={async () => {
+                      const actionKey = `delete-kid-${kid.id}`
+                      if (deleteLocksRef.current.has(actionKey)) {
+                        return
+                      }
+
+                      deleteLocksRef.current.add(actionKey)
                       const confirmed = window.confirm(
                         `Delete ${kid.name}? This will permanently remove the kid profile and all related temperature, medication, and growth records.`
                       )
 
                       if (!confirmed) {
+                        deleteLocksRef.current.delete(actionKey)
                         return
                       }
 
@@ -231,10 +255,21 @@ export function DashboardPage() {
                         )
                       } finally {
                         setDeletingKidId(null)
+                        deleteLocksRef.current.delete(actionKey)
                       }
                     }}
                   >
-                    {deletingKidId === kid.id ? "Deleting..." : "Delete"}
+                    {deletingKidId === kid.id ? (
+                      <>
+                        <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                        Deleting...
+                      </>
+                    ) : (
+                      <>
+                        <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                        Delete
+                      </>
+                    )}
                   </Button>
                 </div>
               </CardContent>
@@ -329,7 +364,14 @@ export function DashboardPage() {
             </div>
 
             <DialogFooter>
-              <Button type="submit">Save</Button>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? (
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                ) : (
+                  <HugeiconsIcon icon={FloppyDiskIcon} strokeWidth={2} className="size-4" />
+                )}
+                {form.formState.isSubmitting ? "Saving..." : "Save"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>

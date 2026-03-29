@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { Navigate } from "react-router-dom"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { GoogleDriveIcon, Loading03Icon } from "@hugeicons/core-free-icons"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -16,7 +18,7 @@ export function AuthPage() {
 
   return (
     <div className="flex min-h-svh items-center justify-center p-4">
-      <Card className="w-full max-w-lg">
+      <Card className="w-full max-w-lg border-primary/25 bg-linear-to-br from-primary/10 to-card">
         <CardHeader>
           <CardTitle>Sign in with Google to start tracking</CardTitle>
         </CardHeader>
@@ -52,6 +54,11 @@ export function AuthPage() {
             }}
             className="w-full"
           >
+            {isLoading ? (
+              <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+            ) : (
+              <HugeiconsIcon icon={GoogleDriveIcon} strokeWidth={2} className="size-4" />
+            )}
             {isLoading ? "Connecting..." : "Authorize Google Drive"}
           </Button>
         </CardContent>
