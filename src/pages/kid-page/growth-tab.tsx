@@ -48,74 +48,72 @@ export function GrowthTab({
 }: GrowthTabProps) {
   return (
     <div className="space-y-3">
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Latest height</CardDescription>
-            <CardTitle className="text-2xl">
-              {kid.currentHeightCm ?? latestGrowth?.heightCm ?? "-"} cm
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              From profile or latest growth row
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Latest weight</CardDescription>
-            <CardTitle className="text-2xl">
-              {kid.currentWeightKg ?? latestGrowth?.weightKg ?? "-"} kg
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              Most recent known measurement
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Growth checkpoints</CardDescription>
-            <CardTitle className="text-2xl">{growthRecords.length}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              Historical growth entries
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="hidden border-primary/25 bg-linear-to-br from-primary/10 to-card md:block">
+        <CardHeader>
+          <CardTitle>Growth data</CardTitle>
+          <CardDescription>
+            Most recent height and weight trends. Growth checkpoints: {growthRecords.length}.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-3 pb-4 sm:grid-cols-3">
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Latest height</p>
+              <p className="mt-2 text-2xl font-semibold">
+                {kid.currentHeightCm ?? latestGrowth?.heightCm ?? "-"} cm
+              </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                From profile or latest growth row
+              </p>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Latest weight</p>
+              <p className="mt-2 text-2xl font-semibold">
+                {kid.currentWeightKg ?? latestGrowth?.weightKg ?? "-"} kg
+              </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Most recent known measurement
+              </p>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Growth checkpoints</p>
+              <p className="mt-2 text-2xl font-semibold">{growthRecords.length}</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Historical growth entries
+              </p>
+            </div>
+          </div>
 
-      <div className="grid gap-3 lg:grid-cols-2">
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader>
-            <CardTitle>Height trend</CardTitle>
-            <CardDescription>Most recent 10 height values</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <LineMiniChart
-              data={growthHeightTrend}
-              emptyLabel="Add growth records with height to see a trend"
-            />
-          </CardContent>
-        </Card>
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader>
-            <CardTitle>Weight trend</CardTitle>
-            <CardDescription>Most recent 10 weight values</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <LineMiniChart
-              data={growthWeightTrend}
-              strokeClassName="text-chart-3"
-              areaClassName="text-chart-3/15"
-              emptyLabel="Add growth records with weight to see a trend"
-            />
-          </CardContent>
-        </Card>
-      </div>
+          <div className="grid gap-3 lg:grid-cols-2">
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <div className="pb-4">
+                <p className="font-medium">Height trend</p>
+                <p className="text-sm text-muted-foreground">
+                  Most recent 10 height values
+                </p>
+              </div>
+              <LineMiniChart
+                data={growthHeightTrend}
+                emptyLabel="Add growth records with height to see a trend"
+              />
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <div className="pb-4">
+                <p className="font-medium">Weight trend</p>
+                <p className="text-sm text-muted-foreground">
+                  Most recent 10 weight values
+                </p>
+              </div>
+              <LineMiniChart
+                data={growthWeightTrend}
+                strokeClassName="text-chart-3"
+                areaClassName="text-chart-3/15"
+                emptyLabel="Add growth records with weight to see a trend"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
         <CardHeader className="flex-row items-center justify-between">

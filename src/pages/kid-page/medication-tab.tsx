@@ -44,54 +44,42 @@ export function MedicationTab({
 }: MedicationTabProps) {
   return (
     <div className="space-y-3">
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Total doses logged</CardDescription>
-            <CardTitle className="text-2xl">{medications.length}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              All medication records for this child
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Most used medication</CardDescription>
-            <CardTitle className="truncate text-2xl">
-              {mostUsedMedication?.name ?? "-"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              {mostUsedMedication
-                ? `${mostUsedMedication.count} doses`
-                : "No medication records yet"}
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Days with medication</CardDescription>
-            <CardTitle className="text-2xl">
-              {medicationPerDay.length}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              Unique treatment days
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+      <Card className="hidden border-primary/25 bg-linear-to-br from-primary/10 to-card md:block">
         <CardHeader>
-          <CardTitle>Medication activity</CardTitle>
-          <CardDescription>Doses recorded per day</CardDescription>
+          <CardTitle>Medication data</CardTitle>
+          <CardDescription>
+            Doses recorded per day. Total logs: {medications.length}. Days with
+            medication: {medicationPerDay.length}.
+          </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="grid gap-3 pb-4 sm:grid-cols-3">
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Total doses logged</p>
+              <p className="mt-2 text-2xl font-semibold">{medications.length}</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                All medication records for this child
+              </p>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Most used medication</p>
+              <p className="mt-2 truncate text-2xl font-semibold">
+                {mostUsedMedication?.name ?? "-"}
+              </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                {mostUsedMedication
+                  ? `${mostUsedMedication.count} doses`
+                  : "No medication records yet"}
+              </p>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Days with medication</p>
+              <p className="mt-2 text-2xl font-semibold">{medicationPerDay.length}</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Unique treatment days
+              </p>
+            </div>
+          </div>
           <BarMiniChart
             data={medicationPerDay}
             emptyLabel="Add medication logs to see daily activity"

@@ -79,56 +79,46 @@ export function TemperatureTab({
 }: TemperatureTabProps) {
   return (
     <div className="space-y-3">
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Latest measurement</CardDescription>
-            <CardTitle className="text-2xl">
-              {latestTemperature
-                ? formatTemperatureDegrees(latestTemperature.value)
-                : "-"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              {latestTemperature
-                ? renderDateTime(latestTemperature.measuredAt)
-                : "No data"}
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Fever episodes</CardDescription>
-            <CardTitle className="text-2xl">{feverCount}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Badge variant={feverCount > 0 ? "destructive" : "secondary"}>
-              {feverCount > 0 ? "At least 38°" : "No fever recorded"}
-            </Badge>
-          </CardContent>
-        </Card>
-        <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
-          <CardHeader className="pb-2">
-            <CardDescription>Total logs</CardDescription>
-            <CardTitle className="text-2xl">{temperatures.length}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">
-              Across all recorded days
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
+      <Card className="hidden border-primary/25 bg-linear-to-br from-primary/10 to-card md:block">
         <CardHeader>
-          <CardTitle>Temperature trend</CardTitle>
+          <CardTitle>Latest measurement data</CardTitle>
           <CardDescription>
-            Last 12 measurements, normalized to C for consistency
+            Last 12 measurements, normalized to C for consistency. Fever
+            episodes: {feverCount}. Total logs: {temperatures.length}.
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="grid gap-3 pb-4 sm:grid-cols-3">
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Latest measurement</p>
+              <p className="mt-2 text-2xl font-semibold">
+                {latestTemperature
+                  ? formatTemperatureDegrees(latestTemperature.value)
+                  : "-"}
+              </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                {latestTemperature
+                  ? renderDateTime(latestTemperature.measuredAt)
+                  : "No data"}
+              </p>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Fever episodes</p>
+              <p className="mt-2 text-2xl font-semibold">{feverCount}</p>
+              <div className="mt-2">
+                <Badge variant={feverCount > 0 ? "destructive" : "secondary"}>
+                  {feverCount > 0 ? "At least 38°" : "No fever recorded"}
+                </Badge>
+              </div>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">Total logs</p>
+              <p className="mt-2 text-2xl font-semibold">{temperatures.length}</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Across all recorded days
+              </p>
+            </div>
+          </div>
           <LineMiniChart
             data={temperatureTrend}
             emptyLabel="Add temperature records to see a trend line"
