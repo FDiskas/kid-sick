@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router-dom"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Heart, Logout01Icon, Settings01Icon } from "@hugeicons/core-free-icons"
 
+import { GitHubFooter } from "./github-footer"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/features/auth/auth-context"
@@ -10,7 +11,7 @@ export function AppShell() {
   const { auth, signOut } = useAuth()
 
   return (
-    <div className="min-h-svh bg-[radial-gradient(circle_at_top_right,var(--color-primary)/12%,transparent_40%),radial-gradient(circle_at_20%_10%,var(--color-accent)/10%,transparent_32%)]">
+    <div className="flex min-h-svh flex-col bg-[radial-gradient(circle_at_top_right,var(--color-primary)/12%,transparent_40%),radial-gradient(circle_at_20%_10%,var(--color-accent)/10%,transparent_32%)]">
       <header className="border-b bg-background/85 backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <Link to="/" className="text-lg font-semibold tracking-tight flex flex-row items-center gap-2">
@@ -61,9 +62,10 @@ export function AppShell() {
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
         <Outlet />
       </main>
+      <GitHubFooter />
     </div>
   )
 }
