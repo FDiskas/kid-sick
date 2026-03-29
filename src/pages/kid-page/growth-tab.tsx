@@ -52,7 +52,8 @@ export function GrowthTab({
         <CardHeader>
           <CardTitle>Growth data</CardTitle>
           <CardDescription>
-            Most recent height and weight trends. Growth checkpoints: {growthRecords.length}.
+            Most recent height and weight trends. Growth checkpoints:{" "}
+            {growthRecords.length}.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -76,8 +77,12 @@ export function GrowthTab({
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Growth checkpoints</p>
-              <p className="mt-2 text-2xl font-semibold">{growthRecords.length}</p>
+              <p className="text-sm text-muted-foreground">
+                Growth checkpoints
+              </p>
+              <p className="mt-2 text-2xl font-semibold">
+                {growthRecords.length}
+              </p>
               <p className="mt-2 text-xs text-muted-foreground">
                 Historical growth entries
               </p>

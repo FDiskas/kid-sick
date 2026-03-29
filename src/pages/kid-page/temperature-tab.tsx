@@ -91,7 +91,9 @@ export function TemperatureTab({
         <CardContent>
           <div className="grid gap-3 pb-4 sm:grid-cols-3">
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Latest measurement</p>
+              <p className="text-sm text-muted-foreground">
+                Latest measurement
+              </p>
               <p className="mt-2 text-2xl font-semibold">
                 {latestTemperature
                   ? formatTemperatureDegrees(latestTemperature.value)
@@ -114,7 +116,9 @@ export function TemperatureTab({
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">Total logs</p>
-              <p className="mt-2 text-2xl font-semibold">{temperatures.length}</p>
+              <p className="mt-2 text-2xl font-semibold">
+                {temperatures.length}
+              </p>
               <p className="mt-2 text-xs text-muted-foreground">
                 Across all recorded days
               </p>

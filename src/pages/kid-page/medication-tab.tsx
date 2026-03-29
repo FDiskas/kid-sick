@@ -55,14 +55,20 @@ export function MedicationTab({
         <CardContent>
           <div className="grid gap-3 pb-4 sm:grid-cols-3">
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Total doses logged</p>
-              <p className="mt-2 text-2xl font-semibold">{medications.length}</p>
+              <p className="text-sm text-muted-foreground">
+                Total doses logged
+              </p>
+              <p className="mt-2 text-2xl font-semibold">
+                {medications.length}
+              </p>
               <p className="mt-2 text-xs text-muted-foreground">
                 All medication records for this child
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Most used medication</p>
+              <p className="text-sm text-muted-foreground">
+                Most used medication
+              </p>
               <p className="mt-2 truncate text-2xl font-semibold">
                 {mostUsedMedication?.name ?? "-"}
               </p>
@@ -73,8 +79,12 @@ export function MedicationTab({
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Days with medication</p>
-              <p className="mt-2 text-2xl font-semibold">{medicationPerDay.length}</p>
+              <p className="text-sm text-muted-foreground">
+                Days with medication
+              </p>
+              <p className="mt-2 text-2xl font-semibold">
+                {medicationPerDay.length}
+              </p>
               <p className="mt-2 text-xs text-muted-foreground">
                 Unique treatment days
               </p>

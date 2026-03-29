@@ -55,7 +55,7 @@ export function KidsGrid({
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="flex items-start justify-between gap-4">
-              <div className="space-y-1 min-w-0">
+              <div className="min-w-0 space-y-1">
                 <div className="text-muted-foreground">
                   Birthday {kid.birthDate}
                   {calculateAge(kid.birthDate) !== null && (

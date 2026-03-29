@@ -44,7 +44,11 @@ export function NotesTab({
         <CardHeader>
           <CardTitle>Notes data</CardTitle>
           <CardDescription>
-            Total notes: {notes.length}. Latest note: {latestNote ? renderDateTime(latestNote.recordedAt) : "No notes yet"}.
+            Total notes: {notes.length}. Latest note:{" "}
+            {latestNote
+              ? renderDateTime(latestNote.recordedAt)
+              : "No notes yet"}
+            .
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -59,7 +63,9 @@ export function NotesTab({
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">Latest note</p>
               <p className="mt-2 text-sm font-semibold">
-                {latestNote ? renderDateTime(latestNote.recordedAt) : "No notes yet"}
+                {latestNote
+                  ? renderDateTime(latestNote.recordedAt)
+                  : "No notes yet"}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
                 Most recent entry time
@@ -68,7 +74,8 @@ export function NotesTab({
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">Recent preview</p>
               <p className="mt-2 line-clamp-3 text-sm font-medium">
-                {latestNote?.content ?? "Add a note to keep recent observations visible here."}
+                {latestNote?.content ??
+                  "Add a note to keep recent observations visible here."}
               </p>
             </div>
           </div>
@@ -79,7 +86,11 @@ export function NotesTab({
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>Note logs</CardTitle>
           <Button onClick={onCreate}>
-            <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
+            <HugeiconsIcon
+              icon={Add01Icon}
+              strokeWidth={2}
+              className="size-4"
+            />
             <HugeiconsIcon
               icon={NoteAddIcon}
               strokeWidth={2}

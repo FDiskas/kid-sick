@@ -1,14 +1,14 @@
 export function GitHubFooter() {
   return (
     <footer className="border-t bg-background/85 backdrop-blur-sm">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-center px-4 py-3 sm:px-6 gap-4">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-center gap-4 px-4 py-3 sm:px-6">
         <a
           href="https://github.com/FDiskas/kid-sick"
           target="_blank"
           rel="noreferrer"
           aria-label="View kid-sick on GitHub"
           title="View kid-sick on GitHub"
-          className="inline-flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="inline-flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <svg
             aria-hidden="true"
@@ -24,7 +24,7 @@ export function GitHubFooter() {
           rel="noreferrer"
           aria-label="View Privacy Policy"
           title="View Privacy Policy"
-          className="underline text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="text-sm text-muted-foreground underline transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           Privacy Policy
         </a>
