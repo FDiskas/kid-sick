@@ -35,9 +35,16 @@ export function SettingsPage() {
               href={auth.spreadsheet.spreadsheetUrl}
               rel="noreferrer"
               target="_blank"
-              className={cn(buttonVariants({ variant: "outline" }), "inline-flex items-center gap-2")}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "inline-flex items-center gap-2"
+              )}
             >
-              <HugeiconsIcon icon={GoogleSheetIcon} strokeWidth={2} className="size-4" />
+              <HugeiconsIcon
+                icon={GoogleSheetIcon}
+                strokeWidth={2}
+                className="size-4"
+              />
               Open my sheet
             </a>
             <Button
@@ -57,9 +64,17 @@ export function SettingsPage() {
               }}
             >
               {isDisconnecting ? (
-                <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                <HugeiconsIcon
+                  icon={Loading03Icon}
+                  strokeWidth={2}
+                  className="size-4 animate-spin"
+                />
               ) : (
-                <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} className="size-4" />
+                <HugeiconsIcon
+                  icon={Logout01Icon}
+                  strokeWidth={2}
+                  className="size-4"
+                />
               )}
               {isDisconnecting ? "Disconnecting..." : "Disconnect Google"}
             </Button>

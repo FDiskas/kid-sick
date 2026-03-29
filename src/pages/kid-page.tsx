@@ -125,8 +125,12 @@ export function KidPage() {
   const [isGrowthOpen, setIsGrowthOpen] = useState(false)
   const [isNoteOpen, setIsNoteOpen] = useState(false)
 
-  const [editingTemperatureId, setEditingTemperatureId] = useState<string | null>(null)
-  const [editingMedicationId, setEditingMedicationId] = useState<string | null>(null)
+  const [editingTemperatureId, setEditingTemperatureId] = useState<
+    string | null
+  >(null)
+  const [editingMedicationId, setEditingMedicationId] = useState<string | null>(
+    null
+  )
   const [editingGrowthId, setEditingGrowthId] = useState<string | null>(null)
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
   const [deletingRecordId, setDeletingRecordId] = useState<string | null>(null)
@@ -231,29 +235,33 @@ export function KidPage() {
       setIsLoading(true)
       setError(null)
       try {
-        const [kids, tempRows, medRows, growthRows, noteRows] = await Promise.all([
-          listKids(currentAuth.accessToken, currentAuth.spreadsheet.spreadsheetId),
-          listTemperatureRecords(
-            currentAuth.accessToken,
-            currentAuth.spreadsheet.spreadsheetId,
-            currentKidId
-          ),
-          listMedicationRecords(
-            currentAuth.accessToken,
-            currentAuth.spreadsheet.spreadsheetId,
-            currentKidId
-          ),
-          listGrowthRecords(
-            currentAuth.accessToken,
-            currentAuth.spreadsheet.spreadsheetId,
-            currentKidId
-          ),
-          listNotes(
-            currentAuth.accessToken,
-            currentAuth.spreadsheet.spreadsheetId,
-            currentKidId
-          ),
-        ])
+        const [kids, tempRows, medRows, growthRows, noteRows] =
+          await Promise.all([
+            listKids(
+              currentAuth.accessToken,
+              currentAuth.spreadsheet.spreadsheetId
+            ),
+            listTemperatureRecords(
+              currentAuth.accessToken,
+              currentAuth.spreadsheet.spreadsheetId,
+              currentKidId
+            ),
+            listMedicationRecords(
+              currentAuth.accessToken,
+              currentAuth.spreadsheet.spreadsheetId,
+              currentKidId
+            ),
+            listGrowthRecords(
+              currentAuth.accessToken,
+              currentAuth.spreadsheet.spreadsheetId,
+              currentKidId
+            ),
+            listNotes(
+              currentAuth.accessToken,
+              currentAuth.spreadsheet.spreadsheetId,
+              currentKidId
+            ),
+          ])
 
         const currentKid = kids.find((item) => item.id === currentKidId) ?? null
 
@@ -266,7 +274,11 @@ export function KidPage() {
         }
       } catch (loadError) {
         if (isMounted) {
-          setError(loadError instanceof Error ? loadError.message : "Could not load kid data")
+          setError(
+            loadError instanceof Error
+              ? loadError.message
+              : "Could not load kid data"
+          )
         }
       } finally {
         if (isMounted) {
@@ -284,7 +296,10 @@ export function KidPage() {
 
   const latestGrowth = useMemo(() => growthRecords[0], [growthRecords])
 
-  const latestTemperature = useMemo(() => temperatures[0] ?? null, [temperatures])
+  const latestTemperature = useMemo(
+    () => temperatures[0] ?? null,
+    [temperatures]
+  )
 
   const temperatureTrend = useMemo(() => {
     return temperatures
@@ -293,7 +308,9 @@ export function KidPage() {
       .slice(-12)
       .map((entry) => ({
         label: format(new Date(entry.measuredAt), "MM/dd"),
-        value: Number(normalizeTemperatureToCelsius(entry.value, entry.unit).toFixed(2)),
+        value: Number(
+          normalizeTemperatureToCelsius(entry.value, entry.unit).toFixed(2)
+        ),
       }))
   }, [temperatures])
 
@@ -383,17 +400,27 @@ export function KidPage() {
               "mb-2 inline-flex items-center gap-2 px-0 text-muted-foreground"
             )}
           >
-            <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="size-4" />
+            <HugeiconsIcon
+              icon={ArrowLeft01Icon}
+              strokeWidth={2}
+              className="size-4"
+            />
             Back to dashboard
           </Link>
-          <h1 className="text-2xl font-semibold">{kid?.name ?? "Kid details"}</h1>
+          <h1 className="text-2xl font-semibold">
+            {kid?.name ?? "Kid details"}
+          </h1>
           <p className="text-sm text-muted-foreground">
-            Birthday {kid?.birthDate ?? "-"} • Latest {kid?.currentHeightCm ?? latestGrowth?.heightCm ?? "-"} cm / {kid?.currentWeightKg ?? latestGrowth?.weightKg ?? "-"} kg
+            Birthday {kid?.birthDate ?? "-"} • Latest{" "}
+            {kid?.currentHeightCm ?? latestGrowth?.heightCm ?? "-"} cm /{" "}
+            {kid?.currentWeightKg ?? latestGrowth?.weightKg ?? "-"} kg
           </p>
         </div>
       </div>
 
-      {isLoading ? <p className="text-sm text-muted-foreground">Loading records...</p> : null}
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Loading records...</p>
+      ) : null}
 
       {error ? (
         <Alert variant="destructive">
@@ -405,7 +432,9 @@ export function KidPage() {
       {!isLoading && !kid ? (
         <Alert>
           <AlertTitle>Kid not found</AlertTitle>
-          <AlertDescription>The selected kid profile no longer exists.</AlertDescription>
+          <AlertDescription>
+            The selected kid profile no longer exists.
+          </AlertDescription>
         </Alert>
       ) : null}
 
@@ -431,7 +460,9 @@ export function KidPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground">
-                    {latestTemperature ? renderDateTime(latestTemperature.measuredAt) : "No data"}
+                    {latestTemperature
+                      ? renderDateTime(latestTemperature.measuredAt)
+                      : "No data"}
                   </p>
                 </CardContent>
               </Card>
@@ -451,10 +482,14 @@ export function KidPage() {
               <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Total logs</CardDescription>
-                  <CardTitle className="text-2xl">{temperatures.length}</CardTitle>
+                  <CardTitle className="text-2xl">
+                    {temperatures.length}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">Across all recorded days</p>
+                  <p className="text-xs text-muted-foreground">
+                    Across all recorded days
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -462,7 +497,9 @@ export function KidPage() {
             <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
               <CardHeader>
                 <CardTitle>Temperature trend</CardTitle>
-                <CardDescription>Last 12 measurements, normalized to C for consistency</CardDescription>
+                <CardDescription>
+                  Last 12 measurements, normalized to C for consistency
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <LineMiniChart
@@ -482,8 +519,16 @@ export function KidPage() {
                     setIsTempOpen(true)
                   }}
                 >
-                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
-                  <HugeiconsIcon icon={ThermometerIcon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon
+                    icon={Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                  <HugeiconsIcon
+                    icon={ThermometerIcon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
                   Add temperature
                 </Button>
               </CardHeader>
@@ -502,7 +547,9 @@ export function KidPage() {
                     {temperatures.map((row) => (
                       <TableRow key={row.id}>
                         <TableCell>{renderDateTime(row.measuredAt)}</TableCell>
-                        <TableCell>{row.value} {row.unit}</TableCell>
+                        <TableCell>
+                          {row.value} {row.unit}
+                        </TableCell>
                         <TableCell>{row.method || "-"}</TableCell>
                         <TableCell>{row.notes || "-"}</TableCell>
                         <TableCell>
@@ -523,7 +570,11 @@ export function KidPage() {
                                 setIsTempOpen(true)
                               }}
                             >
-                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
+                              <HugeiconsIcon
+                                icon={Edit01Icon}
+                                strokeWidth={2}
+                                className="size-4"
+                              />
                               Edit
                             </Button>
                             <Button
@@ -536,7 +587,11 @@ export function KidPage() {
                                   return
                                 }
 
-                                if (!window.confirm("Delete this temperature record?")) {
+                                if (
+                                  !window.confirm(
+                                    "Delete this temperature record?"
+                                  )
+                                ) {
                                   releaseActionLock(actionKey)
                                   return
                                 }
@@ -548,7 +603,9 @@ export function KidPage() {
                                     auth.spreadsheet.spreadsheetId,
                                     row.id
                                   )
-                                  setTemperatures((current) => current.filter((item) => item.id !== row.id))
+                                  setTemperatures((current) =>
+                                    current.filter((item) => item.id !== row.id)
+                                  )
                                   if (editingTemperatureId === row.id) {
                                     setEditingTemperatureId(null)
                                     setIsTempOpen(false)
@@ -569,12 +626,20 @@ export function KidPage() {
                             >
                               {deletingRecordId === row.id ? (
                                 <>
-                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  <HugeiconsIcon
+                                    icon={Loading03Icon}
+                                    strokeWidth={2}
+                                    className="size-4 animate-spin"
+                                  />
                                   Deleting...
                                 </>
                               ) : (
                                 <>
-                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  <HugeiconsIcon
+                                    icon={Delete02Icon}
+                                    strokeWidth={2}
+                                    className="size-4"
+                                  />
                                   Delete
                                 </>
                               )}
@@ -594,10 +659,14 @@ export function KidPage() {
               <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Total doses logged</CardDescription>
-                  <CardTitle className="text-2xl">{medications.length}</CardTitle>
+                  <CardTitle className="text-2xl">
+                    {medications.length}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">All medication records for this child</p>
+                  <p className="text-xs text-muted-foreground">
+                    All medication records for this child
+                  </p>
                 </CardContent>
               </Card>
 
@@ -620,10 +689,14 @@ export function KidPage() {
               <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Days with medication</CardDescription>
-                  <CardTitle className="text-2xl">{medicationPerDay.length}</CardTitle>
+                  <CardTitle className="text-2xl">
+                    {medicationPerDay.length}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">Unique treatment days</p>
+                  <p className="text-xs text-muted-foreground">
+                    Unique treatment days
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -651,8 +724,16 @@ export function KidPage() {
                     setIsMedOpen(true)
                   }}
                 >
-                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
-                  <HugeiconsIcon icon={MedicineBottleIcon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon
+                    icon={Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                  <HugeiconsIcon
+                    icon={MedicineBottleIcon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
                   Add medication
                 </Button>
               </CardHeader>
@@ -672,7 +753,9 @@ export function KidPage() {
                       <TableRow key={row.id}>
                         <TableCell>{renderDateTime(row.takenAt)}</TableCell>
                         <TableCell>{row.medicationName}</TableCell>
-                        <TableCell>{row.dose} {row.unit}</TableCell>
+                        <TableCell>
+                          {row.dose} {row.unit}
+                        </TableCell>
                         <TableCell>{row.notes || "-"}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
@@ -692,7 +775,11 @@ export function KidPage() {
                                 setIsMedOpen(true)
                               }}
                             >
-                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
+                              <HugeiconsIcon
+                                icon={Edit01Icon}
+                                strokeWidth={2}
+                                className="size-4"
+                              />
                               Edit
                             </Button>
                             <Button
@@ -705,7 +792,11 @@ export function KidPage() {
                                   return
                                 }
 
-                                if (!window.confirm("Delete this medication record?")) {
+                                if (
+                                  !window.confirm(
+                                    "Delete this medication record?"
+                                  )
+                                ) {
                                   releaseActionLock(actionKey)
                                   return
                                 }
@@ -717,7 +808,9 @@ export function KidPage() {
                                     auth.spreadsheet.spreadsheetId,
                                     row.id
                                   )
-                                  setMedications((current) => current.filter((item) => item.id !== row.id))
+                                  setMedications((current) =>
+                                    current.filter((item) => item.id !== row.id)
+                                  )
                                   if (editingMedicationId === row.id) {
                                     setEditingMedicationId(null)
                                     setIsMedOpen(false)
@@ -738,12 +831,20 @@ export function KidPage() {
                             >
                               {deletingRecordId === row.id ? (
                                 <>
-                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  <HugeiconsIcon
+                                    icon={Loading03Icon}
+                                    strokeWidth={2}
+                                    className="size-4 animate-spin"
+                                  />
                                   Deleting...
                                 </>
                               ) : (
                                 <>
-                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  <HugeiconsIcon
+                                    icon={Delete02Icon}
+                                    strokeWidth={2}
+                                    className="size-4"
+                                  />
                                   Delete
                                 </>
                               )}
@@ -768,7 +869,9 @@ export function KidPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">From profile or latest growth row</p>
+                  <p className="text-xs text-muted-foreground">
+                    From profile or latest growth row
+                  </p>
                 </CardContent>
               </Card>
 
@@ -780,17 +883,23 @@ export function KidPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">Most recent known measurement</p>
+                  <p className="text-xs text-muted-foreground">
+                    Most recent known measurement
+                  </p>
                 </CardContent>
               </Card>
 
               <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Growth checkpoints</CardDescription>
-                  <CardTitle className="text-2xl">{growthRecords.length}</CardTitle>
+                  <CardTitle className="text-2xl">
+                    {growthRecords.length}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">Historical growth entries</p>
+                  <p className="text-xs text-muted-foreground">
+                    Historical growth entries
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -799,7 +908,9 @@ export function KidPage() {
               <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
                 <CardHeader>
                   <CardTitle>Height trend</CardTitle>
-                  <CardDescription>Most recent 10 height values</CardDescription>
+                  <CardDescription>
+                    Most recent 10 height values
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <LineMiniChart
@@ -811,7 +922,9 @@ export function KidPage() {
               <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
                 <CardHeader>
                   <CardTitle>Weight trend</CardTitle>
-                  <CardDescription>Most recent 10 weight values</CardDescription>
+                  <CardDescription>
+                    Most recent 10 weight values
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <LineMiniChart
@@ -834,8 +947,16 @@ export function KidPage() {
                     setIsGrowthOpen(true)
                   }}
                 >
-                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
-                  <HugeiconsIcon icon={RulerIcon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon
+                    icon={Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                  <HugeiconsIcon
+                    icon={RulerIcon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
                   Add growth measurement
                 </Button>
               </CardHeader>
@@ -874,7 +995,11 @@ export function KidPage() {
                                 setIsGrowthOpen(true)
                               }}
                             >
-                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
+                              <HugeiconsIcon
+                                icon={Edit01Icon}
+                                strokeWidth={2}
+                                className="size-4"
+                              />
                               Edit
                             </Button>
                             <Button
@@ -887,7 +1012,9 @@ export function KidPage() {
                                   return
                                 }
 
-                                if (!window.confirm("Delete this growth record?")) {
+                                if (
+                                  !window.confirm("Delete this growth record?")
+                                ) {
                                   releaseActionLock(actionKey)
                                   return
                                 }
@@ -899,7 +1026,9 @@ export function KidPage() {
                                     auth.spreadsheet.spreadsheetId,
                                     row.id
                                   )
-                                  setGrowthRecords((current) => current.filter((item) => item.id !== row.id))
+                                  setGrowthRecords((current) =>
+                                    current.filter((item) => item.id !== row.id)
+                                  )
                                   if (editingGrowthId === row.id) {
                                     setEditingGrowthId(null)
                                     setIsGrowthOpen(false)
@@ -920,12 +1049,20 @@ export function KidPage() {
                             >
                               {deletingRecordId === row.id ? (
                                 <>
-                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  <HugeiconsIcon
+                                    icon={Loading03Icon}
+                                    strokeWidth={2}
+                                    className="size-4 animate-spin"
+                                  />
                                   Deleting...
                                 </>
                               ) : (
                                 <>
-                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  <HugeiconsIcon
+                                    icon={Delete02Icon}
+                                    strokeWidth={2}
+                                    className="size-4"
+                                  />
                                   Delete
                                 </>
                               )}
@@ -951,8 +1088,16 @@ export function KidPage() {
                     setIsNoteOpen(true)
                   }}
                 >
-                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
-                  <HugeiconsIcon icon={NoteAddIcon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon
+                    icon={Add01Icon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
+                  <HugeiconsIcon
+                    icon={NoteAddIcon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
                   Add note
                 </Button>
               </CardHeader>
@@ -985,7 +1130,11 @@ export function KidPage() {
                                 setIsNoteOpen(true)
                               }}
                             >
-                              <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
+                              <HugeiconsIcon
+                                icon={Edit01Icon}
+                                strokeWidth={2}
+                                className="size-4"
+                              />
                               Edit
                             </Button>
                             <Button
@@ -1005,8 +1154,14 @@ export function KidPage() {
 
                                 setDeletingRecordId(row.id)
                                 try {
-                                  await deleteNote(auth.accessToken, auth.spreadsheet.spreadsheetId, row.id)
-                                  setNotes((current) => current.filter((item) => item.id !== row.id))
+                                  await deleteNote(
+                                    auth.accessToken,
+                                    auth.spreadsheet.spreadsheetId,
+                                    row.id
+                                  )
+                                  setNotes((current) =>
+                                    current.filter((item) => item.id !== row.id)
+                                  )
                                   if (editingNoteId === row.id) {
                                     setEditingNoteId(null)
                                     setIsNoteOpen(false)
@@ -1027,12 +1182,20 @@ export function KidPage() {
                             >
                               {deletingRecordId === row.id ? (
                                 <>
-                                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                                  <HugeiconsIcon
+                                    icon={Loading03Icon}
+                                    strokeWidth={2}
+                                    className="size-4 animate-spin"
+                                  />
                                   Deleting...
                                 </>
                               ) : (
                                 <>
-                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                                  <HugeiconsIcon
+                                    icon={Delete02Icon}
+                                    strokeWidth={2}
+                                    className="size-4"
+                                  />
                                   Delete
                                 </>
                               )}
@@ -1061,7 +1224,9 @@ export function KidPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingTemperatureId ? "Edit temperature" : "Add temperature"}</DialogTitle>
+            <DialogTitle>
+              {editingTemperatureId ? "Edit temperature" : "Add temperature"}
+            </DialogTitle>
             <DialogDescription>
               {editingTemperatureId
                 ? "Update the body temperature measurement."
@@ -1094,7 +1259,9 @@ export function KidPage() {
 
               try {
                 if (editingTemperatureId) {
-                  const existing = temperatures.find((item) => item.id === editingTemperatureId)
+                  const existing = temperatures.find(
+                    (item) => item.id === editingTemperatureId
+                  )
                   if (!existing) {
                     toast.error("Temperature record not found")
                     return
@@ -1120,14 +1287,18 @@ export function KidPage() {
                   )
                   toast.success("Temperature updated")
                 } else {
-                  const saved = await addTemperatureRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                    kidId: kid.id,
-                    measuredAt: toIso(parsed.data.measuredAt),
-                    value: parsed.data.value,
-                    unit: parsed.data.unit,
-                    method: parsed.data.method,
-                    notes: parsed.data.notes,
-                  })
+                  const saved = await addTemperatureRecord(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      kidId: kid.id,
+                      measuredAt: toIso(parsed.data.measuredAt),
+                      value: parsed.data.value,
+                      unit: parsed.data.unit,
+                      method: parsed.data.method,
+                      notes: parsed.data.notes,
+                    }
+                  )
 
                   setTemperatures((current) => [saved, ...current])
                   toast.success("Temperature added")
@@ -1151,33 +1322,63 @@ export function KidPage() {
           >
             <div className="space-y-1.5">
               <Label htmlFor="temp-time">Date and time</Label>
-              <Input id="temp-time" type="datetime-local" {...temperatureForm.register("measuredAt")} />
-              <p className="text-xs text-destructive">{temperatureForm.formState.errors.measuredAt?.message}</p>
+              <Input
+                id="temp-time"
+                type="datetime-local"
+                {...temperatureForm.register("measuredAt")}
+              />
+              <p className="text-xs text-destructive">
+                {temperatureForm.formState.errors.measuredAt?.message}
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1.5">
                 <Label htmlFor="temp-value">Value</Label>
-                <Input id="temp-value" type="number" step="0.1" {...temperatureForm.register("value")} />
-                <p className="text-xs text-destructive">{temperatureForm.formState.errors.value?.message}</p>
+                <Input
+                  id="temp-value"
+                  type="number"
+                  step="0.1"
+                  {...temperatureForm.register("value")}
+                />
+                <p className="text-xs text-destructive">
+                  {temperatureForm.formState.errors.value?.message}
+                </p>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="temp-unit">Unit</Label>
                 <Input id="temp-unit" {...temperatureForm.register("unit")} />
-                <p className="text-xs text-destructive">{temperatureForm.formState.errors.unit?.message}</p>
+                <p className="text-xs text-destructive">
+                  {temperatureForm.formState.errors.unit?.message}
+                </p>
               </div>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="temp-method">Method</Label>
-              <Input id="temp-method" placeholder="Oral / ear / forehead" {...temperatureForm.register("method")} />
+              <Input
+                id="temp-method"
+                placeholder="Oral / ear / forehead"
+                {...temperatureForm.register("method")}
+              />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="temp-notes">Notes</Label>
-              <Textarea id="temp-notes" rows={3} {...temperatureForm.register("notes")} />
+              <Textarea
+                id="temp-notes"
+                rows={3}
+                {...temperatureForm.register("notes")}
+              />
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={temperatureForm.formState.isSubmitting}>
+              <Button
+                type="submit"
+                disabled={temperatureForm.formState.isSubmitting}
+              >
                 {temperatureForm.formState.isSubmitting ? (
-                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                  <HugeiconsIcon
+                    icon={Loading03Icon}
+                    strokeWidth={2}
+                    className="size-4 animate-spin"
+                  />
                 ) : (
                   <HugeiconsIcon
                     icon={editingTemperatureId ? FloppyDiskIcon : Add01Icon}
@@ -1210,7 +1411,11 @@ export function KidPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingMedicationId ? "Edit medication record" : "Add medication record"}</DialogTitle>
+            <DialogTitle>
+              {editingMedicationId
+                ? "Edit medication record"
+                : "Add medication record"}
+            </DialogTitle>
             <DialogDescription>
               {editingMedicationId
                 ? "Update meds taken and dosage for this child."
@@ -1243,7 +1448,9 @@ export function KidPage() {
 
               try {
                 if (editingMedicationId) {
-                  const existing = medications.find((item) => item.id === editingMedicationId)
+                  const existing = medications.find(
+                    (item) => item.id === editingMedicationId
+                  )
                   if (!existing) {
                     toast.error("Medication record not found")
                     return
@@ -1269,14 +1476,18 @@ export function KidPage() {
                   )
                   toast.success("Medication updated")
                 } else {
-                  const saved = await addMedicationRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                    kidId: kid.id,
-                    takenAt: toIso(parsed.data.takenAt),
-                    medicationName: parsed.data.medicationName,
-                    dose: parsed.data.dose,
-                    unit: parsed.data.unit,
-                    notes: parsed.data.notes,
-                  })
+                  const saved = await addMedicationRecord(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      kidId: kid.id,
+                      takenAt: toIso(parsed.data.takenAt),
+                      medicationName: parsed.data.medicationName,
+                      dose: parsed.data.dose,
+                      unit: parsed.data.unit,
+                      notes: parsed.data.notes,
+                    }
+                  )
 
                   setMedications((current) => [saved, ...current])
                   toast.success("Medication added")
@@ -1300,34 +1511,65 @@ export function KidPage() {
           >
             <div className="space-y-1.5">
               <Label htmlFor="med-time">Date and time</Label>
-              <Input id="med-time" type="datetime-local" {...medicationForm.register("takenAt")} />
-              <p className="text-xs text-destructive">{medicationForm.formState.errors.takenAt?.message}</p>
+              <Input
+                id="med-time"
+                type="datetime-local"
+                {...medicationForm.register("takenAt")}
+              />
+              <p className="text-xs text-destructive">
+                {medicationForm.formState.errors.takenAt?.message}
+              </p>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="med-name">Medication</Label>
-              <Input id="med-name" {...medicationForm.register("medicationName")} />
-              <p className="text-xs text-destructive">{medicationForm.formState.errors.medicationName?.message}</p>
+              <Input
+                id="med-name"
+                {...medicationForm.register("medicationName")}
+              />
+              <p className="text-xs text-destructive">
+                {medicationForm.formState.errors.medicationName?.message}
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1.5">
                 <Label htmlFor="med-dose">Dose</Label>
-                <Input id="med-dose" type="number" step="0.1" {...medicationForm.register("dose")} />
-                <p className="text-xs text-destructive">{medicationForm.formState.errors.dose?.message}</p>
+                <Input
+                  id="med-dose"
+                  type="number"
+                  step="0.1"
+                  {...medicationForm.register("dose")}
+                />
+                <p className="text-xs text-destructive">
+                  {medicationForm.formState.errors.dose?.message}
+                </p>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="med-unit">Unit</Label>
                 <Input id="med-unit" {...medicationForm.register("unit")} />
-                <p className="text-xs text-destructive">{medicationForm.formState.errors.unit?.message}</p>
+                <p className="text-xs text-destructive">
+                  {medicationForm.formState.errors.unit?.message}
+                </p>
               </div>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="med-notes">Notes</Label>
-              <Textarea id="med-notes" rows={3} {...medicationForm.register("notes")} />
+              <Textarea
+                id="med-notes"
+                rows={3}
+                {...medicationForm.register("notes")}
+              />
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={medicationForm.formState.isSubmitting}>
+              <Button
+                type="submit"
+                disabled={medicationForm.formState.isSubmitting}
+              >
                 {medicationForm.formState.isSubmitting ? (
-                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                  <HugeiconsIcon
+                    icon={Loading03Icon}
+                    strokeWidth={2}
+                    className="size-4 animate-spin"
+                  />
                 ) : (
                   <HugeiconsIcon
                     icon={editingMedicationId ? FloppyDiskIcon : Add01Icon}
@@ -1360,7 +1602,11 @@ export function KidPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingGrowthId ? "Edit growth measurement" : "Add growth measurement"}</DialogTitle>
+            <DialogTitle>
+              {editingGrowthId
+                ? "Edit growth measurement"
+                : "Add growth measurement"}
+            </DialogTitle>
             <DialogDescription>
               {editingGrowthId
                 ? "Update historical growth values for this child."
@@ -1384,14 +1630,18 @@ export function KidPage() {
 
               const parsed = growthSchema.safeParse(values)
               if (!parsed.success) {
-                toast.error(parsed.error.issues[0]?.message ?? "Invalid growth input")
+                toast.error(
+                  parsed.error.issues[0]?.message ?? "Invalid growth input"
+                )
                 releaseActionLock(actionKey)
                 return
               }
 
               try {
                 if (editingGrowthId) {
-                  const existing = growthRecords.find((item) => item.id === editingGrowthId)
+                  const existing = growthRecords.find(
+                    (item) => item.id === editingGrowthId
+                  )
                   if (!existing) {
                     toast.error("Growth record not found")
                     return
@@ -1416,19 +1666,29 @@ export function KidPage() {
                   )
                   toast.success("Growth measurement updated")
                 } else {
-                  const saved = await addGrowthRecord(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                    kidId: kid.id,
-                    measuredAt: toIso(parsed.data.measuredAt),
-                    heightCm: parsed.data.heightCm,
-                    weightKg: parsed.data.weightKg,
-                    notes: parsed.data.notes,
-                  })
+                  const saved = await addGrowthRecord(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      kidId: kid.id,
+                      measuredAt: toIso(parsed.data.measuredAt),
+                      heightCm: parsed.data.heightCm,
+                      weightKg: parsed.data.weightKg,
+                      notes: parsed.data.notes,
+                    }
+                  )
 
-                  const updatedKid = await updateKid(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                    ...kid,
-                    currentHeightCm: parsed.data.heightCm ?? kid.currentHeightCm,
-                    currentWeightKg: parsed.data.weightKg ?? kid.currentWeightKg,
-                  })
+                  const updatedKid = await updateKid(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      ...kid,
+                      currentHeightCm:
+                        parsed.data.heightCm ?? kid.currentHeightCm,
+                      currentWeightKg:
+                        parsed.data.weightKg ?? kid.currentWeightKg,
+                    }
+                  )
 
                   setGrowthRecords((current) => [saved, ...current])
                   setKid(updatedKid)
@@ -1453,29 +1713,60 @@ export function KidPage() {
           >
             <div className="space-y-1.5">
               <Label htmlFor="growth-time">Date and time</Label>
-              <Input id="growth-time" type="datetime-local" {...growthForm.register("measuredAt")} />
-              <p className="text-xs text-destructive">{growthForm.formState.errors.measuredAt?.message}</p>
+              <Input
+                id="growth-time"
+                type="datetime-local"
+                {...growthForm.register("measuredAt")}
+              />
+              <p className="text-xs text-destructive">
+                {growthForm.formState.errors.measuredAt?.message}
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1.5">
                 <Label htmlFor="growth-height">Height (cm)</Label>
-                <Input id="growth-height" type="number" step="0.1" {...growthForm.register("heightCm")} />
-                <p className="text-xs text-destructive">{growthForm.formState.errors.heightCm?.message}</p>
+                <Input
+                  id="growth-height"
+                  type="number"
+                  step="0.1"
+                  {...growthForm.register("heightCm")}
+                />
+                <p className="text-xs text-destructive">
+                  {growthForm.formState.errors.heightCm?.message}
+                </p>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="growth-weight">Weight (kg)</Label>
-                <Input id="growth-weight" type="number" step="0.1" {...growthForm.register("weightKg")} />
-                <p className="text-xs text-destructive">{growthForm.formState.errors.weightKg?.message}</p>
+                <Input
+                  id="growth-weight"
+                  type="number"
+                  step="0.1"
+                  {...growthForm.register("weightKg")}
+                />
+                <p className="text-xs text-destructive">
+                  {growthForm.formState.errors.weightKg?.message}
+                </p>
               </div>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="growth-notes">Notes</Label>
-              <Textarea id="growth-notes" rows={3} {...growthForm.register("notes")} />
+              <Textarea
+                id="growth-notes"
+                rows={3}
+                {...growthForm.register("notes")}
+              />
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={growthForm.formState.isSubmitting}>
+              <Button
+                type="submit"
+                disabled={growthForm.formState.isSubmitting}
+              >
                 {growthForm.formState.isSubmitting ? (
-                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                  <HugeiconsIcon
+                    icon={Loading03Icon}
+                    strokeWidth={2}
+                    className="size-4 animate-spin"
+                  />
                 ) : (
                   <HugeiconsIcon
                     icon={editingGrowthId ? FloppyDiskIcon : Add01Icon}
@@ -1508,7 +1799,9 @@ export function KidPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingNoteId ? "Edit note" : "Add note"}</DialogTitle>
+            <DialogTitle>
+              {editingNoteId ? "Edit note" : "Add note"}
+            </DialogTitle>
             <DialogDescription>
               {editingNoteId
                 ? "Update an existing note for this child."
@@ -1532,14 +1825,18 @@ export function KidPage() {
 
               const parsed = noteSchema.safeParse(values)
               if (!parsed.success) {
-                toast.error(parsed.error.issues[0]?.message ?? "Invalid note input")
+                toast.error(
+                  parsed.error.issues[0]?.message ?? "Invalid note input"
+                )
                 releaseActionLock(actionKey)
                 return
               }
 
               try {
                 if (editingNoteId) {
-                  const existing = notes.find((item) => item.id === editingNoteId)
+                  const existing = notes.find(
+                    (item) => item.id === editingNoteId
+                  )
                   if (!existing) {
                     toast.error("Note record not found")
                     return
@@ -1562,11 +1859,15 @@ export function KidPage() {
                   )
                   toast.success("Note updated")
                 } else {
-                  const saved = await addNote(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                    kidId: kid.id,
-                    recordedAt: toIso(parsed.data.recordedAt),
-                    content: parsed.data.content,
-                  })
+                  const saved = await addNote(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      kidId: kid.id,
+                      recordedAt: toIso(parsed.data.recordedAt),
+                      content: parsed.data.content,
+                    }
+                  )
 
                   setNotes((current) => [saved, ...current])
                   toast.success("Note added")
@@ -1590,18 +1891,34 @@ export function KidPage() {
           >
             <div className="space-y-1.5">
               <Label htmlFor="note-time">Date and time</Label>
-              <Input id="note-time" type="datetime-local" {...noteForm.register("recordedAt")} />
-              <p className="text-xs text-destructive">{noteForm.formState.errors.recordedAt?.message}</p>
+              <Input
+                id="note-time"
+                type="datetime-local"
+                {...noteForm.register("recordedAt")}
+              />
+              <p className="text-xs text-destructive">
+                {noteForm.formState.errors.recordedAt?.message}
+              </p>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="note-content">Content</Label>
-              <Textarea id="note-content" rows={4} {...noteForm.register("content")} />
-              <p className="text-xs text-destructive">{noteForm.formState.errors.content?.message}</p>
+              <Textarea
+                id="note-content"
+                rows={4}
+                {...noteForm.register("content")}
+              />
+              <p className="text-xs text-destructive">
+                {noteForm.formState.errors.content?.message}
+              </p>
             </div>
             <DialogFooter>
               <Button type="submit" disabled={noteForm.formState.isSubmitting}>
                 {noteForm.formState.isSubmitting ? (
-                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                  <HugeiconsIcon
+                    icon={Loading03Icon}
+                    strokeWidth={2}
+                    className="size-4 animate-spin"
+                  />
                 ) : (
                   <HugeiconsIcon
                     icon={editingNoteId ? FloppyDiskIcon : Add01Icon}

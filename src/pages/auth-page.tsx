@@ -24,12 +24,14 @@ export function AuthPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            This app stores your child health data in a spreadsheet created in your own Google Drive.
+            This app stores your child health data in a spreadsheet created in
+            your own Google Drive.
           </p>
           <Alert>
             <AlertTitle>Scopes requested</AlertTitle>
             <AlertDescription>
-              Drive file access and Sheets read/write are used to create and update your tracker workbook.
+              Drive file access and Sheets read/write are used to create and
+              update your tracker workbook.
             </AlertDescription>
           </Alert>
           {error ? (
@@ -55,9 +57,17 @@ export function AuthPage() {
             className="w-full"
           >
             {isLoading ? (
-              <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+              <HugeiconsIcon
+                icon={Loading03Icon}
+                strokeWidth={2}
+                className="size-4 animate-spin"
+              />
             ) : (
-              <HugeiconsIcon icon={GoogleDriveIcon} strokeWidth={2} className="size-4" />
+              <HugeiconsIcon
+                icon={GoogleDriveIcon}
+                strokeWidth={2}
+                className="size-4"
+              />
             )}
             {isLoading ? "Connecting..." : "Authorize Google Drive"}
           </Button>

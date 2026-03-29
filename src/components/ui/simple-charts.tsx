@@ -30,7 +30,9 @@ function normalizeRange(min: number, max: number) {
 }
 
 function linePath(points: Array<{ x: number; y: number }>) {
-  return points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x},${point.y}`).join(" ")
+  return points
+    .map((point, index) => `${index === 0 ? "M" : "L"}${point.x},${point.y}`)
+    .join(" ")
 }
 
 export function LineMiniChart({
@@ -64,7 +66,8 @@ export function LineMiniChart({
     const x =
       data.length === 1
         ? width / 2
-        : horizontalPadding + (index * (width - horizontalPadding * 2)) / (data.length - 1)
+        : horizontalPadding +
+          (index * (width - horizontalPadding * 2)) / (data.length - 1)
     const y =
       height -
       verticalPadding -
@@ -78,7 +81,12 @@ export function LineMiniChart({
   return (
     <div className={className}>
       <div className="h-36 rounded-lg border bg-card/30 p-2">
-        <svg viewBox={`0 0 ${width} ${height}`} className="size-full" role="img" aria-label="line chart">
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="size-full"
+          role="img"
+          aria-label="line chart"
+        >
           <line
             x1={horizontalPadding}
             y1={height - verticalPadding}
@@ -97,7 +105,11 @@ export function LineMiniChart({
           />
 
           <path d={areaPath} className={`fill-current ${areaClassName}`} />
-          <path d={linePath(points)} className={`fill-none stroke-current ${strokeClassName}`} strokeWidth="2" />
+          <path
+            d={linePath(points)}
+            className={`fill-none stroke-current ${strokeClassName}`}
+            strokeWidth="2"
+          />
 
           {points.map((point, index) => (
             <circle
@@ -143,13 +155,18 @@ export function BarMiniChart({
           const heightPercent = Math.max((item.value / maxValue) * 100, 6)
 
           return (
-            <div key={item.label} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+            <div
+              key={item.label}
+              className="flex min-w-0 flex-1 flex-col items-center gap-2"
+            >
               <div
                 className={`w-full rounded-t-sm transition-all ${barClassName}`}
                 style={{ height: `${heightPercent}%` }}
                 title={`${item.label}: ${item.value}`}
               />
-              <span className="truncate text-[10px] text-muted-foreground">{item.label}</span>
+              <span className="truncate text-[10px] text-muted-foreground">
+                {item.label}
+              </span>
             </div>
           )
         })}

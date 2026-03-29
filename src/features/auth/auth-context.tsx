@@ -95,7 +95,9 @@ async function requestAccessToken(prompt: "consent" | "") {
           }
 
           if (!response.access_token) {
-            reject(new Error("Google token response did not include an access token"))
+            reject(
+              new Error("Google token response did not include an access token")
+            )
             return
           }
 
@@ -123,7 +125,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const tokenResult = await requestAccessToken("consent")
       const spreadsheet = await findOrCreateSpreadsheet(tokenResult.accessToken)
-      await ensureSpreadsheetShape(tokenResult.accessToken, spreadsheet.spreadsheetId)
+      await ensureSpreadsheetShape(
+        tokenResult.accessToken,
+        spreadsheet.spreadsheetId
+      )
 
       setAuth({
         accessToken: tokenResult.accessToken,

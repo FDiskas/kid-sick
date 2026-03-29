@@ -1,10 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router-dom"
 import { HugeiconsIcon } from "@hugeicons/react"
-import {
-  Logout01Icon,
-  Moon01Icon,
-  Sun01Icon,
-} from "@hugeicons/core-free-icons"
+import { Logout01Icon, Moon01Icon, Sun01Icon } from "@hugeicons/core-free-icons"
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -48,7 +44,9 @@ export function AppShell() {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? "font-medium text-foreground" : "text-muted-foreground"
+                isActive
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground"
               }
             >
               Dashboard
@@ -57,7 +55,9 @@ export function AppShell() {
             <NavLink
               to="/settings"
               className={({ isActive }) =>
-                isActive ? "font-medium text-foreground" : "text-muted-foreground"
+                isActive
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground"
               }
             >
               Settings
@@ -65,14 +65,24 @@ export function AppShell() {
           </nav>
           <div className="flex items-center gap-2">
             {auth ? (
-              <Badge variant="secondary" className="inline-flex items-center gap-2">
-                <span className="size-2 rounded-full bg-emerald-500" aria-hidden="true" />
+              <Badge
+                variant="secondary"
+                className="inline-flex items-center gap-2"
+              >
+                <span
+                  className="size-2 rounded-full bg-emerald-500"
+                  aria-hidden="true"
+                />
                 Google Connected
               </Badge>
             ) : null}
             {auth ? (
               <Button variant="outline" onClick={signOut}>
-                <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} className="size-4" />
+                <HugeiconsIcon
+                  icon={Logout01Icon}
+                  strokeWidth={2}
+                  className="size-4"
+                />
                 Logout
               </Button>
             ) : null}

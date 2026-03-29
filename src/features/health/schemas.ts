@@ -49,7 +49,10 @@ export const temperatureSchema = z.object({
 
 export const noteSchema = z.object({
   recordedAt: z.string().min(1, "Date and time is required"),
-  content: z.string().min(1, "Note content is required").max(1000, "Note is too long"),
+  content: z
+    .string()
+    .min(1, "Note content is required")
+    .max(1000, "Note is too long"),
 })
 
 export type NoteFormInput = z.infer<typeof noteSchema>

@@ -46,7 +46,8 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
     <Alert>
       <AlertTitle>No kids added yet</AlertTitle>
       <AlertDescription>
-        Start by adding your first child profile to begin tracking temperature, medication, and growth logs.
+        Start by adding your first child profile to begin tracking temperature,
+        medication, and growth logs.
       </AlertDescription>
       <div className="mt-3">
         <Button onClick={onCreate}>
@@ -106,7 +107,9 @@ export function DashboardPage() {
       } catch (loadError) {
         if (isMounted) {
           setError(
-            loadError instanceof Error ? loadError.message : "Unable to load kids"
+            loadError instanceof Error
+              ? loadError.message
+              : "Unable to load kids"
           )
         }
       } finally {
@@ -180,14 +183,22 @@ export function DashboardPage() {
                   )}
                 </div>
                 <div className="text-muted-foreground">
-                  Latest: {kid.currentHeightCm ?? "-"} cm / {kid.currentWeightKg ?? "-"} kg
+                  Latest: {kid.currentHeightCm ?? "-"} cm /{" "}
+                  {kid.currentWeightKg ?? "-"} kg
                 </div>
                 <div className="flex gap-2">
                   <Link
                     to={`/kids/${kid.id}`}
-                    className={cn(buttonVariants({ size: "sm" }), "inline-flex items-center gap-2")}
+                    className={cn(
+                      buttonVariants({ size: "sm" }),
+                      "inline-flex items-center gap-2"
+                    )}
                   >
-                    <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="size-4" />
+                    <HugeiconsIcon
+                      icon={ArrowRight01Icon}
+                      strokeWidth={2}
+                      className="size-4"
+                    />
                     Open details
                   </Link>
                   <Button
@@ -206,7 +217,11 @@ export function DashboardPage() {
                       setIsDialogOpen(true)
                     }}
                   >
-                    <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
+                    <HugeiconsIcon
+                      icon={Edit01Icon}
+                      strokeWidth={2}
+                      className="size-4"
+                    />
                     Edit
                   </Button>
                   <Button
@@ -261,12 +276,20 @@ export function DashboardPage() {
                   >
                     {deletingKidId === kid.id ? (
                       <>
-                        <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                        <HugeiconsIcon
+                          icon={Loading03Icon}
+                          strokeWidth={2}
+                          className="size-4 animate-spin"
+                        />
                         Deleting...
                       </>
                     ) : (
                       <>
-                        <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
+                        <HugeiconsIcon
+                          icon={Delete02Icon}
+                          strokeWidth={2}
+                          className="size-4"
+                        />
                         Delete
                       </>
                     )}
@@ -291,7 +314,9 @@ export function DashboardPage() {
             onSubmit={form.handleSubmit(async (values) => {
               const parsed = kidSchema.safeParse(values)
               if (!parsed.success) {
-                toast.error(parsed.error.issues[0]?.message ?? "Invalid kid profile input")
+                toast.error(
+                  parsed.error.issues[0]?.message ?? "Invalid kid profile input"
+                )
                 return
               }
 
@@ -302,13 +327,19 @@ export function DashboardPage() {
 
               try {
                 if (editingKid) {
-                  const updatedKid = await updateKid(auth.accessToken, auth.spreadsheet.spreadsheetId, {
-                    ...editingKid,
-                    ...payload,
-                  })
+                  const updatedKid = await updateKid(
+                    auth.accessToken,
+                    auth.spreadsheet.spreadsheetId,
+                    {
+                      ...editingKid,
+                      ...payload,
+                    }
+                  )
 
                   setKids((existing) =>
-                    existing.map((item) => (item.id === updatedKid.id ? updatedKid : item))
+                    existing.map((item) =>
+                      item.id === updatedKid.id ? updatedKid : item
+                    )
                   )
                   toast.success("Kid profile updated")
                 } else {
@@ -335,40 +366,72 @@ export function DashboardPage() {
             <div className="space-y-1.5">
               <Label htmlFor="kid-name">Name</Label>
               <Input id="kid-name" {...form.register("name")} />
-              <p className="text-xs text-destructive">{form.formState.errors.name?.message}</p>
+              <p className="text-xs text-destructive">
+                {form.formState.errors.name?.message}
+              </p>
             </div>
 
             <div className="space-y-1.5">
               <Label htmlFor="kid-birthday">Birthday</Label>
-              <Input id="kid-birthday" type="date" {...form.register("birthDate")} />
-              <p className="text-xs text-destructive">{form.formState.errors.birthDate?.message}</p>
+              <Input
+                id="kid-birthday"
+                type="date"
+                {...form.register("birthDate")}
+              />
+              <p className="text-xs text-destructive">
+                {form.formState.errors.birthDate?.message}
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               <div className="space-y-1.5">
                 <Label htmlFor="kid-height">Height (cm)</Label>
-                <Input id="kid-height" type="number" step="0.1" {...form.register("currentHeightCm")} />
-                <p className="text-xs text-destructive">{form.formState.errors.currentHeightCm?.message}</p>
+                <Input
+                  id="kid-height"
+                  type="number"
+                  step="0.1"
+                  {...form.register("currentHeightCm")}
+                />
+                <p className="text-xs text-destructive">
+                  {form.formState.errors.currentHeightCm?.message}
+                </p>
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="kid-weight">Weight (kg)</Label>
-                <Input id="kid-weight" type="number" step="0.1" {...form.register("currentWeightKg")} />
-                <p className="text-xs text-destructive">{form.formState.errors.currentWeightKg?.message}</p>
+                <Input
+                  id="kid-weight"
+                  type="number"
+                  step="0.1"
+                  {...form.register("currentWeightKg")}
+                />
+                <p className="text-xs text-destructive">
+                  {form.formState.errors.currentWeightKg?.message}
+                </p>
               </div>
             </div>
 
             <div className="space-y-1.5">
               <Label htmlFor="kid-notes">Notes</Label>
               <Textarea id="kid-notes" rows={3} {...form.register("notes")} />
-              <p className="text-xs text-destructive">{form.formState.errors.notes?.message}</p>
+              <p className="text-xs text-destructive">
+                {form.formState.errors.notes?.message}
+              </p>
             </div>
 
             <DialogFooter>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? (
-                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
+                  <HugeiconsIcon
+                    icon={Loading03Icon}
+                    strokeWidth={2}
+                    className="size-4 animate-spin"
+                  />
                 ) : (
-                  <HugeiconsIcon icon={FloppyDiskIcon} strokeWidth={2} className="size-4" />
+                  <HugeiconsIcon
+                    icon={FloppyDiskIcon}
+                    strokeWidth={2}
+                    className="size-4"
+                  />
                 )}
                 {form.formState.isSubmitting ? "Saving..." : "Save"}
               </Button>

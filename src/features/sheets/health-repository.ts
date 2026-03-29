@@ -121,7 +121,9 @@ export async function updateNote(
   await ensureSpreadsheetShape(token, spreadsheetId)
 
   const rows = await readSheetRows(token, spreadsheetId, SHEET_NAMES.notes)
-  const existingRow = rows.rows.find((row) => valueAt(row.values, 0) === record.id)
+  const existingRow = rows.rows.find(
+    (row) => valueAt(row.values, 0) === record.id
+  )
 
   if (!existingRow) {
     throw new Error("Note not found")
@@ -148,7 +150,9 @@ export async function deleteNote(
   recordId: string
 ) {
   const rows = await readSheetRowsSafe(token, spreadsheetId, SHEET_NAMES.notes)
-  const rowIndex = rows.rows.find((row) => valueAt(row.values, 0) === recordId)?.rowIndex
+  const rowIndex = rows.rows.find(
+    (row) => valueAt(row.values, 0) === recordId
+  )?.rowIndex
 
   if (!rowIndex) {
     throw new Error("Note not found")
@@ -163,7 +167,9 @@ export async function updateGrowthRecord(
   record: GrowthRecord
 ) {
   const rows = await readSheetRows(token, spreadsheetId, SHEET_NAMES.growthLogs)
-  const existingRow = rows.rows.find((row) => valueAt(row.values, 0) === record.id)
+  const existingRow = rows.rows.find(
+    (row) => valueAt(row.values, 0) === record.id
+  )
 
   if (!existingRow) {
     throw new Error("Growth record not found")
@@ -192,13 +198,17 @@ export async function deleteGrowthRecord(
   recordId: string
 ) {
   const rows = await readSheetRows(token, spreadsheetId, SHEET_NAMES.growthLogs)
-  const rowIndex = rows.rows.find((row) => valueAt(row.values, 0) === recordId)?.rowIndex
+  const rowIndex = rows.rows.find(
+    (row) => valueAt(row.values, 0) === recordId
+  )?.rowIndex
 
   if (!rowIndex) {
     throw new Error("Growth record not found")
   }
 
-  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.growthLogs, [rowIndex])
+  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.growthLogs, [
+    rowIndex,
+  ])
 }
 
 export async function updateMedicationRecord(
@@ -206,8 +216,14 @@ export async function updateMedicationRecord(
   spreadsheetId: string,
   record: MedicationRecord
 ) {
-  const rows = await readSheetRows(token, spreadsheetId, SHEET_NAMES.medicationLogs)
-  const existingRow = rows.rows.find((row) => valueAt(row.values, 0) === record.id)
+  const rows = await readSheetRows(
+    token,
+    spreadsheetId,
+    SHEET_NAMES.medicationLogs
+  )
+  const existingRow = rows.rows.find(
+    (row) => valueAt(row.values, 0) === record.id
+  )
 
   if (!existingRow) {
     throw new Error("Medication record not found")
@@ -236,14 +252,22 @@ export async function deleteMedicationRecord(
   spreadsheetId: string,
   recordId: string
 ) {
-  const rows = await readSheetRows(token, spreadsheetId, SHEET_NAMES.medicationLogs)
-  const rowIndex = rows.rows.find((row) => valueAt(row.values, 0) === recordId)?.rowIndex
+  const rows = await readSheetRows(
+    token,
+    spreadsheetId,
+    SHEET_NAMES.medicationLogs
+  )
+  const rowIndex = rows.rows.find(
+    (row) => valueAt(row.values, 0) === recordId
+  )?.rowIndex
 
   if (!rowIndex) {
     throw new Error("Medication record not found")
   }
 
-  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.medicationLogs, [rowIndex])
+  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.medicationLogs, [
+    rowIndex,
+  ])
 }
 
 export async function updateTemperatureRecord(
@@ -251,8 +275,14 @@ export async function updateTemperatureRecord(
   spreadsheetId: string,
   record: TemperatureRecord
 ) {
-  const rows = await readSheetRows(token, spreadsheetId, SHEET_NAMES.temperatureLogs)
-  const existingRow = rows.rows.find((row) => valueAt(row.values, 0) === record.id)
+  const rows = await readSheetRows(
+    token,
+    spreadsheetId,
+    SHEET_NAMES.temperatureLogs
+  )
+  const existingRow = rows.rows.find(
+    (row) => valueAt(row.values, 0) === record.id
+  )
 
   if (!existingRow) {
     throw new Error("Temperature record not found")
@@ -281,14 +311,22 @@ export async function deleteTemperatureRecord(
   spreadsheetId: string,
   recordId: string
 ) {
-  const rows = await readSheetRows(token, spreadsheetId, SHEET_NAMES.temperatureLogs)
-  const rowIndex = rows.rows.find((row) => valueAt(row.values, 0) === recordId)?.rowIndex
+  const rows = await readSheetRows(
+    token,
+    spreadsheetId,
+    SHEET_NAMES.temperatureLogs
+  )
+  const rowIndex = rows.rows.find(
+    (row) => valueAt(row.values, 0) === recordId
+  )?.rowIndex
 
   if (!rowIndex) {
     throw new Error("Temperature record not found")
   }
 
-  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.temperatureLogs, [rowIndex])
+  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.temperatureLogs, [
+    rowIndex,
+  ])
 }
 
 export async function updateKid(
@@ -590,5 +628,10 @@ export async function deleteKidCascade(
     ),
   ])
 
-  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.kids, kidRowIndexes)
+  await deleteRowsByIndexes(
+    token,
+    spreadsheetId,
+    SHEET_NAMES.kids,
+    kidRowIndexes
+  )
 }
