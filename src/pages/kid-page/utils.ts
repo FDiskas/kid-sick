@@ -16,7 +16,12 @@ export function toIso(localDateTime: string) {
 }
 
 export function toInputDateTime(iso: string) {
-  return iso.slice(0, 16)
+  const parsed = new Date(iso)
+  if (Number.isNaN(parsed.getTime())) {
+    return ""
+  }
+
+  return format(parsed, "yyyy-MM-dd'T'HH:mm")
 }
 
 export function renderDateTime(value: string) {

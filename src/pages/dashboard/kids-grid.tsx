@@ -54,15 +54,27 @@ export function KidsGrid({
             <CardTitle className="text-lg">{kid.name}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
-            <div className="text-muted-foreground">
-              Birthday {kid.birthDate}
-              {calculateAge(kid.birthDate) !== null && (
-                <span> ({calculateAge(kid.birthDate)})</span>
-              )}
-            </div>
-            <div className="text-muted-foreground">
-              Latest: {kid.currentHeightCm ?? "-"} cm /{" "}
-              {kid.currentWeightKg ?? "-"} kg
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1 min-w-0">
+                <div className="text-muted-foreground">
+                  Birthday {kid.birthDate}
+                  {calculateAge(kid.birthDate) !== null && (
+                    <span> ({calculateAge(kid.birthDate)})</span>
+                  )}
+                </div>
+                <div className="text-muted-foreground">
+                  Latest: {kid.currentHeightCm ?? "-"} cm /{" "}
+                  {kid.currentWeightKg ?? "-"} kg
+                </div>
+              </div>
+              <div className="w-40 shrink-0 text-right">
+                <p className="text-xs font-medium text-muted-foreground">
+                  Notes
+                </p>
+                <p className="text-xs leading-relaxed break-words text-foreground/80">
+                  {kid.notes?.trim() || "No notes"}
+                </p>
+              </div>
             </div>
             <div className="flex gap-2">
               <Link

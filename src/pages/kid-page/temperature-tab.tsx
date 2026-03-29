@@ -38,8 +38,9 @@ type TemperatureTabProps = {
   onDelete: (record: TemperatureRecord) => void
 }
 
-function formatTemperatureDegrees(value: number) {
-  return `${Number(value.toFixed(1)).toString()}°`
+function formatTemperatureDegrees(value: number, unit?: "C" | "F") {
+  const baseValue = `${Number(value.toFixed(1)).toString()}°`
+  return unit === "F" ? `${baseValue}F` : baseValue
 }
 
 function getTemperatureBadgeClassName(record: TemperatureRecord) {
@@ -163,7 +164,7 @@ export function TemperatureTab({
                       variant="secondary"
                       className={getTemperatureBadgeClassName(row)}
                     >
-                      {formatTemperatureDegrees(row.value)}
+                      {formatTemperatureDegrees(row.value, row.unit)}
                     </Badge>
                   </TableCell>
                   <TableCell>{row.method || "-"}</TableCell>
