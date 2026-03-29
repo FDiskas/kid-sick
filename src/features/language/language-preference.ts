@@ -2,8 +2,8 @@ import { type LanguageCode } from "../../lib/translate"
 
 const LANGUAGE_STORAGE_KEY = "kid-sick.language"
 
-export function isLanguageCode(value: LanguageCode): value is LanguageCode {
-  return value === "en" || value === "lt"
+export function isLanguageCode(value: string | null): value is LanguageCode {
+  return value === "en" || value === "lt" || value === "pl" || value === "ru"
 }
 
 export function getLanguagePreference(): LanguageCode {
@@ -11,8 +11,8 @@ export function getLanguagePreference(): LanguageCode {
     return "en"
   }
 
-  const storedValue = localStorage.getItem(LANGUAGE_STORAGE_KEY) as LanguageCode
-  if (!storedValue || !isLanguageCode(storedValue)) {
+  const storedValue = localStorage.getItem(LANGUAGE_STORAGE_KEY)
+  if (!isLanguageCode(storedValue)) {
     return "en"
   }
 
