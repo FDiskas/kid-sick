@@ -89,6 +89,78 @@
     "pl": "Witamy w Kid Sick. Proszę się zalogować, aby kontynuować.",
     "ru": "Добро пожаловать в Kid Sick. Пожалуйста, войдите, чтобы продолжить."
   },
+  "landingHeroTitle": {
+    "en": "Your Family's Health, Privately Logged.",
+    "lt": "Jūsų šeimos sveikata, saugiai fiksuojama.",
+    "pl": "Zdrowie Twojej rodziny, prywatnie zapisywane.",
+    "ru": "Здоровье вашей семьи, конфиденциально зафиксировано."
+  },
+  "landingHeroSubtitle": {
+    "en": "The smartest way to track your kid's temperature, medications, and growth - using your own Google Drive.",
+    "lt": "Išmaniausias būdas sekti jūsų vaiko temperatūrą, vaistus ir augimą – naudojant jūsų asmeninį Google Drive.",
+    "pl": "Najmądrzejszy sposób na śledzenie temperatury, leków i wzrostu Twojego dziecka – przy użyciu własnego Dysku Google.",
+    "ru": "Самый умный способ отслеживать температуру, прием лекарств и рост вашего ребенка — с помощью вашего собственного Google Диска."
+  },
+  "featurePrivacyTitle": {
+    "en": "100% Private",
+    "lt": "100% Privatu",
+    "pl": "100% Prywatności",
+    "ru": "100% Приватно"
+  },
+  "featurePrivacyDesc": {
+    "en": "Your data never leaves your Google Drive. No third-party databases, no tracking.",
+    "lt": "Jūsų duomenys niekada nepalieka jūsų Google Drive. Jokių trečiųjų šalių duomenų bazių, jokio sekimo.",
+    "pl": "Twoje dane nigdy nie opuszczają Twojego Dysku Google. Brak baz danych osób trzecich, brak śledzenia.",
+    "ru": "Ваши данные никогда не покидают ваш Google Диск. Никаких сторонних баз данных, никакого отслеживания."
+  },
+  "featureTrackingTitle": {
+    "en": "Easy Tracking",
+    "lt": "Lengvas sekimas",
+    "pl": "Łatwe śledzenie",
+    "ru": "Простое отслеживание"
+  },
+  "featureTrackingDesc": {
+    "en": "Quickly log temperature readings and medication doses with a simple, intuitive interface.",
+    "lt": "Greitai fiksuokite temperatūros rodmenis ir vaistų dozes naudodami paprastą ir intuityvią sąsają.",
+    "pl": "Szybko zapisuj odczyty temperatury i dawki leków dzięki prostemu, intuicyjnemu interfejsowi.",
+    "ru": "Быстро записывайте показания температуры и дозы лекарств с помощью простого и интуитивно понятного интерфейса."
+  },
+  "featureChartsTitle": {
+    "en": "Health Insights",
+    "lt": "Sveikatos įžvalgos",
+    "pl": "Wgląd w zdrowie",
+    "ru": "Анализ здоровья"
+  },
+  "featureChartsDesc": {
+    "en": "Visualize health trends with automatic charts and a complete, searchable history.",
+    "lt": "Vizualizuokite sveikatos tendencijas naudodami automatines diagramas ir pilną, ieškomą istoriją.",
+    "pl": "Wizualizuj trendy zdrowotne dzięki automatycznym wykresom i pełnej, przeszukiwalnej historii.",
+    "ru": "Визуализируйте тенденции здоровья с помощью автоматических диаграмм и полной истории с возможностью поиска."
+  },
+  "howItWorksTitle": {
+    "en": "How it works",
+    "lt": "Kaip tai veikia",
+    "pl": "Jak to działa",
+    "ru": "Как это работает"
+  },
+  "howItWorksStep1": {
+    "en": "Sign in with your Google account.",
+    "lt": "Prisijunkite naudodami Google paskyrą.",
+    "pl": "Zaloguj się za pomocą swojego konta Google.",
+    "ru": "Войдите с помощью своей учетной записи Google."
+  },
+  "howItWorksStep2": {
+    "en": "This app creates a secure spreadsheet in your Drive.",
+    "lt": "Ši programėlė sukuria saugų Google Sheet jūsų Drive paskyroje.",
+    "pl": "Ta aplikacja tworzy bezpieczny arkusz kalkulacyjny na Twoim Dysku.",
+    "ru": "Это приложение создает безопасную таблицу на вашем Диске."
+  },
+  "howItWorksStep3": {
+    "en": "Start tracking! You own the data and can export it anytime.",
+    "lt": "Pradėkite sekti! Duomenys priklauso jums ir galite juos eksportuoti bet kada.",
+    "pl": "Zacznij śledzić! Jesteś właścicielem danych i możesz je wyeksportować w dowolnym momencie.",
+    "ru": "Начните отслеживать! Вы владеете данными и можете экспортировать их в любое время."
+  },
   "authorizeGoogle": {
     "en": "Authorize Google Drive",
     "lt": "Suteikti prieigą prie Google Drive",
