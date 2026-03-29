@@ -1,0 +1,82 @@
+{
+  "title": {
+    "en": "Kid Sick Tracker",
+    "lt": "Kid Sick Tracker"
+  },
+  "settingsTitle": {
+    "en": "Settings",
+    "lt": "Nustatymai"
+  },
+  "appearanceTitle": {
+    "en": "Appearance",
+    "lt": "Išvaizda"
+  },
+  "appearanceDescription": {
+    "en": "Choose how the app theme should render for this browser.",
+    "lt": "Pasirinkite, kaip programėlės tema turėtų būti rodoma šiame naršyklėje."
+  },
+  "themeLabel": {
+    "en": "Theme",
+    "lt": "Tema"
+  },
+  "themePlaceholder": {
+    "en": "Select a theme",
+    "lt": "Pasirinkite temą"
+  },
+  "themeSystem": {
+    "en": "System",
+    "lt": "Sistema"
+  },
+  "themeLight": {
+    "en": "Light",
+    "lt": "Šviesi"
+  },
+  "themeDark": {
+    "en": "Dark",
+    "lt": "Tamsi"
+  },
+  "languageLabel": {
+    "en": "Language",
+    "lt": "Kalba"
+  },
+  "languagePlaceholder": {
+    "en": "Select a language",
+    "lt": "Pasirinkite kalbą"
+  },
+  "temperatureTitle": {
+    "en": "Temperature",
+    "lt": "Temperatūra"
+  },
+  "temperatureDescription": {
+    "en": "Pick your default unit for new temperature entries. Default is Celsius.",
+    "lt": "Pasirinkite numatytąjį vienetą naujiems temperatūros įrašams. Numatytasis yra Celsijus."
+  },
+  "temperatureUnitLabel": {
+    "en": "Default unit",
+    "lt": "Numatytasis vienetas"
+  },
+  "temperatureUnitPlaceholder": {
+    "en": "Select a unit",
+    "lt": "Pasirinkite vienetą"
+  },
+  "googleConnectionTitle": {
+    "en": "Google Connection",
+    "lt": "Google prisijungimas"
+  },
+  "googleConnectionDescription": {
+    "en": "Your health records are stored in your own Google Drive spreadsheet.",
+    "lt": "Jūsų sveikatos įrašai saugomi jūsų Google Drive skaičiuoklėje."
+  },
+  "openMySheet": {
+    "en": "Open my sheet",
+    "lt": "Atidaryti mano skaičiuoklę"
+  },
+  "disconnecting": {
+    "en": "Disconnecting...",
+    "lt": "Atsijungiama..."
+  },
+  "disconnectGoogle": {
+    "en": "Disconnect Google",
+    "lt": "Atsijungti nuo Google"
+  }
+}

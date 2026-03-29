@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { translate, setTranslateLanguage, type LanguageCode } from "@/lib/translate"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   GoogleSheetIcon,
@@ -28,12 +29,18 @@ import { type Theme } from "@/components/theme-utils"
 import { cn } from "@/lib/utils"
 
 const THEME_OPTIONS: ReadonlyArray<{ value: Theme; label: string }> = [
-  { value: "system", label: "System" },
-  { value: "light", label: "Light" },
-  { value: "dark", label: "Dark" },
+  { value: "system", label: translate.themeSystem },
+  { value: "light", label: translate.themeLight },
+  { value: "dark", label: translate.themeDark },
+]
+
+const LANGUAGE_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
+  { value: "lt", label: "Lietuvių" },
+  { value: "en", label: "English" },
 ]
 
 export function SettingsPage() {
+  const [language, setLanguage] = useState<LanguageCode>("en")
   const { auth, signOut } = useAuth()
   const { theme, setTheme } = useTheme()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
@@ -68,25 +75,47 @@ export function SettingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">Settings</h1>
+      <h1 className="text-2xl font-semibold">{translate.settingsTitle}</h1>
       <Card>
         <CardHeader>
-          <CardTitle>Appearance</CardTitle>
+          <CardTitle>{translate.appearanceTitle}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <p className="text-muted-foreground">
-            Choose how the app theme should render for this browser.
+            {translate.appearanceDescription}
           </p>
           <div className="max-w-xs space-y-1.5">
             <label className="text-sm font-medium" htmlFor="theme-select">
-              Theme
+              {translate.themeLabel}
             </label>
             <Select value={theme} onValueChange={handleThemeChange}>
               <SelectTrigger id="theme-select" className="w-full">
-                <SelectValue placeholder="Select a theme" />
+                <SelectValue placeholder={translate.themePlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {THEME_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="max-w-xs space-y-1.5">
+            <label className="text-sm font-medium" htmlFor="language-select">
+              {translate.languageLabel}
+            </label>
+            <Select value={language} onValueChange={(value) => {
+              if (value) {
+                setLanguage(value)
+                setTranslateLanguage(value)
+              }
+            }}>
+              <SelectTrigger id="language-select" className="w-full">
+                <SelectValue placeholder={translate.languagePlaceholder} />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGE_OPTIONS.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
@@ -98,23 +127,22 @@ export function SettingsPage() {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Temperature</CardTitle>
+          <CardTitle>{translate.temperatureTitle}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <p className="text-muted-foreground">
-            Pick your default unit for new temperature entries. Default is
-            Celsius.
+            {translate.temperatureDescription}
           </p>
           <div className="max-w-xs space-y-1.5">
             <label className="text-sm font-medium" htmlFor="temperature-unit">
-              Default unit
+              {translate.temperatureUnitLabel}
             </label>
             <Select
               value={temperatureUnit}
               onValueChange={handleTemperatureUnitChange}
             >
               <SelectTrigger id="temperature-unit" className="w-full">
-                <SelectValue placeholder="Select a unit" />
+                <SelectValue placeholder={translate.temperatureUnitPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {TEMPERATURE_UNIT_OPTIONS.map((option) => (
@@ -129,11 +157,11 @@ export function SettingsPage() {
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Google Connection</CardTitle>
+          <CardTitle>{translate.googleConnectionTitle}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm">
           <p className="text-muted-foreground">
-            Your health records are stored in your own Google Drive spreadsheet.
+            {translate.googleConnectionDescription}
           </p>
           <div className="flex flex-wrap gap-2">
             <a
@@ -150,7 +178,7 @@ export function SettingsPage() {
                 strokeWidth={2}
                 className="size-4"
               />
-              Open my sheet
+              {translate.openMySheet}
             </a>
             <Button
               variant="destructive"
@@ -159,7 +187,6 @@ export function SettingsPage() {
                 if (isDisconnecting) {
                   return
                 }
-
                 setIsDisconnecting(true)
                 try {
                   signOut()
@@ -181,7 +208,7 @@ export function SettingsPage() {
                   className="size-4"
                 />
               )}
-              {isDisconnecting ? "Disconnecting..." : "Disconnect Google"}
+              {isDisconnecting ? translate.disconnecting : translate.disconnectGoogle}
             </Button>
           </div>
         </CardContent>

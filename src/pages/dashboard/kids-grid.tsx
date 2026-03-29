@@ -71,7 +71,7 @@ export function KidsGrid({
                 <p className="text-xs font-medium text-muted-foreground">
                   Notes
                 </p>
-                <p className="text-xs leading-relaxed break-words text-foreground/80">
+                <p className="text-xs leading-relaxed wrap-break-word text-foreground/80">
                   {kid.notes?.trim() || "No notes"}
                 </p>
               </div>
