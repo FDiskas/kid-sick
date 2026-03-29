@@ -1178,8 +1178,8 @@
   "title": {
     "en": "Kid Sick Tracker",
     "lt": "Kid Sick Tracker",
-    "pl": "Śledzenie choroby dziecka",
-    "ru": "Отслеживание болезни ребёнка"
+    "pl": "Kid Sick Tracker",
+    "ru": "Kid Sick Tracker"
   },
   "totalDosesLogged": {
     "en": "Total doses logged",
