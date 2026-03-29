@@ -11,6 +11,7 @@ type SpreadsheetInfo = {
 
 type SheetSummary = {
   properties?: {
+    sheetId?: number
     title?: string
   }
 }
@@ -193,6 +194,63 @@ export async function updateRow(
     {
       method: "PUT",
       body: JSON.stringify({ values: [values] }),
+    }
+  )
+}
+
+export async function deleteRowsByIndexes(
+  token: string,
+  spreadsheetId: string,
+  sheetName: string,
+  rowIndexes: number[]
+) {
+  if (rowIndexes.length === 0) {
+    return
+  }
+
+  type SheetMetaResponse = {
+    sheets?: SheetSummary[]
+  }
+
+  const metadata = await googleFetch<SheetMetaResponse>(
+    token,
+    `${GOOGLE_SHEETS_API}/spreadsheets/${spreadsheetId}?fields=sheets(properties(sheetId,title))`
+  )
+
+  const targetSheet = metadata.sheets?.find(
+    (sheet) => sheet.properties?.title === sheetName
+  )
+
+  const sheetId = targetSheet?.properties?.sheetId
+  if (sheetId === undefined) {
+    throw new Error(`Sheet '${sheetName}' not found`)
+  }
+
+  const sortedUniqueIndexes = [...new Set(rowIndexes)]
+    .filter((rowIndex) => rowIndex >= 2)
+    .sort((a, b) => b - a)
+
+  if (sortedUniqueIndexes.length === 0) {
+    return
+  }
+
+  await googleFetch(
+    token,
+    `${GOOGLE_SHEETS_API}/spreadsheets/${spreadsheetId}:batchUpdate`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        requests: sortedUniqueIndexes.map((rowIndex) => ({
+          deleteDimension: {
+            range: {
+              sheetId,
+              dimension: "ROWS",
+              startIndex: rowIndex - 1,
+              endIndex: rowIndex,
+            },
+          },
+        })),
+      }),
     }
   )
 }

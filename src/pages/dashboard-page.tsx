@@ -20,7 +20,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useAuth } from "@/features/auth/auth-context"
 import { kidSchema, type KidFormInput } from "@/features/health/schemas"
 import type { KidProfile } from "@/features/health/types"
-import { createKid, listKids, updateKid } from "@/features/sheets/health-repository"
+import {
+  createKid,
+  deleteKidCascade,
+  listKids,
+  updateKid,
+} from "@/features/sheets/health-repository"
 import { cn } from "@/lib/utils"
 
 function isoDateOnly(value: string) {
@@ -48,6 +53,7 @@ export function DashboardPage() {
   const [error, setError] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingKid, setEditingKid] = useState<KidProfile | null>(null)
+  const [deletingKidId, setDeletingKidId] = useState<string | null>(null)
 
   const form = useForm<KidFormInput>({
     defaultValues: {
@@ -180,6 +186,50 @@ export function DashboardPage() {
                     }}
                   >
                     Edit
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    disabled={deletingKidId === kid.id}
+                    onClick={async () => {
+                      const confirmed = window.confirm(
+                        `Delete ${kid.name}? This will permanently remove the kid profile and all related temperature, medication, and growth records.`
+                      )
+
+                      if (!confirmed) {
+                        return
+                      }
+
+                      setDeletingKidId(kid.id)
+                      try {
+                        await deleteKidCascade(
+                          auth.accessToken,
+                          auth.spreadsheet.spreadsheetId,
+                          kid.id
+                        )
+
+                        setKids((existing) =>
+                          existing.filter((item) => item.id !== kid.id)
+                        )
+
+                        if (editingKid?.id === kid.id) {
+                          setEditingKid(null)
+                          setIsDialogOpen(false)
+                        }
+
+                        toast.success("Kid and related records deleted")
+                      } catch (deleteError) {
+                        toast.error(
+                          deleteError instanceof Error
+                            ? deleteError.message
+                            : "Failed to delete kid"
+                        )
+                      } finally {
+                        setDeletingKidId(null)
+                      }
+                    }}
+                  >
+                    {deletingKidId === kid.id ? "Deleting..." : "Delete"}
                   </Button>
                 </div>
               </CardContent>

@@ -1,5 +1,6 @@
 import {
   appendRow,
+  deleteRowsByIndexes,
   readSheetRows,
   updateRow,
 } from "@/features/sheets/google-api"
@@ -261,4 +262,61 @@ export async function addGrowthRecord(
   )
 
   return payload
+}
+
+export async function deleteKidCascade(
+  token: string,
+  spreadsheetId: string,
+  kidId: string
+) {
+  const [kidsRows, temperatureRows, medicationRows, growthRows] =
+    await Promise.all([
+      readSheetRows(token, spreadsheetId, SHEET_NAMES.kids),
+      readSheetRows(token, spreadsheetId, SHEET_NAMES.temperatureLogs),
+      readSheetRows(token, spreadsheetId, SHEET_NAMES.medicationLogs),
+      readSheetRows(token, spreadsheetId, SHEET_NAMES.growthLogs),
+    ])
+
+  const kidRowIndexes = kidsRows.rows
+    .filter((row) => valueAt(row.values, 0) === kidId)
+    .map((row) => row.rowIndex)
+
+  if (kidRowIndexes.length === 0) {
+    throw new Error("Kid not found")
+  }
+
+  const temperatureRowIndexes = temperatureRows.rows
+    .filter((row) => valueAt(row.values, 1) === kidId)
+    .map((row) => row.rowIndex)
+
+  const medicationRowIndexes = medicationRows.rows
+    .filter((row) => valueAt(row.values, 1) === kidId)
+    .map((row) => row.rowIndex)
+
+  const growthRowIndexes = growthRows.rows
+    .filter((row) => valueAt(row.values, 1) === kidId)
+    .map((row) => row.rowIndex)
+
+  await Promise.all([
+    deleteRowsByIndexes(
+      token,
+      spreadsheetId,
+      SHEET_NAMES.temperatureLogs,
+      temperatureRowIndexes
+    ),
+    deleteRowsByIndexes(
+      token,
+      spreadsheetId,
+      SHEET_NAMES.medicationLogs,
+      medicationRowIndexes
+    ),
+    deleteRowsByIndexes(
+      token,
+      spreadsheetId,
+      SHEET_NAMES.growthLogs,
+      growthRowIndexes
+    ),
+  ])
+
+  await deleteRowsByIndexes(token, spreadsheetId, SHEET_NAMES.kids, kidRowIndexes)
 }

@@ -27,7 +27,44 @@ const SCOPES = [
   "https://www.googleapis.com/auth/spreadsheets",
 ].join(" ")
 
+const AUTH_STORAGE_KEY = "kid-sick.auth"
+
 const AuthContext = React.createContext<AuthContextValue | undefined>(undefined)
+
+function readPersistedAuth(): AuthState | null {
+  const raw = localStorage.getItem(AUTH_STORAGE_KEY)
+  if (!raw) {
+    return null
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as Partial<AuthState>
+    if (
+      typeof parsed.accessToken !== "string" ||
+      typeof parsed.expiresAt !== "number" ||
+      !parsed.spreadsheet ||
+      typeof parsed.spreadsheet.spreadsheetId !== "string" ||
+      typeof parsed.spreadsheet.spreadsheetUrl !== "string"
+    ) {
+      localStorage.removeItem(AUTH_STORAGE_KEY)
+      return null
+    }
+
+    if (parsed.expiresAt <= Date.now()) {
+      localStorage.removeItem(AUTH_STORAGE_KEY)
+      return null
+    }
+
+    return {
+      accessToken: parsed.accessToken,
+      expiresAt: parsed.expiresAt,
+      spreadsheet: parsed.spreadsheet,
+    }
+  } catch {
+    localStorage.removeItem(AUTH_STORAGE_KEY)
+    return null
+  }
+}
 
 async function requestAccessToken(prompt: "consent" | "") {
   await loadGoogleIdentityScript()
@@ -75,7 +112,9 @@ async function requestAccessToken(prompt: "consent" | "") {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [auth, setAuth] = React.useState<AuthState | null>(null)
+  const [auth, setAuth] = React.useState<AuthState | null>(() =>
+    readPersistedAuth()
+  )
   const [isLoading, setIsLoading] = React.useState(false)
 
   const signIn = React.useCallback(async () => {
@@ -100,7 +139,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (auth?.accessToken && window.google?.accounts?.oauth2?.revoke) {
       window.google.accounts.oauth2.revoke(auth.accessToken)
     }
+    localStorage.removeItem(AUTH_STORAGE_KEY)
     setAuth(null)
+  }, [auth])
+
+  React.useEffect(() => {
+    if (!auth) {
+      localStorage.removeItem(AUTH_STORAGE_KEY)
+      return
+    }
+
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(auth))
   }, [auth])
 
   React.useEffect(() => {
@@ -111,11 +160,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const timeoutMs = auth.expiresAt - Date.now() - 60_000
 
     if (timeoutMs <= 0) {
+      localStorage.removeItem(AUTH_STORAGE_KEY)
       setAuth(null)
       return
     }
 
     const timeout = window.setTimeout(() => {
+      localStorage.removeItem(AUTH_STORAGE_KEY)
       setAuth(null)
     }, timeoutMs)
 

@@ -21,7 +21,7 @@ function ThemeToggleButton() {
 }
 
 export function AppShell() {
-  const { auth } = useAuth()
+  const { auth, signOut } = useAuth()
 
   return (
     <div className="min-h-svh bg-[radial-gradient(circle_at_top_right,var(--color-primary)/12%,transparent_40%),radial-gradient(circle_at_20%_10%,var(--color-accent)/10%,transparent_32%)]">
@@ -51,6 +51,11 @@ export function AppShell() {
           </nav>
           <div className="flex items-center gap-2">
             {auth ? <Badge variant="secondary">Google Connected</Badge> : null}
+            {auth ? (
+              <Button variant="outline" onClick={signOut}>
+                Logout
+              </Button>
+            ) : null}
             <ThemeToggleButton />
           </div>
         </div>
