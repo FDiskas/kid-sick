@@ -1,878 +1,1316 @@
 {
   "actions": {
     "en": "Actions",
-    "lt": "Veiksmai"
+    "lt": "Veiksmai",
+    "pl": "Akcje",
+    "ru": "Действия"
   },
   "add": {
     "en": "Add",
-    "lt": "Pridėti"
+    "lt": "Pridėti",
+    "pl": "Dodaj",
+    "ru": "Добавить"
   },
   "addFirstKid": {
     "en": "Add First Kid",
-    "lt": "Pridėti pirmą vaiką"
+    "lt": "Pridėti pirmą vaiką",
+    "pl": "Dodaj pierwsze dziecko",
+    "ru": "Добавить первого ребенка"
   },
   "addGrowthMeasurement": {
     "en": "Add growth measurement",
-    "lt": "Pridėti augimo įrašą"
+    "lt": "Pridėti augimo įrašą",
+    "pl": "Dodaj pomiar wzrostu",
+    "ru": "Добавить измерение роста"
   },
   "addKid": {
     "en": "Add Kid",
-    "lt": "Pridėti vaiką"
+    "lt": "Pridėti vaiką",
+    "pl": "Dodaj dziecko",
+    "ru": "Добавить ребенка"
   },
   "addKidProfile": {
     "en": "Add kid profile",
-    "lt": "Pridėti vaiko profilį"
+    "lt": "Pridėti vaiko profilį",
+    "pl": "Dodaj profil dziecka",
+    "ru": "Добавить профиль ребенка"
   },
   "addMedication": {
     "en": "Add medication",
-    "lt": "Pridėti vaistą"
+    "lt": "Pridėti vaistą",
+    "pl": "Dodaj lek",
+    "ru": "Добавить медикамент"
   },
   "addMedicationRecord": {
     "en": "Add medication record",
-    "lt": "Pridėti vaistų įrašą"
+    "lt": "Pridėti vaistų įrašą",
+    "pl": "Dodaj wpis dotyczący leku",
+    "ru": "Добавить запись о лекарстве"
   },
   "addNote": {
     "en": "Add note",
-    "lt": "Pridėti pastabą"
+    "lt": "Pridėti pastabą",
+    "pl": "Dodaj notatkę",
+    "ru": "Добавить заметку"
   },
   "addTemperatureRecord": {
     "en": "Add temperature record",
-    "lt": "Pridėti temperatūros įrašą"
+    "lt": "Pridėti temperatūros įrašą",
+    "pl": "Dodaj rekord temperatury",
+    "ru": "Добавить запись о температуре"
   },
   "adding": {
     "en": "Adding...",
-    "lt": "Pridedama..."
+    "lt": "Pridedama...",
+    "pl": "Dodawanie...",
+    "ru": "Добавление..."
   },
   "appearanceDescription": {
     "en": "Choose how the app theme should render for this browser.",
-    "lt": "Pasirinkite, kaip programėlės tema turėtų būti rodoma šiame naršyklėje."
+    "lt": "Pasirinkite, kaip programėlės tema turėtų būti rodoma šiame naršyklėje.",
+    "pl": "Wybierz, jak motyw aplikacji powinien być wyświetlany w tej przeglądarce.",
+    "ru": "Выберите, как должна отображаться тема приложения в этом браузере."
   },
   "appearanceTitle": {
     "en": "Appearance",
-    "lt": "Išvaizda"
+    "lt": "Išvaizda",
+    "pl": "Wygląd",
+    "ru": "Внешний вид"
   },
   "atLeast38": {
     "en": "At least 38°",
-    "lt": "Bent 38°"
+    "lt": "Bent 38°",
+    "pl": "Przynajmniej 38°",
+    "ru": "Не менее 38°"
   },
   "authDescription": {
     "en": "Welcome to Kid Sick. Please sign in to continue.",
-    "lt": "Sveiki atvykę į Kid Sick. Prašome prisijungti, kad tęstumėte."
+    "lt": "Sveiki atvykę į Kid Sick. Prašome prisijungti, kad tęstumėte.",
+    "pl": "Witamy w Kid Sick. Proszę się zalogować, aby kontynuować.",
+    "ru": "Добро пожаловать в Kid Sick. Пожалуйста, войдите, чтобы продолжить."
   },
   "authorizeGoogle": {
     "en": "Authorize Google Drive",
-    "lt": "Suteikti prieigą prie Google Drive"
+    "lt": "Suteikti prieigą prie Google Drive",
+    "pl": "Autoryzuj Google Drive",
+    "ru": "Авторизовать Google Диск"
   },
   "backToDashboard": {
     "en": "Back to dashboard",
-    "lt": "Atgal į prietaisų skydelį"
+    "lt": "Atgal į prietaisų skydelį",
+    "pl": "Powrót do pulpitu nawigacyjnego",
+    "ru": "Назад к панели управления"
   },
   "birthday": {
     "en": "Birthday",
-    "lt": "Gimimo data"
+    "lt": "Gimimo data",
+    "pl": "Urodziny",
+    "ru": "День рождения"
   },
   "birthdayRequired": {
     "en": "Birthday is required",
-    "lt": "Gimtadienis yra privalomas"
+    "lt": "Gimtadienis yra privalomas",
+    "pl": "Data urodzenia jest wymagana",
+    "ru": "Дата рождения обязательна"
   },
   "birthdayValue": {
     "en": "Birthday {date}",
-    "lt": "Gimtadienis {date}"
+    "lt": "Gimtadienis {date}",
+    "pl": "Urodziny {date}",
+    "ru": "День рождения {date}"
   },
   "bySigningIn": {
     "en": "By signing in, you authorize this app to:",
-    "lt": "Prisijungdami suteikiate šiai programai leidimą:"
+    "lt": "Prisijungdami suteikiate šiai programai leidimą:",
+    "pl": "Logując się, upoważniasz tę aplikację do:",
+    "ru": "Войдя в систему, вы разрешаете этому приложению:"
   },
   "close": {
     "en": "Close",
-    "lt": "Uždaryti"
+    "lt": "Uždaryti",
+    "pl": "Zamknij",
+    "ru": "Закрыть"
   },
   "cm": {
     "en": "cm",
-    "lt": "cm"
+    "lt": "cm",
+    "pl": "cm",
+    "ru": "см"
   },
   "connecting": {
     "en": "Connecting...",
-    "lt": "Jungiamasi..."
+    "lt": "Jungiamasi...",
+    "pl": "Łączenie...",
+    "ru": "Подключение..."
   },
   "content": {
     "en": "Content",
-    "lt": "Turinys"
+    "lt": "Turinys",
+    "pl": "Zawartość",
+    "ru": "Содержание"
   },
   "createSpreadsheet": {
     "en": "Create a spreadsheet in your Google Drive",
-    "lt": "Sukurti Google Sheet jūsų Google Drive paskyroje"
+    "lt": "Sukurti Google Sheet jūsų Google Drive paskyroje",
+    "pl": "Utwórz arkusz kalkulacyjny w swoim Dysku Google",
+    "ru": "Создайте таблицу в вашем Google Диске"
   },
   "dashboardLoadError": {
     "en": "Could not load dashboard",
-    "lt": "Nepavyko įkelti prietaisų skydelio"
+    "lt": "Nepavyko įkelti prietaisų skydelio",
+    "pl": "Nie można załadować panelu sterowania",
+    "ru": "Не удалось загрузить панель управления"
   },
   "dateTime": {
     "en": "Date and time",
-    "lt": "Data ir laikas"
+    "lt": "Data ir laikas",
+    "pl": "Data i godzina",
+    "ru": "Дата и время"
   },
   "datetimeRequired": {
     "en": "Measurement date/time is required",
-    "lt": "Reikalinga matavimo data/laikas"
+    "lt": "Reikalinga matavimo data/laikas",
+    "pl": "Data/czas pomiaru jest wymagany",
+    "ru": "Требуется дата/время измерения"
   },
   "daysWithMedication": {
     "en": "Days with medication",
-    "lt": "Dienos su vaistais"
+    "lt": "Dienos su vaistais",
+    "pl": "Dni z lekiem",
+    "ru": "Дни с приёмом медикаментов"
   },
   "daysWithMedicationDesc": {
     "en": "Unique treatment days",
-    "lt": "Unikalios gydymo dienos"
+    "lt": "Unikalios gydymo dienos",
+    "pl": "Unikalne dni leczenia",
+    "ru": "Уникальные дни лечения"
   },
   "daysWithMedications": {
     "en": "Days with medication:",
-    "lt": "Dienos su vaistais:"
+    "lt": "Dienos su vaistais:",
+    "pl": "Dni z lekami:",
+    "ru": "Дни с приемом медикаментов:"
   },
   "delete": {
     "en": "Delete",
-    "lt": "Ištrinti"
+    "lt": "Ištrinti",
+    "pl": "Usuń",
+    "ru": "Удалить"
   },
   "deleteKidConfirm": {
     "en": "Delete {name}? This will permanently remove the kid profile and all related temperature, medication, and growth records.",
-    "lt": "Ištrinti {name}? Tai nepakeičiamai pašalins vaiko profilį ir visus susijusius temperatūros, vaistų bei augimo įrašus."
+    "lt": "Ištrinti {name}? Tai nepakeičiamai pašalins vaiko profilį ir visus susijusius temperatūros, vaistų bei augimo įrašus.",
+    "pl": "Usunąć {name}? Spowoduje to trwałe usunięcie profilu dziecka oraz wszystkich powiązanych rekordów dotyczących temperatury, leków i wzrostu.",
+    "ru": "Удалить {name}? Это приведёт к безвозвратному удалению профиля ребёнка и всех связанных записей о температуре, лекарствах и росте."
   },
   "deleting": {
     "en": "Deleting...",
-    "lt": "Trinama..."
+    "lt": "Trinama...",
+    "pl": "Usuwanie...",
+    "ru": "Удаление..."
   },
   "disconnectGoogle": {
     "en": "Disconnect Google",
-    "lt": "Atsijungti nuo Google"
+    "lt": "Atsijungti nuo Google",
+    "pl": "Odłącz Google",
+    "ru": "Отключить Google"
   },
   "disconnecting": {
     "en": "Disconnecting...",
-    "lt": "Atsijungiama..."
+    "lt": "Atsijungiama...",
+    "pl": "Rozłączanie...",
+    "ru": "Отключение..."
   },
   "dose": {
     "en": "Dose",
-    "lt": "Dozė"
+    "lt": "Dozė",
+    "pl": "Dawka",
+    "ru": "Доза"
   },
   "doseInvalid": {
     "en": "Dose seems invalid",
-    "lt": "Dozė atrodo netinkama"
+    "lt": "Dozė atrodo netinkama",
+    "pl": "Dawka wydaje się nieprawidłowa",
+    "ru": "Доза кажется недействительной"
   },
   "dosePositive": {
     "en": "Dose must be positive",
-    "lt": "Dozė turi būti teigiama"
+    "lt": "Dozė turi būti teigiama",
+    "pl": "Dawka musi być dodatnia",
+    "ru": "Доза должна быть положительной"
   },
   "doseUnitRequired": {
     "en": "Dose unit is required",
-    "lt": "Dalių vienetas yra privalomas"
+    "lt": "Dalių vienetas yra privalomas",
+    "pl": "Jednostka dawki jest wymagana",
+    "ru": "Требуется единица дозировки"
   },
   "dosesCount": {
     "en": "doses",
-    "lt": "dozės"
+    "lt": "dozės",
+    "pl": "dawki",
+    "ru": "дозы"
   },
   "dosesCountValue": {
     "en": "{count} doses",
-    "lt": "{count} dozės"
+    "lt": "{count} dozės",
+    "pl": "{count} dawek",
+    "ru": "{count} дозы"
   },
   "edit": {
     "en": "Edit",
-    "lt": "Redaguoti"
+    "lt": "Redaguoti",
+    "pl": "Edytuj",
+    "ru": "Редактировать"
   },
   "editGrowthMeasurement": {
     "en": "Edit growth measurement",
-    "lt": "Redaguoti augimo įrašą"
+    "lt": "Redaguoti augimo įrašą",
+    "pl": "Edytuj pomiar wzrostu",
+    "ru": "Редактировать измерение роста"
   },
   "editKidProfile": {
     "en": "Edit kid profile",
-    "lt": "Redaguoti vaiko profilį"
+    "lt": "Redaguoti vaiko profilį",
+    "pl": "Edytuj profil dziecka",
+    "ru": "Редактировать профиль ребенка"
   },
   "editMedicationRecord": {
     "en": "Edit medication record",
-    "lt": "Redaguoti vaistų įrašą"
+    "lt": "Redaguoti vaistų įrašą",
+    "pl": "Edytuj rekord leku",
+    "ru": "Редактировать запись о препарате"
   },
   "editNote": {
     "en": "Edit note",
-    "lt": "Redaguoti pastabą"
+    "lt": "Redaguoti pastabą",
+    "pl": "Edytuj notatkę",
+    "ru": "Редактировать заметку"
   },
   "editTemperatureRecord": {
     "en": "Edit temperature record",
-    "lt": "Redaguoti temperatūros įrašą"
+    "lt": "Redaguoti temperatūros įrašą",
+    "pl": "Edytuj rekord temperatury",
+    "ru": "Редактировать запись о температуре"
   },
   "failedToAddGrowth": {
     "en": "Failed to add growth measurement",
-    "lt": "Nepavyko pridėti augimo matavimo"
+    "lt": "Nepavyko pridėti augimo matavimo",
+    "pl": "Nie udało się dodać pomiaru wzrostu",
+    "ru": "Не удалось добавить измерение роста"
   },
   "failedToAddMedication": {
     "en": "Failed to add medication",
-    "lt": "Nepavyko pridėti vaistų"
+    "lt": "Nepavyko pridėti vaistų",
+    "pl": "Nie udało się dodać leku",
+    "ru": "Не удалось добавить лекарство"
   },
   "failedToAddNote": {
     "en": "Failed to add note",
-    "lt": "Nepavyko pridėti užrašą"
+    "lt": "Nepavyko pridėti užrašą",
+    "pl": "Nie udało się dodać notatki",
+    "ru": "Не удалось добавить заметку"
   },
   "failedToAddTemperature": {
     "en": "Failed to add temperature",
-    "lt": "Nepavyko pridėti temperatūros"
+    "lt": "Nepavyko pridėti temperatūros",
+    "pl": "Nie udało się dodać temperatury",
+    "ru": "Не удалось добавить температуру"
   },
   "failedToDeleteGrowth": {
     "en": "Failed to delete growth record",
-    "lt": "Nepavyko ištrinti augimo įrašo"
+    "lt": "Nepavyko ištrinti augimo įrašo",
+    "pl": "Nie udało się usunąć rekordu wzrostu",
+    "ru": "Не удалось удалить запись о росте."
   },
   "failedToDeleteKid": {
     "en": "Failed to delete kid",
-    "lt": "Nepavyko ištrinti vaikui"
+    "lt": "Nepavyko ištrinti vaikui",
+    "pl": "Nie udało się usunąć dziecka",
+    "ru": "Не удалось удалить ребенка"
   },
   "failedToDeleteMedication": {
     "en": "Failed to delete medication",
-    "lt": "Nepavyko ištrinti vaisto"
+    "lt": "Nepavyko ištrinti vaisto",
+    "pl": "Nie udało się usunąć leku",
+    "ru": "Не удалось удалить лекарство"
   },
   "failedToDeleteNote": {
     "en": "Failed to delete note",
-    "lt": "Nepavyko ištrinti pastabos"
+    "lt": "Nepavyko ištrinti pastabos",
+    "pl": "Nie udało się usunąć notatki",
+    "ru": "Не удалось удалить заметку"
   },
   "failedToDeleteTemperature": {
     "en": "Failed to delete temperature",
-    "lt": "Nepavyko ištrinti temperatūros"
+    "lt": "Nepavyko ištrinti temperatūros",
+    "pl": "Nie udało się usunąć temperatury",
+    "ru": "Не удалось удалить температуру"
   },
   "failedToLoadGIS": {
     "en": "Failed to load Google Identity Services",
-    "lt": "Nepavyko įkelti „Google Identity Services“"
+    "lt": "Nepavyko įkelti „Google Identity Services“",
+    "pl": "Nie udało się załadować usług tożsamości Google",
+    "ru": "Не удалось загрузить службы идентификации Google"
   },
   "failedToSaveGrowth": {
     "en": "Failed to save growth measurement",
-    "lt": "Nepavyko išsaugoti augimo matavimo"
+    "lt": "Nepavyko išsaugoti augimo matavimo",
+    "pl": "Nie udało się zapisać pomiaru wzrostu",
+    "ru": "Не удалось сохранить измерение роста"
   },
   "failedToSaveKid": {
     "en": "Failed to save kid profile",
-    "lt": "Nepavyko išsaugoti vaiko profilio"
+    "lt": "Nepavyko išsaugoti vaiko profilio",
+    "pl": "Nie udało się zapisać profilu dziecka",
+    "ru": "Не удалось сохранить профиль ребенка"
   },
   "failedToSaveMedication": {
     "en": "Failed to save medication",
-    "lt": "Nepavyko įrašyti vaistų"
+    "lt": "Nepavyko įrašyti vaistų",
+    "pl": "Nie udało się zapisać leku",
+    "ru": "Не удалось сохранить лекарство"
   },
   "failedToSaveNote": {
     "en": "Failed to save note",
-    "lt": "Nepavyko įrašyti pastabos"
+    "lt": "Nepavyko įrašyti pastabos",
+    "pl": "Nie udało się zapisać notatki",
+    "ru": "Не удалось сохранить заметку"
   },
   "failedToSaveTemperature": {
     "en": "Failed to save temperature",
-    "lt": "Nepavyko išsaugoti temperatūros"
+    "lt": "Nepavyko išsaugoti temperatūros",
+    "pl": "Nie udało się zapisać temperatury",
+    "ru": "Не удалось сохранить температуру"
   },
   "failedToUpdateGrowth": {
     "en": "Failed to update growth measurement",
-    "lt": "Nepavyko atnaujinti augimo matavimo"
+    "lt": "Nepavyko atnaujinti augimo matavimo",
+    "pl": "Nie udało się zaktualizować pomiaru wzrostu",
+    "ru": "Не удалось обновить измерение роста"
   },
   "failedToUpdateMedication": {
     "en": "Failed to update medication",
-    "lt": "Nepavyko atnaujinti vaistų"
+    "lt": "Nepavyko atnaujinti vaistų",
+    "pl": "Nie udało się zaktualizować leku",
+    "ru": "Не удалось обновить препарат"
   },
   "failedToUpdateNote": {
     "en": "Failed to update note",
-    "lt": "Nepavyko atnaujinti pastabos"
+    "lt": "Nepavyko atnaujinti pastabos",
+    "pl": "Nie udało się zaktualizować notatki",
+    "ru": "Не удалось обновить заметку"
   },
   "failedToUpdateTemperature": {
     "en": "Failed to update temperature",
-    "lt": "Nepavyko atnaujinti temperatūros"
+    "lt": "Nepavyko atnaujinti temperatūros",
+    "pl": "Nie udało się zaktualizować temperatury",
+    "ru": "Не удалось обновить температуру"
   },
   "feverEpisodes": {
     "en": "Fever episodes",
-    "lt": "Karščiavimo epizodai"
+    "lt": "Karščiavimo epizodai",
+    "pl": "Epizody gorączki",
+    "ru": "Эпизоды лихорадки"
   },
   "googleConnected": {
     "en": "Google Connected",
-    "lt": "„Google Connected“"
+    "lt": "„Google Connected“",
+    "pl": "Google Połączone",
+    "ru": "Google Connected — Подключено к Google"
   },
   "googleConnectionDescription": {
     "en": "Your health records are stored in your own Google Drive spreadsheet.",
-    "lt": "Jūsų sveikatos įrašai saugomi jūsų asmeniniame Google Drive Sheet."
+    "lt": "Jūsų sveikatos įrašai saugomi jūsų asmeniniame Google Drive Sheet.",
+    "pl": "Twoje dane zdrowotne są przechowywane w Twoim własnym arkuszu Google Drive.",
+    "ru": "Ваши медицинские записи хранятся в вашей собственной таблице Google Диска."
   },
   "googleConnectionTitle": {
     "en": "Google Connection",
-    "lt": "„Google“ ryšys"
+    "lt": "„Google“ ryšys",
+    "pl": "Połączenie Google",
+    "ru": "Подключение Google"
   },
   "growth": {
     "en": "Growth",
-    "lt": "Augimas"
+    "lt": "Augimas",
+    "pl": "Wzrost",
+    "ru": "Рост"
   },
   "growthAdded": {
     "en": "Growth measurement added",
-    "lt": "Pridėtas augimo matavimas"
+    "lt": "Pridėtas augimo matavimas",
+    "pl": "Dodano pomiar wzrostu",
+    "ru": "Добавлено измерение роста"
   },
   "growthCheckpoints": {
     "en": "Growth checkpoints",
-    "lt": "Augimo kontroliniai taškai"
+    "lt": "Augimo kontroliniai taškai",
+    "pl": "Punkty kontrolne wzrostu",
+    "ru": "Контрольные точки роста"
   },
   "growthCheckpointsDesc": {
     "en": "Historical growth entries",
-    "lt": "Istoriniai augimo įrašai"
+    "lt": "Istoriniai augimo įrašai",
+    "pl": "Historyczne wpisy wzrostu",
+    "ru": "Исторические записи о росте"
   },
   "growthDataDescFull": {
     "en": "Most recent height and weight trends. Growth checkpoints: {total}.",
-    "lt": "Naujausios ūgio ir svorio tendencijos. Augimo kontroliniai taškai: {total}."
+    "lt": "Naujausios ūgio ir svorio tendencijos. Augimo kontroliniai taškai: {total}.",
+    "pl": "Najnowsze trendy wzrostu i wagi. Punkty kontrolne wzrostu: {total}.",
+    "ru": "Последние тенденции по росту и весу. Контрольные точки роста: {total}."
   },
   "growthDataTitle": {
     "en": "Growth data",
-    "lt": "Augimo duomenys"
+    "lt": "Augimo duomenys",
+    "pl": "Dane dotyczące wzrostu",
+    "ru": "Данные о росте"
   },
   "growthDeleted": {
     "en": "Growth record deleted",
-    "lt": "Augimo įrašas ištrintas"
+    "lt": "Augimo įrašas ištrintas",
+    "pl": "Rejestr wzrostu został usunięty",
+    "ru": "Запись о росте удалена"
   },
   "growthDialogAddDesc": {
     "en": "Save historical growth and refresh profile latest values.",
-    "lt": "Išsaugokite istorinius augimo duomenis ir atnaujinkite profilio naujausius rodiklius."
+    "lt": "Išsaugokite istorinius augimo duomenis ir atnaujinkite profilio naujausius rodiklius.",
+    "pl": "Zapisz historyczny wzrost i odśwież najnowsze wartości profilu.",
+    "ru": "Сохранить исторический рост и обновить последние значения профиля."
   },
   "growthDialogEditDesc": {
     "en": "Update historical growth values for this child.",
-    "lt": "Atnaujinkite šio vaiko istorinius augimo duomenis."
+    "lt": "Atnaujinkite šio vaiko istorinius augimo duomenis.",
+    "pl": "Zaktualizuj historyczne wartości wzrostu dla tego dziecka.",
+    "ru": "Обновить исторические значения роста для этого ребенка."
   },
   "growthHistory": {
     "en": "Growth history",
-    "lt": "Augimo istorija"
+    "lt": "Augimo istorija",
+    "pl": "Historia wzrostu",
+    "ru": "История роста"
   },
   "growthUpdated": {
     "en": "Growth measurement updated",
-    "lt": "Augimo matavimas atnaujintas"
+    "lt": "Augimo matavimas atnaujintas",
+    "pl": "Aktualizacja pomiaru wzrostu",
+    "ru": "Измерение роста обновлено"
   },
   "heightCm": {
     "en": "Height (cm)",
-    "lt": "Ūgis (cm)"
+    "lt": "Ūgis (cm)",
+    "pl": "Wzrost (cm)",
+    "ru": "Рост (см)"
   },
   "heightInvalid": {
     "en": "Height seems invalid",
-    "lt": "Atrodo, kad ūgis nėra normalus"
+    "lt": "Atrodo, kad ūgis nėra normalus",
+    "pl": "Wysokość wydaje się nieprawidłowa",
+    "ru": "Высота кажется недействительной"
   },
   "heightTrend": {
     "en": "Height trend",
-    "lt": "Ūgio tendencija"
+    "lt": "Ūgio tendencija",
+    "pl": "Trend wzrostu",
+    "ru": "Тенденция высоты"
   },
   "heightTrendDesc": {
     "en": "Most recent 10 height values",
-    "lt": "Paskutinės 10 ūgio reikšmių"
+    "lt": "Paskutinės 10 ūgio reikšmių",
+    "pl": "Ostatnie 10 wartości wysokości",
+    "ru": "Последние 10 значений высоты"
   },
   "heightTrendEmpty": {
     "en": "Add growth records with height to see a trend",
-    "lt": "Pridėkite augimo įrašus su ūgiu, kad pamatytumėte tendenciją"
+    "lt": "Pridėkite augimo įrašus su ūgiu, kad pamatytumėte tendenciją",
+    "pl": "Dodaj rekordy wzrostu z wysokością, aby zobaczyć trend",
+    "ru": "Добавьте записи о росте с указанием высоты, чтобы увидеть тенденцию"
   },
   "heightValue": {
     "en": "{value} cm",
-    "lt": "{value} cm"
+    "lt": "{value} cm",
+    "pl": "{value} cm",
+    "ru": "{value} см"
   },
   "invalidGrowthInput": {
     "en": "Invalid growth input",
-    "lt": "Neteisinga augimo įvestis"
+    "lt": "Neteisinga augimo įvestis",
+    "pl": "Nieprawidłowe dane wzrostu",
+    "ru": "Недопустимый ввод роста"
   },
   "invalidKidInput": {
     "en": "Invalid kid profile input",
-    "lt": "Neteisinga vaiko profilio įvestis"
+    "lt": "Neteisinga vaiko profilio įvestis",
+    "pl": "Nieprawidłowe dane profilu dziecka",
+    "ru": "Недопустимый ввод профиля ребенка"
   },
   "invalidMedicationInput": {
     "en": "Invalid medication input",
-    "lt": "Neteisinga vaistų įvestis"
+    "lt": "Neteisinga vaistų įvestis",
+    "pl": "Nieprawidłowe dane leku",
+    "ru": "Неверный ввод лекарства"
   },
   "invalidNoteInput": {
     "en": "Invalid note input",
-    "lt": "Neteisingas pastabos įrašas"
+    "lt": "Neteisingas pastabos įrašas",
+    "pl": "Nieprawidłowe wprowadzenie notatki",
+    "ru": "Недопустимый ввод заметки"
   },
   "invalidTemperatureInput": {
     "en": "Invalid temperature input",
-    "lt": "Neteisingas temperatūros įvestis"
+    "lt": "Neteisingas temperatūros įvestis",
+    "pl": "Nieprawidłowe dane dotyczące temperatury",
+    "ru": "Недопустимый ввод температуры"
   },
   "kg": {
     "en": "kg",
-    "lt": "kg"
+    "lt": "kg",
+    "pl": "kg",
+    "ru": "кг"
   },
   "kidDeleted": {
     "en": "Kid and related records deleted",
-    "lt": "Vaikas ir susiję įrašai ištrinti"
+    "lt": "Vaikas ir susiję įrašai ištrinti",
+    "pl": "Dziecko i powiązane rekordy zostały usunięte",
+    "ru": "Данные ребенка и связанные записи удалены"
   },
   "kidDetails": {
     "en": "Kid details",
-    "lt": "Vaiko informacija"
+    "lt": "Vaiko informacija",
+    "pl": "Dane dziecka",
+    "ru": "Детали ребенка"
   },
   "kidFormDialogDescription": {
     "en": "Add core profile details and update height or weight anytime.",
-    "lt": "Pridėkite pagrindinę profilio informaciją ir atnaujinkite ūgį ar svorį bet kada."
+    "lt": "Pridėkite pagrindinę profilio informaciją ir atnaujinkite ūgį ar svorį bet kada.",
+    "pl": "Dodaj szczegóły podstawowego profilu i aktualizuj wzrost lub wagę w dowolnym momencie.",
+    "ru": "Добавляйте основные данные профиля и обновляйте рост или вес в любое время."
   },
   "kidLoadError": {
     "en": "Error loading kid data",
-    "lt": "Klaida įkeliant vaiko duomenis"
+    "lt": "Klaida įkeliant vaiko duomenis",
+    "pl": "Błąd ładowania danych dziecka",
+    "ru": "Ошибка загрузки данных ребенка"
   },
   "kidNotFound": {
     "en": "Kid not found",
-    "lt": "Vaikas nerastas"
+    "lt": "Vaikas nerastas",
+    "pl": "Dziecko nie znalezione",
+    "ru": "Ребёнок не найден"
   },
   "kidProfileCreated": {
     "en": "Kid profile created",
-    "lt": "Vaiko profilis sukurtas"
+    "lt": "Vaiko profilis sukurtas",
+    "pl": "Profil dziecka utworzony",
+    "ru": "Профиль ребёнка создан"
   },
   "kidProfileMissing": {
     "en": "The selected kid profile no longer exists.",
-    "lt": "Pasirinkto vaiko profilis nebeegzistuoja."
+    "lt": "Pasirinkto vaiko profilis nebeegzistuoja.",
+    "pl": "Wybrany profil dziecka nie istnieje już.",
+    "ru": "Выбранный профиль ребёнка больше не существует."
   },
   "kidProfileUpdated": {
     "en": "Kid profile updated",
-    "lt": "Vaiko profilis atnaujintas"
+    "lt": "Vaiko profilis atnaujintas",
+    "pl": "Profil dziecka zaktualizowany",
+    "ru": "Профиль ребенка обновлен"
   },
   "kidsDashboardDescription": {
     "en": "Manage child profiles and jump into detailed tracking records.",
-    "lt": "Tvarkykite vaikų profilius ir peržiūrėkite detalius sekimo įrašus."
+    "lt": "Tvarkykite vaikų profilius ir peržiūrėkite detalius sekimo įrašus.",
+    "pl": "Zarządzaj profilami dzieci i przejdź do szczegółowych rekordów śledzenia.",
+    "ru": "Управляйте детскими профилями и переходите к подробным записям отслеживания."
   },
   "kidsDashboardTitle": {
     "en": "Kids Dashboard",
-    "lt": "Vaikų skydelis"
+    "lt": "Vaikų skydelis",
+    "pl": "Panel dziecięcy",
+    "ru": "Панель управления для детей"
   },
   "languageLabel": {
     "en": "Language",
-    "lt": "Kalba"
+    "lt": "Kalba",
+    "pl": "Język",
+    "ru": "Язык"
   },
   "languagePlaceholder": {
     "en": "Select a language",
-    "lt": "Pasirinkite kalbą"
+    "lt": "Pasirinkite kalbą",
+    "pl": "Wybierz język",
+    "ru": "Выберите язык"
   },
   "latest": {
     "en": "Latest",
-    "lt": "Naujausia"
+    "lt": "Naujausia",
+    "pl": "Najnowsze",
+    "ru": "Последний"
   },
   "latestHeight": {
     "en": "Latest height",
-    "lt": "Naujausias ūgis"
+    "lt": "Naujausias ūgis",
+    "pl": "Najnowsza wysokość",
+    "ru": "Последняя высота"
   },
   "latestHeightDesc": {
     "en": "From profile or latest growth row",
-    "lt": "Iš profilio arba naujausios augimo eilutės"
+    "lt": "Iš profilio arba naujausios augimo eilutės",
+    "pl": "Z profilu lub najnowszego wiersza wzrostu",
+    "ru": "Из профиля или последней строки роста"
   },
   "latestMeasurement": {
     "en": "Latest measurement",
-    "lt": "Naujausias matavimas"
+    "lt": "Naujausias matavimas",
+    "pl": "Najnowszy pomiar",
+    "ru": "Последнее измерение"
   },
   "latestMeasurementData": {
     "en": "Latest measurement data",
-    "lt": "Naujausi matavimo duomenys"
+    "lt": "Naujausi matavimo duomenys",
+    "pl": "Najnowsze dane pomiarowe",
+    "ru": "Последние данные измерений"
   },
   "latestMeasurementDataDescFull": {
     "en": "Last 12 measurements, normalized to C for consistency. Fever episodes: {feverCount}. Total logs: {totalCount}.",
-    "lt": "Paskutiniai 12 matavimų, normalizuoti į C dėl nuoseklumo. Karščiavimo epizodai: {feverCount}. Iš viso įrašų: {totalCount}."
+    "lt": "Paskutiniai 12 matavimų, normalizuoti į C dėl nuoseklumo. Karščiavimo epizodai: {feverCount}. Iš viso įrašų: {totalCount}.",
+    "pl": "Ostatnie 12 pomiarów, przeliczone na C dla spójności. Epizody gorączki: {feverCount}. Łączna liczba zapisów: {totalCount}.",
+    "ru": "Последние 12 измерений, нормализованных до °C для согласованности. Эпизоды лихорадки: {feverCount}. Всего записей: {totalCount}."
   },
   "latestMeasurements": {
     "en": "Latest: {height} cm / {weight} kg",
-    "lt": "Naujausia: {height} cm / {weight} kg"
+    "lt": "Naujausia: {height} cm / {weight} kg",
+    "pl": "Ostatnie: {height} cm / {weight} kg",
+    "ru": "Последние данные: {height} см / {weight} кг"
   },
   "latestNote": {
     "en": "Latest note",
-    "lt": "Naujausia pastaba"
+    "lt": "Naujausia pastaba",
+    "pl": "Najnowsza notatka",
+    "ru": "Последняя заметка"
   },
   "latestNoteDesc": {
     "en": "Most recent entry time",
-    "lt": "Naujausias įėjimo laikas"
+    "lt": "Naujausias įėjimo laikas",
+    "pl": "Najnowszy czas wpisu",
+    "ru": "Самое позднее время захода"
   },
   "latestWeight": {
     "en": "Latest weight",
-    "lt": "Naujausias svoris"
+    "lt": "Naujausias svoris",
+    "pl": "Najnowsza waga",
+    "ru": "Последний вес"
   },
   "latestWeightDesc": {
     "en": "Most recent known measurement",
-    "lt": "Naujausias žinomas matavimas"
+    "lt": "Naujausias žinomas matavimas",
+    "pl": "Najnowszy znany pomiar",
+    "ru": "Самое последнее известное измерение"
   },
   "loadingData": {
     "en": "Loading data...",
-    "lt": "Įkeliami duomenys..."
+    "lt": "Įkeliami duomenys...",
+    "pl": "Ładowanie danych...",
+    "ru": "Загрузка данных..."
   },
   "loadingRecords": {
     "en": "Loading records...",
-    "lt": "Įkeliami įrašai..."
+    "lt": "Įkeliami įrašai...",
+    "pl": "Ładowanie rekordów...",
+    "ru": "Загрузка записей..."
   },
   "logout": {
     "en": "Logout",
-    "lt": "Atsijungti"
+    "lt": "Atsijungti",
+    "pl": "Wyloguj się",
+    "ru": "Выйти из системы"
   },
   "medication": {
     "en": "Medication",
-    "lt": "Vaistai"
+    "lt": "Vaistai",
+    "pl": "Lekarstwo",
+    "ru": "Лекарство"
   },
   "medicationActivityEmpty": {
     "en": "Add medication logs to see daily activity",
-    "lt": "Pridėkite vaistų įrašus, kad matytumėte kasdienę veiklą"
+    "lt": "Pridėkite vaistų įrašus, kad matytumėte kasdienę veiklą",
+    "pl": "Dodaj dzienniki leków, aby zobaczyć codzienną aktywność",
+    "ru": "Добавьте журналы приема лекарств, чтобы отслеживать ежедневную активность"
   },
   "medicationAdded": {
     "en": "Medication added",
-    "lt": "Vaistas pridėtas"
+    "lt": "Vaistas pridėtas",
+    "pl": "Lek dodany",
+    "ru": "Медикамент добавлен"
   },
   "medicationDataDescFull": {
     "en": "Doses recorded per day. Total logs: {total}. Days with medication: {days}.",
-    "lt": "Registruotos dozės per dieną. Iš viso įrašų: {total}. Dienų su vaistais: {days}."
+    "lt": "Registruotos dozės per dieną. Iš viso įrašų: {total}. Dienų su vaistais: {days}.",
+    "pl": "Dawki zarejestrowane na dzień. Łączna liczba wpisów: {total}. Dni z przyjmowaniem leków: {days}.",
+    "ru": "Зарегистрированные дозы в день. Всего записей: {total}. Дней с приемом лекарства: {days}."
   },
   "medicationDataTitle": {
     "en": "Medication data",
-    "lt": "Vaistų duomenys"
+    "lt": "Vaistų duomenys",
+    "pl": "Dane dotyczące leków",
+    "ru": "Данные о медикаментах"
   },
   "medicationDeleted": {
     "en": "Medication deleted",
-    "lt": "Vaistas ištrintas"
+    "lt": "Vaistas ištrintas",
+    "pl": "Lek usunięty",
+    "ru": "Медикамент удалён"
   },
   "medicationDialogAddDesc": {
     "en": "Track meds taken and dosage for this child.",
-    "lt": "Sekite šio vaiko vartojamus vaistus ir dozes."
+    "lt": "Sekite šio vaiko vartojamus vaistus ir dozes.",
+    "pl": "Śledź przyjmowane leki i dawki dla tego dziecka.",
+    "ru": "Отслеживайте принятые лекарства и дозировку для этого ребенка."
   },
   "medicationDialogEditDesc": {
     "en": "Update meds taken and dosage for this child.",
-    "lt": "Atnaujinkite šio vaiko vartojamus vaistus ir dozę."
+    "lt": "Atnaujinkite šio vaiko vartojamus vaistus ir dozę.",
+    "pl": "Zaktualizuj przyjmowane leki i dawki dla tego dziecka.",
+    "ru": "Обновите данные о принимаемых препаратах и дозировке для этого ребенка."
   },
   "medicationLogs": {
     "en": "Medication logs",
-    "lt": "Vaistų žurnalai"
+    "lt": "Vaistų žurnalai",
+    "pl": "Dzienniki leków",
+    "ru": "Журналы приёма лекарств"
   },
   "medicationNameRequired": {
     "en": "Medication name is required",
-    "lt": "Vaisto pavadinimas yra privalomas"
+    "lt": "Vaisto pavadinimas yra privalomas",
+    "pl": "Nazwa leku jest wymagana",
+    "ru": "Название лекарства обязательно для заполнения"
   },
   "medicationNameTooLong": {
     "en": "Medication name is too long",
-    "lt": "Vaisto pavadinimas per ilgas"
+    "lt": "Vaisto pavadinimas per ilgas",
+    "pl": "Nazwa leku jest za długa",
+    "ru": "Название лекарства слишком длинное"
   },
   "medicationTimeRequired": {
     "en": "Medication time is required",
-    "lt": "Reikalingas vaistų laikas"
+    "lt": "Reikalingas vaistų laikas",
+    "pl": "Wymagany jest czas przyjmowania leku",
+    "ru": "Требуется время для приема лекарства"
   },
   "medicationUpdated": {
     "en": "Medication updated",
-    "lt": "Vaistas atnaujintas"
+    "lt": "Vaistas atnaujintas",
+    "pl": "Lek został zaktualizowany",
+    "ru": "Медикамент обновлён"
   },
   "medications": {
     "en": "Medications",
-    "lt": "Vaistai"
+    "lt": "Vaistai",
+    "pl": "Leki",
+    "ru": "Лекарства"
   },
   "method": {
     "en": "Method",
-    "lt": "Metodas"
+    "lt": "Metodas",
+    "pl": "Metoda",
+    "ru": "Метод"
   },
   "methodPlaceholder": {
     "en": "Oral / ear / forehead",
-    "lt": "Burnos / ausies / kaktos"
+    "lt": "Burnos / ausies / kaktos",
+    "pl": "Ustny / ucho / czoło",
+    "ru": "Ротовой / ухо / лоб"
   },
   "methodTooLong": {
     "en": "Method is too long",
-    "lt": "Metodas per ilgas"
+    "lt": "Metodas per ilgas",
+    "pl": "Metoda jest za długa",
+    "ru": "Метод слишком длинный"
   },
   "mostUsedMedicationTitle": {
     "en": "Most used medication",
-    "lt": "Daugiausiai naudojami vaistai"
+    "lt": "Daugiausiai naudojami vaistai",
+    "pl": "Najczęściej stosowane leki",
+    "ru": "Самые используемые лекарства"
   },
   "mustBePositive": {
     "en": "{field} must be positive",
-    "lt": "{field} turi būti teigiamas"
+    "lt": "{field} turi būti teigiamas",
+    "pl": "{field} musi być dodatnie",
+    "ru": "{field} должен быть положительным"
   },
   "name": {
     "en": "Name",
-    "lt": "Vardas"
+    "lt": "Vardas",
+    "pl": "Imię",
+    "ru": "Имя"
   },
   "nameRequired": {
     "en": "Name is required",
-    "lt": "Vardas yra privalomas"
+    "lt": "Vardas yra privalomas",
+    "pl": "Imię jest wymagane",
+    "ru": "Имя обязательно для заполнения"
   },
   "nameTooLong": {
     "en": "Name is too long",
-    "lt": "Vardas yra per ilgas"
+    "lt": "Vardas yra per ilgas",
+    "pl": "Nazwa jest za długa",
+    "ru": "Имя слишком длинное"
   },
   "noData": {
     "en": "No data",
-    "lt": "Nėra duomenų"
+    "lt": "Nėra duomenų",
+    "pl": "Brak danych",
+    "ru": "Нет данных"
   },
   "noFeverRecorded": {
     "en": "No fever recorded",
-    "lt": "Neregistruota temperatūros"
+    "lt": "Neregistruota temperatūros",
+    "pl": "Nie zarejestrowano gorączki",
+    "ru": "Жар не зафиксирован"
   },
   "noKidsDescription": {
     "en": "Start by adding your first child profile to begin tracking temperature, medication, and growth logs.",
-    "lt": "Pradėkite pridėdami pirmąjį vaiko profilį, kad galėtumėte sekti temperatūrą, vaistus ir augimo įrašus."
+    "lt": "Pradėkite pridėdami pirmąjį vaiko profilį, kad galėtumėte sekti temperatūrą, vaistus ir augimo įrašus.",
+    "pl": "Rozpocznij od dodania profilu pierwszego dziecka, aby zacząć śledzić temperaturę, leki i wzrost.",
+    "ru": "Начните с добавления первого профиля ребенка, чтобы начать отслеживать температуру, прием лекарств и рост."
   },
   "noKidsTitle": {
     "en": "No kids added yet",
-    "lt": "Dar nėra pridėtų vaikų"
+    "lt": "Dar nėra pridėtų vaikų",
+    "pl": "Nie dodano jeszcze dzieci",
+    "ru": "Еще не добавлено детей"
   },
   "noMedicationRecords": {
     "en": "No medication records yet",
-    "lt": "Dar nėra jokių vaistų įrašų"
+    "lt": "Dar nėra jokių vaistų įrašų",
+    "pl": "Brak jeszcze zapisów dotyczących leków",
+    "ru": "Записи о приёме лекарств ещё отсутствуют"
   },
   "noNotes": {
     "en": "No notes",
-    "lt": "Nėra pastabų"
+    "lt": "Nėra pastabų",
+    "pl": "Brak notatek",
+    "ru": "Без заметок"
   },
   "noNotesYet": {
     "en": "No notes yet",
-    "lt": "Jokių užrašų dar nėra"
+    "lt": "Jokių užrašų dar nėra",
+    "pl": "Brak notatek jeszcze",
+    "ru": "Пока заметок нет"
   },
   "noteAdded": {
     "en": "Note added",
-    "lt": "Pastaba pridėta"
+    "lt": "Pastaba pridėta",
+    "pl": "Notatka dodana",
+    "ru": "Примечание добавлено"
   },
   "noteContentRequired": {
     "en": "Note content is required",
-    "lt": "Pastabos turinys yra privalomas"
+    "lt": "Pastabos turinys yra privalomas",
+    "pl": "Treść notatki jest wymagana",
+    "ru": "Содержание заметки обязательно для заполнения"
   },
   "noteDeleted": {
     "en": "Note deleted",
-    "lt": "Pastaba ištrinta"
+    "lt": "Pastaba ištrinta",
+    "pl": "Notatka usunięta",
+    "ru": "Заметка удалена"
   },
   "noteDialogAddDesc": {
     "en": "Record a new note for this child.",
-    "lt": "Įrašykite naują pastabą šiam vaikui."
+    "lt": "Įrašykite naują pastabą šiam vaikui.",
+    "pl": "Zapisz nową notatkę dla tego dziecka.",
+    "ru": "Записать новую заметку для этого ребенка."
   },
   "noteDialogEditDesc": {
     "en": "Update an existing note for this child.",
-    "lt": "Atnaujinti esamą pastabą šiam vaikui."
+    "lt": "Atnaujinti esamą pastabą šiam vaikui.",
+    "pl": "Zaktualizuj istniejącą notatkę dla tego dziecka.",
+    "ru": "Обновите существующую заметку для этого ребенка."
   },
   "noteLogs": {
     "en": "Note logs",
-    "lt": "Pastabų žurnalai"
+    "lt": "Pastabų žurnalai",
+    "pl": "Zanotuj logi",
+    "ru": "Журнал заметок"
   },
   "noteTooLong": {
     "en": "Note is too long",
-    "lt": "Pastaba per ilga"
+    "lt": "Pastaba per ilga",
+    "pl": "Notatka jest za długa",
+    "ru": "Заметка слишком длинная"
   },
   "noteUpdated": {
     "en": "Note updated",
-    "lt": "Pastaba atnaujinta"
+    "lt": "Pastaba atnaujinta",
+    "pl": "Notatka zaktualizowana",
+    "ru": "Примечание обновлено"
   },
   "notes": {
     "en": "Notes",
-    "lt": "Pastabos"
+    "lt": "Pastabos",
+    "pl": "Notatki",
+    "ru": "Заметки"
   },
   "notesDataDescFull": {
     "en": "Total notes: {total}. Latest note: {latest}.",
-    "lt": "Iš viso užrašų: {total}. Naujausias užrašas: {latest}."
+    "lt": "Iš viso užrašų: {total}. Naujausias užrašas: {latest}.",
+    "pl": "Łączna liczba notatek: {total}. Najnowsza notatka: {latest}.",
+    "ru": "Всего заметок: {total}. Последняя заметка: {latest}."
   },
   "notesDataTitle": {
     "en": "Notes data",
-    "lt": "Pastabų duomenys"
+    "lt": "Pastabų duomenys",
+    "pl": "Dane notatek",
+    "ru": "Данные заметок"
   },
   "notesTooLong": {
     "en": "Notes are too long",
-    "lt": "Pastabos per ilgos"
+    "lt": "Pastabos per ilgos",
+    "pl": "Notatki są za długie",
+    "ru": "Заметки слишком длинные"
   },
   "openDetails": {
     "en": "Open details",
-    "lt": "Atverti detales"
+    "lt": "Atverti detales",
+    "pl": "Otwórz szczegóły",
+    "ru": "Открыть детали"
   },
   "openMySheet": {
     "en": "Open my sheet",
-    "lt": "Atidaryti Google Sheet"
+    "lt": "Atidaryti Google Sheet",
+    "pl": "Otwórz mój arkusz",
+    "ru": "Открыть мой лист"
   },
   "openSettings": {
     "en": "Open settings",
-    "lt": "Atidaryti nustatymus"
+    "lt": "Atidaryti nustatymus",
+    "pl": "Otwórz ustawienia",
+    "ru": "Открыть настройки"
   },
   "privacyPolicy": {
     "en": "Privacy Policy",
-    "lt": "Privatumo politika"
+    "lt": "Privatumo politika",
+    "pl": "Polityka prywatności",
+    "ru": "Политика конфиденциальности"
   },
   "provideHeightOrWeight": {
     "en": "Provide at least height or weight",
-    "lt": "Nurodykite bent ūgį arba svorį"
+    "lt": "Nurodykite bent ūgį arba svorį",
+    "pl": "Podaj co najmniej wzrost lub wagę",
+    "ru": "Укажите как минимум рост или вес"
   },
   "readWriteHealth": {
     "en": "Read and write your health tracking data in the spreadsheet",
-    "lt": "Skaityti ir rašyti jūsų sveikatos sekimo duomenis Google Sheet"
+    "lt": "Skaityti ir rašyti jūsų sveikatos sekimo duomenis Google Sheet",
+    "pl": "Odczytuj i zapisuj dane śledzenia zdrowia w arkuszu kalkulacyjnym",
+    "ru": "Читать и записывать данные о вашем состоянии здоровья в таблицу"
   },
   "recentPreview": {
     "en": "Recent preview",
-    "lt": "Naujausias peržiūra"
+    "lt": "Naujausias peržiūra",
+    "pl": "Ostatnia podglądowa wersja",
+    "ru": "Недавний предварительный просмотр"
   },
   "recentPreviewEmpty": {
     "en": "Add a note to keep recent observations visible here.",
-    "lt": "Pridėkite pastabą, kad čia būtų matomi naujausi pastebėjimai."
+    "lt": "Pridėkite pastabą, kad čia būtų matomi naujausi pastebėjimai.",
+    "pl": "Dodaj notatkę, aby utrzymać widoczność ostatnich obserwacji tutaj.",
+    "ru": "Добавьте заметку, чтобы недавние наблюдения были видны здесь."
   },
   "save": {
     "en": "Save",
-    "lt": "Išsaugoti"
+    "lt": "Išsaugoti",
+    "pl": "Zapisz",
+    "ru": "Сохранить"
   },
   "saving": {
     "en": "Saving...",
-    "lt": "Išsaugoma..."
+    "lt": "Išsaugoma...",
+    "pl": "Zapisywanie...",
+    "ru": "Сохранение..."
   },
   "scopesDrive": {
     "en": "Drive file access and Sheets read/write are used to create and update your tracker workbook.",
-    "lt": "Prieiga prie Drive failų ir Sheets skaitymo/rašymo naudojama jūsų įrašams kurti ir atnaujinti."
+    "lt": "Prieiga prie Drive failų ir Sheets skaitymo/rašymo naudojama jūsų įrašams kurti ir atnaujinti.",
+    "pl": "Dostęp do plików Dysku i odczyt/zapis arkuszy są używane do tworzenia i aktualizowania twojego skoroszytu śledzenia.",
+    "ru": "Доступ к файлам Диска и чтение/запись Таблиц используются для создания и обновления вашей рабочей книги трекера."
   },
   "scopesRequested": {
     "en": "Scopes requested",
-    "lt": "Prašomos prieigos"
+    "lt": "Prašomos prieigos",
+    "pl": "Zażądane zakresy",
+    "ru": "Запрошенные области"
   },
   "selectTemperatureUnit": {
     "en": "Select temperature unit",
-    "lt": "Pasirinkite temperatūros vienetą"
+    "lt": "Pasirinkite temperatūros vienetą",
+    "pl": "Wybierz jednostkę temperatury",
+    "ru": "Выберите единицу измерения температуры"
   },
   "settingsTitle": {
     "en": "Settings",
-    "lt": "Nustatymai"
+    "lt": "Nustatymai",
+    "pl": "Ustawienia",
+    "ru": "Настройки"
   },
   "signInErrorDefault": {
     "en": "Failed to sign in. Please try again.",
-    "lt": "Prisijungti nepavyko. Bandykite dar kartą."
+    "lt": "Prisijungti nepavyko. Bandykite dar kartą.",
+    "pl": "Nie udało się zalogować. Proszę spróbować ponownie.",
+    "ru": "Не удалось войти. Пожалуйста, попробуйте снова."
   },
   "signInFailed": {
     "en": "Sign-in failed",
-    "lt": "Prisijungti nepavyko"
+    "lt": "Prisijungti nepavyko",
+    "pl": "Logowanie nie powiodło się",
+    "ru": "Ошибка входа"
   },
   "temperatureAdded": {
     "en": "Temperature added",
-    "lt": "Temperatūra pridėta"
+    "lt": "Temperatūra pridėta",
+    "pl": "Dodano temperaturę",
+    "ru": "Температура добавлена"
   },
   "temperatureDeleted": {
     "en": "Temperature deleted",
-    "lt": "Temperatūra ištrinta"
+    "lt": "Temperatūra ištrinta",
+    "pl": "Temperatura usunięta",
+    "ru": "Температура удалена"
   },
   "temperatureDescription": {
     "en": "Pick your default unit for new temperature entries. Default is Celsius.",
-    "lt": "Pasirinkite numatytąjį vienetą naujiems temperatūros įrašams. Numatytasis yra Celsijus."
+    "lt": "Pasirinkite numatytąjį vienetą naujiems temperatūros įrašams. Numatytasis yra Celsijus.",
+    "pl": "Wybierz domyślną jednostkę dla nowych wpisów temperatury. Domyślnie jest to stopień Celsjusza.",
+    "ru": "Выберите единицу измерения по умолчанию для новых записей температуры. По умолчанию – Цельсий."
   },
   "temperatureDialogAddDesc": {
     "en": "Record a new body temperature measurement.",
-    "lt": "Užfiksuokite naują kūno temperatūros matavimą."
+    "lt": "Užfiksuokite naują kūno temperatūros matavimą.",
+    "pl": "Zarejestruj nowe pomiary temperatury ciała.",
+    "ru": "Записать новое измерение температуры тела."
   },
   "temperatureDialogEditDesc": {
     "en": "Update the body temperature measurement.",
-    "lt": "Atnaujinkite kūno temperatūros matavimą."
+    "lt": "Atnaujinkite kūno temperatūros matavimą.",
+    "pl": "Zaktualizuj pomiar temperatury ciała.",
+    "ru": "Обновите измерение температуры тела."
   },
   "temperatureLogs": {
     "en": "Temperature logs",
-    "lt": "Temperatūros įrašai"
+    "lt": "Temperatūros įrašai",
+    "pl": "Rejestry temperatury",
+    "ru": "Журналы температуры"
   },
   "temperatureTitle": {
     "en": "Temperature",
-    "lt": "Temperatūra"
+    "lt": "Temperatūra",
+    "pl": "Temperatura",
+    "ru": "Температура"
   },
   "temperatureTooHigh": {
     "en": "Temperature is too high",
-    "lt": "Temperatūra per aukšta"
+    "lt": "Temperatūra per aukšta",
+    "pl": "Temperatura jest zbyt wysoka",
+    "ru": "Температура слишком высокая"
   },
   "temperatureTooLow": {
     "en": "Temperature is too low",
-    "lt": "Temperatūra per žema"
+    "lt": "Temperatūra per žema",
+    "pl": "Temperatura jest zbyt niska",
+    "ru": "Температура слишком низкая"
   },
   "temperatureTrendEmpty": {
     "en": "Add temperature records to see a trend line",
-    "lt": "Pridėti temperatūros įrašus norint pamatyti tendencijų liniją"
+    "lt": "Pridėti temperatūros įrašus norint pamatyti tendencijų liniją",
+    "pl": "Dodaj rekordy temperatur, aby zobaczyć linię trendu",
+    "ru": "Добавьте записи температуры, чтобы увидеть тенденцию."
   },
   "temperatureUnitLabel": {
     "en": "Default unit",
-    "lt": "Numatytasis vienetas"
+    "lt": "Numatytasis vienetas",
+    "pl": "Jednostka domyślna",
+    "ru": "Единица по умолчанию"
   },
   "temperatureUnitPlaceholder": {
     "en": "Select a unit",
-    "lt": "Pasirinkite vienetą"
+    "lt": "Pasirinkite vienetą",
+    "pl": "Wybierz jednostkę",
+    "ru": "Выберите подразделение"
   },
   "temperatureUpdated": {
     "en": "Temperature updated",
-    "lt": "Temperatūra atnaujinta"
+    "lt": "Temperatūra atnaujinta",
+    "pl": "Temperatura zaktualizowana",
+    "ru": "Температура обновлена"
   },
   "themeDark": {
     "en": "Dark",
-    "lt": "Tamsi"
+    "lt": "Tamsi",
+    "pl": "Ciemny",
+    "ru": "Тёмный"
   },
   "themeLabel": {
     "en": "Theme",
-    "lt": "Tema"
+    "lt": "Tema",
+    "pl": "Motyw",
+    "ru": "Тема"
   },
   "themeLight": {
     "en": "Light",
-    "lt": "Šviesi"
+    "lt": "Šviesi",
+    "pl": "Jasne",
+    "ru": "Светлый"
   },
   "themePlaceholder": {
     "en": "Select a theme",
-    "lt": "Pasirinkite temą"
+    "lt": "Pasirinkite temą",
+    "pl": "Wybierz motyw",
+    "ru": "Выберите тему"
   },
   "themeSystem": {
     "en": "System",
-    "lt": "Sistema"
+    "lt": "Sistema",
+    "pl": "System",
+    "ru": "Система"
   },
   "title": {
     "en": "Kid Sick Tracker",
-    "lt": "Kid Sick Tracker"
+    "lt": "Kid Sick Tracker",
+    "pl": "Śledzenie choroby dziecka",
+    "ru": "Отслеживание болезни ребёнка"
   },
   "totalDosesLogged": {
     "en": "Total doses logged",
-    "lt": "Iš viso užregistruotų dozių"
+    "lt": "Iš viso užregistruotų dozių",
+    "pl": "Całkowita liczba zarejestrowanych dawek",
+    "ru": "Всего зарегистрированных доз"
   },
   "totalDosesLoggedDesc": {
     "en": "All medication records for this child",
-    "lt": "Visi šio vaiko vaistų įrašai"
+    "lt": "Visi šio vaiko vaistų įrašai",
+    "pl": "Wszystkie zapisy dotyczące leków dla tego dziecka",
+    "ru": "Все записи о лекарственных препаратах для этого ребенка"
   },
   "totalLogs": {
     "en": "Total logs",
-    "lt": "Bendras įrašų skaičius"
+    "lt": "Bendras įrašų skaičius",
+    "pl": "Całkowita liczba logów",
+    "ru": "Всего журналов"
   },
   "totalLogsDesc": {
     "en": "Across all recorded days",
-    "lt": "Per visą įrašytą laikotarpį"
+    "lt": "Per visą įrašytą laikotarpį",
+    "pl": "Przez wszystkie zarejestrowane dni",
+    "ru": "За все записанные дни"
   },
   "totalNotes": {
     "en": "Total notes",
-    "lt": "Iš viso užrašų"
+    "lt": "Iš viso užrašų",
+    "pl": "Łączna liczba notatek",
+    "ru": "Всего заметок"
   },
   "totalNotesDesc": {
     "en": "Logged observations and reminders",
-    "lt": "Užfiksuoti stebėjimai ir priminimai"
+    "lt": "Užfiksuoti stebėjimai ir priminimai",
+    "pl": "Zarejestrowane obserwacje i przypomnienia",
+    "ru": "Зарегистрированные наблюдения и напоминания"
   },
   "unableToLoadKids": {
     "en": "Unable to load kids",
-    "lt": "Nepavyksta įkelti vaikų"
+    "lt": "Nepavyksta įkelti vaikų",
+    "pl": "Nie można załadować dzieci",
+    "ru": "Не удалось загрузить детей"
   },
   "unit": {
     "en": "Unit",
-    "lt": "Vienetas"
+    "lt": "Vienetas",
+    "pl": "Jednostka",
+    "ru": "Единица"
   },
   "unitTooLong": {
     "en": "Unit is too long",
-    "lt": "Vienetas per ilgas"
+    "lt": "Vienetas per ilgas",
+    "pl": "Jednostka jest za długa",
+    "ru": "Подразделение слишком долгое"
   },
   "unnamedMedication": {
     "en": "Unnamed",
-    "lt": "Nepavadintas"
+    "lt": "Nepavadintas",
+    "pl": "Bez nazwy",
+    "ru": "Безымянный"
   },
   "update": {
     "en": "Update",
-    "lt": "Atnaujinti"
+    "lt": "Atnaujinti",
+    "pl": "Aktualizuj",
+    "ru": "Обновить"
   },
   "updating": {
     "en": "Updating...",
-    "lt": "Atsinaujinama..."
+    "lt": "Atsinaujinama...",
+    "pl": "Aktualizowanie...",
+    "ru": "Обновление..."
   },
   "value": {
     "en": "Value",
-    "lt": "Vertė"
+    "lt": "Vertė",
+    "pl": "Wartość",
+    "ru": "Значение"
   },
   "viewOnGithub": {
     "en": "View kid-sick on GitHub",
-    "lt": "Peržiūrėti kid-sick GitHub platformoje"
+    "lt": "Peržiūrėti kid-sick GitHub platformoje",
+    "pl": "Zobacz kid-sick na GitHub",
+    "ru": "Посмотреть kid-sick на GitHub"
   },
   "viewPrivacyPolicy": {
     "en": "View Privacy Policy",
-    "lt": "Peržiūrėti privatumo politiką"
+    "lt": "Peržiūrėti privatumo politiką",
+    "pl": "Zobacz Politykę Prywatności",
+    "ru": "Просмотреть Политику Конфиденциальности"
   },
   "weightInvalid": {
     "en": "Weight seems invalid",
-    "lt": "Svoris atrodo neteisingas"
+    "lt": "Svoris atrodo neteisingas",
+    "pl": "Waga wydaje się nieprawidłowa",
+    "ru": "Вес кажется недопустимым"
   },
   "weightKg": {
     "en": "Weight (kg)",
-    "lt": "Svoris (kg)"
+    "lt": "Svoris (kg)",
+    "pl": "Waga (kg)",
+    "ru": "Вес (кг)"
   },
   "weightTrend": {
     "en": "Weight trend",
-    "lt": "Svorio tendencija"
+    "lt": "Svorio tendencija",
+    "pl": "Trend wagi",
+    "ru": "Тенденция веса"
   },
   "weightTrendDesc": {
     "en": "Most recent 10 weight values",
-    "lt": "Paskutinės 10 svorio reikšmių"
+    "lt": "Paskutinės 10 svorio reikšmių",
+    "pl": "Ostatnie 10 wartości wagi",
+    "ru": "Последние 10 значений веса"
   },
   "weightTrendEmpty": {
     "en": "Add growth records with weight to see a trend",
-    "lt": "Pridėkite ūgio ir svorio įrašus, kad matytumėte tendenciją"
+    "lt": "Pridėkite ūgio ir svorio įrašus, kad matytumėte tendenciją",
+    "pl": "Dodaj rekordy wzrostu z wagą, aby zobaczyć trend",
+    "ru": "Добавьте записи о росте с весом, чтобы увидеть тенденцию"
   },
   "weightValue": {
     "en": "{value} kg",
-    "lt": "{value} kg"
+    "lt": "{value} kg",
+    "pl": "{value} kg",
+    "ru": "{value} кг"
   },
   "when": {
     "en": "When",
-    "lt": "Kada"
+    "lt": "Kada",
+    "pl": "Kiedy",
+    "ru": "Когда"
   }
 }

@@ -126,6 +126,22 @@ export function AuthPage() {
               >
                 <span className="fi fi-lt"></span>
               </Button>
+              <Button
+                variant={language === "pl" ? "secondary" : "ghost"}
+                size="icon"
+                onClick={() => handleLanguageChange("pl")}
+                title="Polski"
+              >
+                <span className="fi fi-pl"></span>
+              </Button>
+              <Button
+                variant={language === "ru" ? "secondary" : "ghost"}
+                size="icon"
+                onClick={() => handleLanguageChange("ru")}
+                title="Русский"
+              >
+                <span className="fi fi-ru"></span>
+              </Button>
             </div>
           </CardContent>
         </Card>

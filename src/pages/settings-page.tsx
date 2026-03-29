@@ -42,10 +42,15 @@ const THEME_OPTIONS: ReadonlyArray<{ value: Theme; label: string }> = [
   { value: "dark", label: translate.themeDark },
 ]
 
-const LANGUAGE_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
-  { value: "lt", label: "Lietuvių" },
-  { value: "en", label: "English" },
-]
+const LANGUAGE_OPTIONS: ReadonlyArray<{
+  value: LanguageCode
+  label: string
+}> = [
+    { value: "lt", label: "Lietuvių" },
+    { value: "en", label: "English" },
+    { value: "pl", label: "Polski" },
+    { value: "ru", label: "Русский" },
+  ]
 
 export function SettingsPage() {
   const [language, setLanguage] = useState<LanguageCode>(getLanguagePreference)
