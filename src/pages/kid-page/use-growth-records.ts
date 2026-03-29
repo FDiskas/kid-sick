@@ -13,6 +13,7 @@ import {
 } from "@/features/sheets/health-repository"
 import type { KidAuth, LockHelpers } from "@/pages/kid-page/types"
 import { toInputDateTime, toIso } from "@/pages/kid-page/utils"
+import { translate } from "@/lib/translate"
 
 type GrowthControllerArgs = {
   auth: KidAuth | null
@@ -42,7 +43,7 @@ export function useGrowthRecords({
       editingGrowthId: string | null
     }) => {
       if (!kid || !auth) {
-        throw new Error("Failed to save growth measurement")
+        throw new Error(translate.failedToSaveGrowth)
       }
 
       if (payload.editingGrowthId) {
@@ -109,13 +110,13 @@ export function useGrowthRecords({
             )
             .sort((a, b) => b.measuredAt.localeCompare(a.measuredAt))
         )
-        toast.success("Growth measurement updated")
+        toast.success(translate.growthUpdated)
       } else {
         setGrowthRecords((current) => [result.record, ...current])
         if (result.kid) {
           setKid(result.kid)
         }
-        toast.success("Growth measurement added")
+        toast.success(translate.growthAdded)
       }
 
       setIsGrowthOpen(false)
@@ -127,8 +128,8 @@ export function useGrowthRecords({
         saveError instanceof Error
           ? saveError.message
           : editingGrowthId
-            ? "Failed to update growth measurement"
-            : "Failed to add growth measurement"
+            ? translate.failedToUpdateGrowth
+            : translate.failedToAddGrowth
       )
     },
   })
@@ -136,7 +137,7 @@ export function useGrowthRecords({
   const deleteGrowthMutation = useMutation({
     mutationFn: async (record: GrowthRecord) => {
       if (!auth) {
-        throw new Error("Failed to delete growth record")
+        throw new Error(translate.failedToDeleteGrowth)
       }
 
       await deleteGrowthRecord(
@@ -156,13 +157,13 @@ export function useGrowthRecords({
         setIsGrowthOpen(false)
         resetForm()
       }
-      toast.success("Growth record deleted")
+      toast.success(translate.growthDeleted)
     },
     onError: (deleteError) => {
       toast.error(
         deleteError instanceof Error
           ? deleteError.message
-          : "Failed to delete growth record"
+          : translate.failedToDeleteGrowth
       )
     },
     onSettled: () => {
@@ -200,7 +201,9 @@ export function useGrowthRecords({
 
     const parsed = growthSchema.safeParse(values)
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Invalid growth input")
+      toast.error(
+        parsed.error.issues[0]?.message ?? translate.invalidGrowthInput
+      )
       locks.releaseActionLock(actionKey)
       return
     }

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Cancel01Icon } from "@hugeicons/core-free-icons"
+import { translate } from "@/lib/translate"
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
@@ -72,7 +73,7 @@ function SheetContent({
             }
           >
             <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{translate.close}</span>
           </SheetPrimitive.Close>
         )}
       </SheetPrimitive.Popup>

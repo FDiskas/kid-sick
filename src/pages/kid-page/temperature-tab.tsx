@@ -26,6 +26,7 @@ import {
   renderDateTime,
 } from "@/pages/kid-page/utils"
 import type { TemperatureRecord } from "@/features/health/types"
+import { translate, withParams } from "@/lib/translate"
 
 type TemperatureTabProps = {
   temperatures: TemperatureRecord[]
@@ -82,17 +83,19 @@ export function TemperatureTab({
     <div className="space-y-3">
       <Card className="hidden border-primary/25 bg-linear-to-br from-primary/10 to-card md:block">
         <CardHeader>
-          <CardTitle>Latest measurement data</CardTitle>
+          <CardTitle>{translate.latestMeasurementData}</CardTitle>
           <CardDescription>
-            Last 12 measurements, normalized to C for consistency. Fever
-            episodes: {feverCount}. Total logs: {temperatures.length}.
+            {withParams(translate.latestMeasurementDataDescFull, {
+              feverCount,
+              totalCount: temperatures.length,
+            })}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 pb-4 sm:grid-cols-3">
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">
-                Latest measurement
+                {translate.latestMeasurement}
               </p>
               <p className="mt-2 text-2xl font-semibold">
                 {latestTemperature
@@ -102,38 +105,44 @@ export function TemperatureTab({
               <p className="mt-2 text-xs text-muted-foreground">
                 {latestTemperature
                   ? renderDateTime(latestTemperature.measuredAt)
-                  : "No data"}
+                  : translate.noData}
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Fever episodes</p>
+              <p className="text-sm text-muted-foreground">
+                {translate.feverEpisodes}
+              </p>
               <p className="mt-2 text-2xl font-semibold">{feverCount}</p>
               <div className="mt-2">
                 <Badge variant={feverCount > 0 ? "destructive" : "secondary"}>
-                  {feverCount > 0 ? "At least 38°" : "No fever recorded"}
+                  {feverCount > 0
+                    ? translate.atLeast38
+                    : translate.noFeverRecorded}
                 </Badge>
               </div>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Total logs</p>
+              <p className="text-sm text-muted-foreground">
+                {translate.totalLogs}
+              </p>
               <p className="mt-2 text-2xl font-semibold">
                 {temperatures.length}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
-                Across all recorded days
+                {translate.totalLogsDesc}
               </p>
             </div>
           </div>
           <LineMiniChart
             data={temperatureTrend}
-            emptyLabel="Add temperature records to see a trend line"
+            emptyLabel={translate.temperatureTrendEmpty}
           />
         </CardContent>
       </Card>
 
       <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
         <CardHeader className="flex-row items-center justify-between">
-          <CardTitle>Temperature logs</CardTitle>
+          <CardTitle>{translate.temperatureLogs}</CardTitle>
           <Button onClick={onCreate}>
             <HugeiconsIcon
               icon={Add01Icon}
@@ -145,18 +154,18 @@ export function TemperatureTab({
               strokeWidth={2}
               className="size-4"
             />
-            Add temperature
+            {translate.addTemperatureRecord}
           </Button>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>When</TableHead>
-                <TableHead>Value</TableHead>
-                <TableHead>Method</TableHead>
-                <TableHead>Notes</TableHead>
-                <TableHead className="w-32">Actions</TableHead>
+                <TableHead>{translate.when}</TableHead>
+                <TableHead>{translate.value}</TableHead>
+                <TableHead>{translate.method}</TableHead>
+                <TableHead>{translate.notes}</TableHead>
+                <TableHead className="w-32">{translate.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

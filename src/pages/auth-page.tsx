@@ -18,10 +18,28 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { useAuth } from "@/features/auth/auth-context"
+import {
+  translate,
+  setTranslateLanguage,
+  type LanguageCode,
+} from "@/lib/translate"
+import {
+  getLanguagePreference,
+  setLanguagePreference,
+} from "@/features/language/language-preference"
+import "flag-icons/css/flag-icons.min.css"
 
 export function AuthPage() {
   const { auth, isLoading, signIn } = useAuth()
   const [error, setError] = useState<string | null>(null)
+  const [language, setLanguage] = useState<LanguageCode>(getLanguagePreference)
+
+  function handleLanguageChange(newLang: LanguageCode) {
+    if (newLang === language) return
+    setLanguage(newLang)
+    setTranslateLanguage(newLang)
+    setLanguagePreference(newLang)
+  }
 
   if (auth) {
     return <Navigate to="/" replace />
@@ -39,10 +57,8 @@ export function AuthPage() {
                 className="size-6 text-white"
               />
             </div>
-            <CardTitle className="text-2xl">Kid Sick Tracker</CardTitle>
-            <CardDescription>
-              Track your child's health data securely in your own Google Drive
-            </CardDescription>
+            <CardTitle className="text-2xl">{translate.title}</CardTitle>
+            <CardDescription>{translate.authDescription}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button
@@ -55,7 +71,7 @@ export function AuthPage() {
                   setError(
                     signInError instanceof Error
                       ? signInError.message
-                      : "Unable to complete Google authorization"
+                      : translate.signInErrorDefault
                   )
                 }
               }}
@@ -74,31 +90,42 @@ export function AuthPage() {
                   className="size-4"
                 />
               )}
-              {isLoading ? "Connecting..." : "Authorize Google Drive"}
+              {isLoading ? translate.connecting : translate.authorizeGoogle}
             </Button>
             <Alert className="p-4">
-              <AlertTitle>Scopes requested</AlertTitle>
-              <AlertDescription>
-                Drive file access and Sheets read/write are used to create and
-                update your tracker workbook.
-              </AlertDescription>
+              <AlertTitle>{translate.scopesRequested}</AlertTitle>
+              <AlertDescription>{translate.scopesDrive}</AlertDescription>
             </Alert>
             {error ? (
               <Alert variant="destructive">
-                <AlertTitle>Sign-in failed</AlertTitle>
+                <AlertTitle>{translate.signInFailed}</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             ) : null}
             <div className="space-y-1 text-center text-xs text-gray-500">
-              <p className="text-left">
-                By signing in, you authorize this app to:
-              </p>
+              <p className="text-left">{translate.bySigningIn}</p>
               <ul className="ml-6 list-disc text-left">
-                <li>Create a spreadsheet in your Google Drive</li>
-                <li>
-                  Read and write your health tracking data in the spreadsheet
-                </li>
+                <li>{translate.createSpreadsheet}</li>
+                <li>{translate.readWriteHealth}</li>
               </ul>
+            </div>
+            <div className="flex justify-center gap-2 pt-4">
+              <Button
+                variant={language === "en" ? "secondary" : "ghost"}
+                size="icon"
+                onClick={() => handleLanguageChange("en")}
+                title="English"
+              >
+                <span className="fi fi-us"></span>
+              </Button>
+              <Button
+                variant={language === "lt" ? "secondary" : "ghost"}
+                size="icon"
+                onClick={() => handleLanguageChange("lt")}
+                title="Lietuvių"
+              >
+                <span className="fi fi-lt"></span>
+              </Button>
             </div>
           </CardContent>
         </Card>

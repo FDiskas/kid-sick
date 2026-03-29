@@ -66,11 +66,13 @@ export function buildMedicationPerDay(medications: MedicationRecord[]) {
     }))
 }
 
+import { translate } from "@/lib/translate"
+
 export function buildMostUsedMedication(medications: MedicationRecord[]) {
   const countByMedication = new Map<string, number>()
 
   for (const entry of medications) {
-    const key = entry.medicationName.trim() || "Unnamed"
+    const key = entry.medicationName.trim() || translate.unnamedMedication
     countByMedication.set(key, (countByMedication.get(key) ?? 0) + 1)
   }
 

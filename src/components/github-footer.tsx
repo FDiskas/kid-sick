@@ -1,3 +1,5 @@
+import { translate } from "@/lib/translate"
+
 export function GitHubFooter() {
   return (
     <footer className="border-t bg-background/85 backdrop-blur-sm">
@@ -6,8 +8,8 @@ export function GitHubFooter() {
           href="https://github.com/FDiskas/kid-sick"
           target="_blank"
           rel="noreferrer"
-          aria-label="View kid-sick on GitHub"
-          title="View kid-sick on GitHub"
+          aria-label={translate.viewOnGithub}
+          title={translate.viewOnGithub}
           className="inline-flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <svg
@@ -22,11 +24,11 @@ export function GitHubFooter() {
           href="/privacy-policy.html"
           target="_blank"
           rel="noreferrer"
-          aria-label="View Privacy Policy"
-          title="View Privacy Policy"
+          aria-label={translate.viewPrivacyPolicy}
+          title={translate.viewPrivacyPolicy}
           className="text-sm text-muted-foreground underline transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
         >
-          Privacy Policy
+          {translate.privacyPolicy}
         </a>
       </div>
     </footer>

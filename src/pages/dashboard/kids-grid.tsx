@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RecordActionsMenu } from "@/components/record-actions-menu"
 import type { KidProfile } from "@/features/health/types"
 import { cn, calculateAge } from "@/lib/utils"
+import { translate, withParams } from "@/lib/translate"
 
 type KidsGridProps = {
   kids: KidProfile[]
@@ -20,15 +21,12 @@ type KidsGridProps = {
 function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
     <Alert>
-      <AlertTitle>No kids added yet</AlertTitle>
-      <AlertDescription>
-        Start by adding your first child profile to begin tracking temperature,
-        medication, and growth logs.
-      </AlertDescription>
+      <AlertTitle>{translate.noKidsTitle}</AlertTitle>
+      <AlertDescription>{translate.noKidsDescription}</AlertDescription>
       <div className="mt-3">
         <Button onClick={onCreate}>
           <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
-          Add First Kid
+          {translate.addFirstKid}
         </Button>
       </div>
     </Alert>
@@ -57,22 +55,24 @@ export function KidsGrid({
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 space-y-1">
                 <div className="text-muted-foreground">
-                  Birthday {kid.birthDate}
+                  {withParams(translate.birthdayValue, { date: kid.birthDate })}
                   {calculateAge(kid.birthDate) !== null && (
                     <span> ({calculateAge(kid.birthDate)})</span>
                   )}
                 </div>
                 <div className="text-muted-foreground">
-                  Latest: {kid.currentHeightCm ?? "-"} cm /{" "}
-                  {kid.currentWeightKg ?? "-"} kg
+                  {withParams(translate.latestMeasurements, {
+                    height: String(kid.currentHeightCm ?? "-"),
+                    weight: String(kid.currentWeightKg ?? "-"),
+                  })}
                 </div>
               </div>
               <div className="w-40 shrink-0 text-right">
                 <p className="text-xs font-medium text-muted-foreground">
-                  Notes
+                  {translate.notes}
                 </p>
                 <p className="text-xs leading-relaxed wrap-break-word text-foreground/80">
-                  {kid.notes?.trim() || "No notes"}
+                  {kid.notes?.trim() || translate.noNotes}
                 </p>
               </div>
             </div>
@@ -89,7 +89,7 @@ export function KidsGrid({
                   strokeWidth={2}
                   className="size-4"
                 />
-                Open details
+                {translate.openDetails}
               </Link>
               <RecordActionsMenu
                 isDeleting={deletingKidId === kid.id}

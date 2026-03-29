@@ -1,39 +1,423 @@
 {
-  "title": {
-    "en": "Kid Sick Tracker",
-    "lt": "Kid Sick Tracker"
+  "actions": {
+    "en": "Actions",
+    "lt": "Veiksmai"
   },
-  "settingsTitle": {
-    "en": "Settings",
-    "lt": "Nustatymai"
+  "add": {
+    "en": "Add",
+    "lt": "Pridėti"
   },
-  "appearanceTitle": {
-    "en": "Appearance",
-    "lt": "Išvaizda"
+  "addFirstKid": {
+    "en": "Add First Kid",
+    "lt": "Pridėti pirmą vaiką"
+  },
+  "addGrowthMeasurement": {
+    "en": "Add growth measurement",
+    "lt": "Pridėti augimo įrašą"
+  },
+  "addKid": {
+    "en": "Add Kid",
+    "lt": "Pridėti vaiką"
+  },
+  "addKidProfile": {
+    "en": "Add kid profile",
+    "lt": "Pridėti vaiko profilį"
+  },
+  "addMedication": {
+    "en": "Add medication",
+    "lt": "Pridėti vaistą"
+  },
+  "addMedicationRecord": {
+    "en": "Add medication record",
+    "lt": "Pridėti vaistų įrašą"
+  },
+  "addNote": {
+    "en": "Add note",
+    "lt": "Pridėti pastabą"
+  },
+  "addTemperatureRecord": {
+    "en": "Add temperature record",
+    "lt": "Pridėti temperatūros įrašą"
+  },
+  "adding": {
+    "en": "Adding...",
+    "lt": "Pridedama..."
   },
   "appearanceDescription": {
     "en": "Choose how the app theme should render for this browser.",
     "lt": "Pasirinkite, kaip programėlės tema turėtų būti rodoma šiame naršyklėje."
   },
-  "themeLabel": {
-    "en": "Theme",
-    "lt": "Tema"
+  "appearanceTitle": {
+    "en": "Appearance",
+    "lt": "Išvaizda"
   },
-  "themePlaceholder": {
-    "en": "Select a theme",
-    "lt": "Pasirinkite temą"
+  "atLeast38": {
+    "en": "At least 38°",
+    "lt": "Bent 38°"
   },
-  "themeSystem": {
-    "en": "System",
-    "lt": "Sistema"
+  "authDescription": {
+    "en": "Welcome to Kid Sick. Please sign in to continue.",
+    "lt": "Sveiki atvykę į Kid Sick. Prašome prisijungti, kad tęstumėte."
   },
-  "themeLight": {
-    "en": "Light",
-    "lt": "Šviesi"
+  "authorizeGoogle": {
+    "en": "Authorize Google Drive",
+    "lt": "Suteikti prieigą prie Google Drive"
   },
-  "themeDark": {
-    "en": "Dark",
-    "lt": "Tamsi"
+  "backToDashboard": {
+    "en": "Back to dashboard",
+    "lt": "Atgal į prietaisų skydelį"
+  },
+  "birthday": {
+    "en": "Birthday",
+    "lt": "Gimimo data"
+  },
+  "birthdayRequired": {
+    "en": "Birthday is required",
+    "lt": "Gimtadienis yra privalomas"
+  },
+  "birthdayValue": {
+    "en": "Birthday {date}",
+    "lt": "Gimtadienis {date}"
+  },
+  "bySigningIn": {
+    "en": "By signing in, you authorize this app to:",
+    "lt": "Prisijungdami suteikiate šiai programai leidimą:"
+  },
+  "close": {
+    "en": "Close",
+    "lt": "Uždaryti"
+  },
+  "cm": {
+    "en": "cm",
+    "lt": "cm"
+  },
+  "connecting": {
+    "en": "Connecting...",
+    "lt": "Jungiamasi..."
+  },
+  "content": {
+    "en": "Content",
+    "lt": "Turinys"
+  },
+  "createSpreadsheet": {
+    "en": "Create a spreadsheet in your Google Drive",
+    "lt": "Sukurti Google Sheet jūsų Google Drive paskyroje"
+  },
+  "dashboardLoadError": {
+    "en": "Could not load dashboard",
+    "lt": "Nepavyko įkelti prietaisų skydelio"
+  },
+  "dateTime": {
+    "en": "Date and time",
+    "lt": "Data ir laikas"
+  },
+  "datetimeRequired": {
+    "en": "Measurement date/time is required",
+    "lt": "Reikalinga matavimo data/laikas"
+  },
+  "daysWithMedication": {
+    "en": "Days with medication",
+    "lt": "Dienos su vaistais"
+  },
+  "daysWithMedicationDesc": {
+    "en": "Unique treatment days",
+    "lt": "Unikalios gydymo dienos"
+  },
+  "daysWithMedications": {
+    "en": "Days with medication:",
+    "lt": "Dienos su vaistais:"
+  },
+  "delete": {
+    "en": "Delete",
+    "lt": "Ištrinti"
+  },
+  "deleteKidConfirm": {
+    "en": "Delete {name}? This will permanently remove the kid profile and all related temperature, medication, and growth records.",
+    "lt": "Ištrinti {name}? Tai nepakeičiamai pašalins vaiko profilį ir visus susijusius temperatūros, vaistų bei augimo įrašus."
+  },
+  "deleting": {
+    "en": "Deleting...",
+    "lt": "Trinama..."
+  },
+  "disconnectGoogle": {
+    "en": "Disconnect Google",
+    "lt": "Atsijungti nuo Google"
+  },
+  "disconnecting": {
+    "en": "Disconnecting...",
+    "lt": "Atsijungiama..."
+  },
+  "dose": {
+    "en": "Dose",
+    "lt": "Dozė"
+  },
+  "doseInvalid": {
+    "en": "Dose seems invalid",
+    "lt": "Dozė atrodo netinkama"
+  },
+  "dosePositive": {
+    "en": "Dose must be positive",
+    "lt": "Dozė turi būti teigiama"
+  },
+  "doseUnitRequired": {
+    "en": "Dose unit is required",
+    "lt": "Dalių vienetas yra privalomas"
+  },
+  "dosesCount": {
+    "en": "doses",
+    "lt": "dozės"
+  },
+  "dosesCountValue": {
+    "en": "{count} doses",
+    "lt": "{count} dozės"
+  },
+  "edit": {
+    "en": "Edit",
+    "lt": "Redaguoti"
+  },
+  "editGrowthMeasurement": {
+    "en": "Edit growth measurement",
+    "lt": "Redaguoti augimo įrašą"
+  },
+  "editKidProfile": {
+    "en": "Edit kid profile",
+    "lt": "Redaguoti vaiko profilį"
+  },
+  "editMedicationRecord": {
+    "en": "Edit medication record",
+    "lt": "Redaguoti vaistų įrašą"
+  },
+  "editNote": {
+    "en": "Edit note",
+    "lt": "Redaguoti pastabą"
+  },
+  "editTemperatureRecord": {
+    "en": "Edit temperature record",
+    "lt": "Redaguoti temperatūros įrašą"
+  },
+  "failedToAddGrowth": {
+    "en": "Failed to add growth measurement",
+    "lt": "Nepavyko pridėti augimo matavimo"
+  },
+  "failedToAddMedication": {
+    "en": "Failed to add medication",
+    "lt": "Nepavyko pridėti vaistų"
+  },
+  "failedToAddNote": {
+    "en": "Failed to add note",
+    "lt": "Nepavyko pridėti užrašą"
+  },
+  "failedToAddTemperature": {
+    "en": "Failed to add temperature",
+    "lt": "Nepavyko pridėti temperatūros"
+  },
+  "failedToDeleteGrowth": {
+    "en": "Failed to delete growth record",
+    "lt": "Nepavyko ištrinti augimo įrašo"
+  },
+  "failedToDeleteKid": {
+    "en": "Failed to delete kid",
+    "lt": "Nepavyko ištrinti vaikui"
+  },
+  "failedToDeleteMedication": {
+    "en": "Failed to delete medication",
+    "lt": "Nepavyko ištrinti vaisto"
+  },
+  "failedToDeleteNote": {
+    "en": "Failed to delete note",
+    "lt": "Nepavyko ištrinti pastabos"
+  },
+  "failedToDeleteTemperature": {
+    "en": "Failed to delete temperature",
+    "lt": "Nepavyko ištrinti temperatūros"
+  },
+  "failedToLoadGIS": {
+    "en": "Failed to load Google Identity Services",
+    "lt": "Nepavyko įkelti „Google Identity Services“"
+  },
+  "failedToSaveGrowth": {
+    "en": "Failed to save growth measurement",
+    "lt": "Nepavyko išsaugoti augimo matavimo"
+  },
+  "failedToSaveKid": {
+    "en": "Failed to save kid profile",
+    "lt": "Nepavyko išsaugoti vaiko profilio"
+  },
+  "failedToSaveMedication": {
+    "en": "Failed to save medication",
+    "lt": "Nepavyko įrašyti vaistų"
+  },
+  "failedToSaveNote": {
+    "en": "Failed to save note",
+    "lt": "Nepavyko įrašyti pastabos"
+  },
+  "failedToSaveTemperature": {
+    "en": "Failed to save temperature",
+    "lt": "Nepavyko išsaugoti temperatūros"
+  },
+  "failedToUpdateGrowth": {
+    "en": "Failed to update growth measurement",
+    "lt": "Nepavyko atnaujinti augimo matavimo"
+  },
+  "failedToUpdateMedication": {
+    "en": "Failed to update medication",
+    "lt": "Nepavyko atnaujinti vaistų"
+  },
+  "failedToUpdateNote": {
+    "en": "Failed to update note",
+    "lt": "Nepavyko atnaujinti pastabos"
+  },
+  "failedToUpdateTemperature": {
+    "en": "Failed to update temperature",
+    "lt": "Nepavyko atnaujinti temperatūros"
+  },
+  "feverEpisodes": {
+    "en": "Fever episodes",
+    "lt": "Karščiavimo epizodai"
+  },
+  "googleConnected": {
+    "en": "Google Connected",
+    "lt": "„Google Connected“"
+  },
+  "googleConnectionDescription": {
+    "en": "Your health records are stored in your own Google Drive spreadsheet.",
+    "lt": "Jūsų sveikatos įrašai saugomi jūsų asmeniniame Google Drive Sheet."
+  },
+  "googleConnectionTitle": {
+    "en": "Google Connection",
+    "lt": "„Google“ ryšys"
+  },
+  "growth": {
+    "en": "Growth",
+    "lt": "Augimas"
+  },
+  "growthAdded": {
+    "en": "Growth measurement added",
+    "lt": "Pridėtas augimo matavimas"
+  },
+  "growthCheckpoints": {
+    "en": "Growth checkpoints",
+    "lt": "Augimo kontroliniai taškai"
+  },
+  "growthCheckpointsDesc": {
+    "en": "Historical growth entries",
+    "lt": "Istoriniai augimo įrašai"
+  },
+  "growthDataDescFull": {
+    "en": "Most recent height and weight trends. Growth checkpoints: {total}.",
+    "lt": "Naujausios ūgio ir svorio tendencijos. Augimo kontroliniai taškai: {total}."
+  },
+  "growthDataTitle": {
+    "en": "Growth data",
+    "lt": "Augimo duomenys"
+  },
+  "growthDeleted": {
+    "en": "Growth record deleted",
+    "lt": "Augimo įrašas ištrintas"
+  },
+  "growthDialogAddDesc": {
+    "en": "Save historical growth and refresh profile latest values.",
+    "lt": "Išsaugokite istorinius augimo duomenis ir atnaujinkite profilio naujausius rodiklius."
+  },
+  "growthDialogEditDesc": {
+    "en": "Update historical growth values for this child.",
+    "lt": "Atnaujinkite šio vaiko istorinius augimo duomenis."
+  },
+  "growthHistory": {
+    "en": "Growth history",
+    "lt": "Augimo istorija"
+  },
+  "growthUpdated": {
+    "en": "Growth measurement updated",
+    "lt": "Augimo matavimas atnaujintas"
+  },
+  "heightCm": {
+    "en": "Height (cm)",
+    "lt": "Ūgis (cm)"
+  },
+  "heightInvalid": {
+    "en": "Height seems invalid",
+    "lt": "Atrodo, kad ūgis nėra normalus"
+  },
+  "heightTrend": {
+    "en": "Height trend",
+    "lt": "Ūgio tendencija"
+  },
+  "heightTrendDesc": {
+    "en": "Most recent 10 height values",
+    "lt": "Paskutinės 10 ūgio reikšmių"
+  },
+  "heightTrendEmpty": {
+    "en": "Add growth records with height to see a trend",
+    "lt": "Pridėkite augimo įrašus su ūgiu, kad pamatytumėte tendenciją"
+  },
+  "heightValue": {
+    "en": "{value} cm",
+    "lt": "{value} cm"
+  },
+  "invalidGrowthInput": {
+    "en": "Invalid growth input",
+    "lt": "Neteisinga augimo įvestis"
+  },
+  "invalidKidInput": {
+    "en": "Invalid kid profile input",
+    "lt": "Neteisinga vaiko profilio įvestis"
+  },
+  "invalidMedicationInput": {
+    "en": "Invalid medication input",
+    "lt": "Neteisinga vaistų įvestis"
+  },
+  "invalidNoteInput": {
+    "en": "Invalid note input",
+    "lt": "Neteisingas pastabos įrašas"
+  },
+  "invalidTemperatureInput": {
+    "en": "Invalid temperature input",
+    "lt": "Neteisingas temperatūros įvestis"
+  },
+  "kg": {
+    "en": "kg",
+    "lt": "kg"
+  },
+  "kidDeleted": {
+    "en": "Kid and related records deleted",
+    "lt": "Vaikas ir susiję įrašai ištrinti"
+  },
+  "kidDetails": {
+    "en": "Kid details",
+    "lt": "Vaiko informacija"
+  },
+  "kidFormDialogDescription": {
+    "en": "Add core profile details and update height or weight anytime.",
+    "lt": "Pridėkite pagrindinę profilio informaciją ir atnaujinkite ūgį ar svorį bet kada."
+  },
+  "kidLoadError": {
+    "en": "Error loading kid data",
+    "lt": "Klaida įkeliant vaiko duomenis"
+  },
+  "kidNotFound": {
+    "en": "Kid not found",
+    "lt": "Vaikas nerastas"
+  },
+  "kidProfileCreated": {
+    "en": "Kid profile created",
+    "lt": "Vaiko profilis sukurtas"
+  },
+  "kidProfileMissing": {
+    "en": "The selected kid profile no longer exists.",
+    "lt": "Pasirinkto vaiko profilis nebeegzistuoja."
+  },
+  "kidProfileUpdated": {
+    "en": "Kid profile updated",
+    "lt": "Vaiko profilis atnaujintas"
+  },
+  "kidsDashboardDescription": {
+    "en": "Manage child profiles and jump into detailed tracking records.",
+    "lt": "Tvarkykite vaikų profilius ir peržiūrėkite detalius sekimo įrašus."
+  },
+  "kidsDashboardTitle": {
+    "en": "Kids Dashboard",
+    "lt": "Vaikų skydelis"
   },
   "languageLabel": {
     "en": "Language",
@@ -43,13 +427,329 @@
     "en": "Select a language",
     "lt": "Pasirinkite kalbą"
   },
-  "temperatureTitle": {
-    "en": "Temperature",
-    "lt": "Temperatūra"
+  "latest": {
+    "en": "Latest",
+    "lt": "Naujausia"
+  },
+  "latestHeight": {
+    "en": "Latest height",
+    "lt": "Naujausias ūgis"
+  },
+  "latestHeightDesc": {
+    "en": "From profile or latest growth row",
+    "lt": "Iš profilio arba naujausios augimo eilutės"
+  },
+  "latestMeasurement": {
+    "en": "Latest measurement",
+    "lt": "Naujausias matavimas"
+  },
+  "latestMeasurementData": {
+    "en": "Latest measurement data",
+    "lt": "Naujausi matavimo duomenys"
+  },
+  "latestMeasurementDataDescFull": {
+    "en": "Last 12 measurements, normalized to C for consistency. Fever episodes: {feverCount}. Total logs: {totalCount}.",
+    "lt": "Paskutiniai 12 matavimų, normalizuoti į C dėl nuoseklumo. Karščiavimo epizodai: {feverCount}. Iš viso įrašų: {totalCount}."
+  },
+  "latestMeasurements": {
+    "en": "Latest: {height} cm / {weight} kg",
+    "lt": "Naujausia: {height} cm / {weight} kg"
+  },
+  "latestNote": {
+    "en": "Latest note",
+    "lt": "Naujausia pastaba"
+  },
+  "latestNoteDesc": {
+    "en": "Most recent entry time",
+    "lt": "Naujausias įėjimo laikas"
+  },
+  "latestWeight": {
+    "en": "Latest weight",
+    "lt": "Naujausias svoris"
+  },
+  "latestWeightDesc": {
+    "en": "Most recent known measurement",
+    "lt": "Naujausias žinomas matavimas"
+  },
+  "loadingData": {
+    "en": "Loading data...",
+    "lt": "Įkeliami duomenys..."
+  },
+  "loadingRecords": {
+    "en": "Loading records...",
+    "lt": "Įkeliami įrašai..."
+  },
+  "logout": {
+    "en": "Logout",
+    "lt": "Atsijungti"
+  },
+  "medication": {
+    "en": "Medication",
+    "lt": "Vaistai"
+  },
+  "medicationActivityEmpty": {
+    "en": "Add medication logs to see daily activity",
+    "lt": "Pridėkite vaistų įrašus, kad matytumėte kasdienę veiklą"
+  },
+  "medicationAdded": {
+    "en": "Medication added",
+    "lt": "Vaistas pridėtas"
+  },
+  "medicationDataDescFull": {
+    "en": "Doses recorded per day. Total logs: {total}. Days with medication: {days}.",
+    "lt": "Registruotos dozės per dieną. Iš viso įrašų: {total}. Dienų su vaistais: {days}."
+  },
+  "medicationDataTitle": {
+    "en": "Medication data",
+    "lt": "Vaistų duomenys"
+  },
+  "medicationDeleted": {
+    "en": "Medication deleted",
+    "lt": "Vaistas ištrintas"
+  },
+  "medicationDialogAddDesc": {
+    "en": "Track meds taken and dosage for this child.",
+    "lt": "Sekite šio vaiko vartojamus vaistus ir dozes."
+  },
+  "medicationDialogEditDesc": {
+    "en": "Update meds taken and dosage for this child.",
+    "lt": "Atnaujinkite šio vaiko vartojamus vaistus ir dozę."
+  },
+  "medicationLogs": {
+    "en": "Medication logs",
+    "lt": "Vaistų žurnalai"
+  },
+  "medicationNameRequired": {
+    "en": "Medication name is required",
+    "lt": "Vaisto pavadinimas yra privalomas"
+  },
+  "medicationNameTooLong": {
+    "en": "Medication name is too long",
+    "lt": "Vaisto pavadinimas per ilgas"
+  },
+  "medicationTimeRequired": {
+    "en": "Medication time is required",
+    "lt": "Reikalingas vaistų laikas"
+  },
+  "medicationUpdated": {
+    "en": "Medication updated",
+    "lt": "Vaistas atnaujintas"
+  },
+  "medications": {
+    "en": "Medications",
+    "lt": "Vaistai"
+  },
+  "method": {
+    "en": "Method",
+    "lt": "Metodas"
+  },
+  "methodPlaceholder": {
+    "en": "Oral / ear / forehead",
+    "lt": "Burnos / ausies / kaktos"
+  },
+  "methodTooLong": {
+    "en": "Method is too long",
+    "lt": "Metodas per ilgas"
+  },
+  "mostUsedMedicationTitle": {
+    "en": "Most used medication",
+    "lt": "Daugiausiai naudojami vaistai"
+  },
+  "mustBePositive": {
+    "en": "{field} must be positive",
+    "lt": "{field} turi būti teigiamas"
+  },
+  "name": {
+    "en": "Name",
+    "lt": "Vardas"
+  },
+  "nameRequired": {
+    "en": "Name is required",
+    "lt": "Vardas yra privalomas"
+  },
+  "nameTooLong": {
+    "en": "Name is too long",
+    "lt": "Vardas yra per ilgas"
+  },
+  "noData": {
+    "en": "No data",
+    "lt": "Nėra duomenų"
+  },
+  "noFeverRecorded": {
+    "en": "No fever recorded",
+    "lt": "Neregistruota temperatūros"
+  },
+  "noKidsDescription": {
+    "en": "Start by adding your first child profile to begin tracking temperature, medication, and growth logs.",
+    "lt": "Pradėkite pridėdami pirmąjį vaiko profilį, kad galėtumėte sekti temperatūrą, vaistus ir augimo įrašus."
+  },
+  "noKidsTitle": {
+    "en": "No kids added yet",
+    "lt": "Dar nėra pridėtų vaikų"
+  },
+  "noMedicationRecords": {
+    "en": "No medication records yet",
+    "lt": "Dar nėra jokių vaistų įrašų"
+  },
+  "noNotes": {
+    "en": "No notes",
+    "lt": "Nėra pastabų"
+  },
+  "noNotesYet": {
+    "en": "No notes yet",
+    "lt": "Jokių užrašų dar nėra"
+  },
+  "noteAdded": {
+    "en": "Note added",
+    "lt": "Pastaba pridėta"
+  },
+  "noteContentRequired": {
+    "en": "Note content is required",
+    "lt": "Pastabos turinys yra privalomas"
+  },
+  "noteDeleted": {
+    "en": "Note deleted",
+    "lt": "Pastaba ištrinta"
+  },
+  "noteDialogAddDesc": {
+    "en": "Record a new note for this child.",
+    "lt": "Įrašykite naują pastabą šiam vaikui."
+  },
+  "noteDialogEditDesc": {
+    "en": "Update an existing note for this child.",
+    "lt": "Atnaujinti esamą pastabą šiam vaikui."
+  },
+  "noteLogs": {
+    "en": "Note logs",
+    "lt": "Pastabų žurnalai"
+  },
+  "noteTooLong": {
+    "en": "Note is too long",
+    "lt": "Pastaba per ilga"
+  },
+  "noteUpdated": {
+    "en": "Note updated",
+    "lt": "Pastaba atnaujinta"
+  },
+  "notes": {
+    "en": "Notes",
+    "lt": "Pastabos"
+  },
+  "notesDataDescFull": {
+    "en": "Total notes: {total}. Latest note: {latest}.",
+    "lt": "Iš viso užrašų: {total}. Naujausias užrašas: {latest}."
+  },
+  "notesDataTitle": {
+    "en": "Notes data",
+    "lt": "Pastabų duomenys"
+  },
+  "notesTooLong": {
+    "en": "Notes are too long",
+    "lt": "Pastabos per ilgos"
+  },
+  "openDetails": {
+    "en": "Open details",
+    "lt": "Atverti detales"
+  },
+  "openMySheet": {
+    "en": "Open my sheet",
+    "lt": "Atidaryti Google Sheet"
+  },
+  "openSettings": {
+    "en": "Open settings",
+    "lt": "Atidaryti nustatymus"
+  },
+  "privacyPolicy": {
+    "en": "Privacy Policy",
+    "lt": "Privatumo politika"
+  },
+  "provideHeightOrWeight": {
+    "en": "Provide at least height or weight",
+    "lt": "Nurodykite bent ūgį arba svorį"
+  },
+  "readWriteHealth": {
+    "en": "Read and write your health tracking data in the spreadsheet",
+    "lt": "Skaityti ir rašyti jūsų sveikatos sekimo duomenis Google Sheet"
+  },
+  "recentPreview": {
+    "en": "Recent preview",
+    "lt": "Naujausias peržiūra"
+  },
+  "recentPreviewEmpty": {
+    "en": "Add a note to keep recent observations visible here.",
+    "lt": "Pridėkite pastabą, kad čia būtų matomi naujausi pastebėjimai."
+  },
+  "save": {
+    "en": "Save",
+    "lt": "Išsaugoti"
+  },
+  "saving": {
+    "en": "Saving...",
+    "lt": "Išsaugoma..."
+  },
+  "scopesDrive": {
+    "en": "Drive file access and Sheets read/write are used to create and update your tracker workbook.",
+    "lt": "Prieiga prie Drive failų ir Sheets skaitymo/rašymo naudojama jūsų įrašams kurti ir atnaujinti."
+  },
+  "scopesRequested": {
+    "en": "Scopes requested",
+    "lt": "Prašomos prieigos"
+  },
+  "selectTemperatureUnit": {
+    "en": "Select temperature unit",
+    "lt": "Pasirinkite temperatūros vienetą"
+  },
+  "settingsTitle": {
+    "en": "Settings",
+    "lt": "Nustatymai"
+  },
+  "signInErrorDefault": {
+    "en": "Failed to sign in. Please try again.",
+    "lt": "Prisijungti nepavyko. Bandykite dar kartą."
+  },
+  "signInFailed": {
+    "en": "Sign-in failed",
+    "lt": "Prisijungti nepavyko"
+  },
+  "temperatureAdded": {
+    "en": "Temperature added",
+    "lt": "Temperatūra pridėta"
+  },
+  "temperatureDeleted": {
+    "en": "Temperature deleted",
+    "lt": "Temperatūra ištrinta"
   },
   "temperatureDescription": {
     "en": "Pick your default unit for new temperature entries. Default is Celsius.",
     "lt": "Pasirinkite numatytąjį vienetą naujiems temperatūros įrašams. Numatytasis yra Celsijus."
+  },
+  "temperatureDialogAddDesc": {
+    "en": "Record a new body temperature measurement.",
+    "lt": "Užfiksuokite naują kūno temperatūros matavimą."
+  },
+  "temperatureDialogEditDesc": {
+    "en": "Update the body temperature measurement.",
+    "lt": "Atnaujinkite kūno temperatūros matavimą."
+  },
+  "temperatureLogs": {
+    "en": "Temperature logs",
+    "lt": "Temperatūros įrašai"
+  },
+  "temperatureTitle": {
+    "en": "Temperature",
+    "lt": "Temperatūra"
+  },
+  "temperatureTooHigh": {
+    "en": "Temperature is too high",
+    "lt": "Temperatūra per aukšta"
+  },
+  "temperatureTooLow": {
+    "en": "Temperature is too low",
+    "lt": "Temperatūra per žema"
+  },
+  "temperatureTrendEmpty": {
+    "en": "Add temperature records to see a trend line",
+    "lt": "Pridėti temperatūros įrašus norint pamatyti tendencijų liniją"
   },
   "temperatureUnitLabel": {
     "en": "Default unit",
@@ -59,24 +759,120 @@
     "en": "Select a unit",
     "lt": "Pasirinkite vienetą"
   },
-  "googleConnectionTitle": {
-    "en": "Google Connection",
-    "lt": "Google prisijungimas"
+  "temperatureUpdated": {
+    "en": "Temperature updated",
+    "lt": "Temperatūra atnaujinta"
   },
-  "googleConnectionDescription": {
-    "en": "Your health records are stored in your own Google Drive spreadsheet.",
-    "lt": "Jūsų sveikatos įrašai saugomi jūsų Google Drive skaičiuoklėje."
+  "themeDark": {
+    "en": "Dark",
+    "lt": "Tamsi"
   },
-  "openMySheet": {
-    "en": "Open my sheet",
-    "lt": "Atidaryti mano skaičiuoklę"
+  "themeLabel": {
+    "en": "Theme",
+    "lt": "Tema"
   },
-  "disconnecting": {
-    "en": "Disconnecting...",
-    "lt": "Atsijungiama..."
+  "themeLight": {
+    "en": "Light",
+    "lt": "Šviesi"
   },
-  "disconnectGoogle": {
-    "en": "Disconnect Google",
-    "lt": "Atsijungti nuo Google"
+  "themePlaceholder": {
+    "en": "Select a theme",
+    "lt": "Pasirinkite temą"
+  },
+  "themeSystem": {
+    "en": "System",
+    "lt": "Sistema"
+  },
+  "title": {
+    "en": "Kid Sick Tracker",
+    "lt": "Kid Sick Tracker"
+  },
+  "totalDosesLogged": {
+    "en": "Total doses logged",
+    "lt": "Iš viso užregistruotų dozių"
+  },
+  "totalDosesLoggedDesc": {
+    "en": "All medication records for this child",
+    "lt": "Visi šio vaiko vaistų įrašai"
+  },
+  "totalLogs": {
+    "en": "Total logs",
+    "lt": "Bendras įrašų skaičius"
+  },
+  "totalLogsDesc": {
+    "en": "Across all recorded days",
+    "lt": "Per visą įrašytą laikotarpį"
+  },
+  "totalNotes": {
+    "en": "Total notes",
+    "lt": "Iš viso užrašų"
+  },
+  "totalNotesDesc": {
+    "en": "Logged observations and reminders",
+    "lt": "Užfiksuoti stebėjimai ir priminimai"
+  },
+  "unableToLoadKids": {
+    "en": "Unable to load kids",
+    "lt": "Nepavyksta įkelti vaikų"
+  },
+  "unit": {
+    "en": "Unit",
+    "lt": "Vienetas"
+  },
+  "unitTooLong": {
+    "en": "Unit is too long",
+    "lt": "Vienetas per ilgas"
+  },
+  "unnamedMedication": {
+    "en": "Unnamed",
+    "lt": "Nepavadintas"
+  },
+  "update": {
+    "en": "Update",
+    "lt": "Atnaujinti"
+  },
+  "updating": {
+    "en": "Updating...",
+    "lt": "Atsinaujinama..."
+  },
+  "value": {
+    "en": "Value",
+    "lt": "Vertė"
+  },
+  "viewOnGithub": {
+    "en": "View kid-sick on GitHub",
+    "lt": "Peržiūrėti kid-sick GitHub platformoje"
+  },
+  "viewPrivacyPolicy": {
+    "en": "View Privacy Policy",
+    "lt": "Peržiūrėti privatumo politiką"
+  },
+  "weightInvalid": {
+    "en": "Weight seems invalid",
+    "lt": "Svoris atrodo neteisingas"
+  },
+  "weightKg": {
+    "en": "Weight (kg)",
+    "lt": "Svoris (kg)"
+  },
+  "weightTrend": {
+    "en": "Weight trend",
+    "lt": "Svorio tendencija"
+  },
+  "weightTrendDesc": {
+    "en": "Most recent 10 weight values",
+    "lt": "Paskutinės 10 svorio reikšmių"
+  },
+  "weightTrendEmpty": {
+    "en": "Add growth records with weight to see a trend",
+    "lt": "Pridėkite ūgio ir svorio įrašus, kad matytumėte tendenciją"
+  },
+  "weightValue": {
+    "en": "{value} kg",
+    "lt": "{value} kg"
+  },
+  "when": {
+    "en": "When",
+    "lt": "Kada"
   }
 }

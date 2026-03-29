@@ -22,6 +22,7 @@ import {
 import type { MedicationRecord } from "@/features/health/types"
 import type { MiniChartPoint } from "@/pages/kid-page/utils"
 import { renderDateTime } from "@/pages/kid-page/utils"
+import { translate, withParams } from "@/lib/translate"
 
 type MedicationTabProps = {
   medications: MedicationRecord[]
@@ -46,60 +47,64 @@ export function MedicationTab({
     <div className="space-y-3">
       <Card className="hidden border-primary/25 bg-linear-to-br from-primary/10 to-card md:block">
         <CardHeader>
-          <CardTitle>Medication data</CardTitle>
+          <CardTitle>{translate.medicationDataTitle}</CardTitle>
           <CardDescription>
-            Doses recorded per day. Total logs: {medications.length}. Days with
-            medication: {medicationPerDay.length}.
+            {withParams(translate.medicationDataDescFull, {
+              total: medications.length,
+              days: medicationPerDay.length,
+            })}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 pb-4 sm:grid-cols-3">
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">
-                Total doses logged
+                {translate.totalDosesLogged}
               </p>
               <p className="mt-2 text-2xl font-semibold">
                 {medications.length}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
-                All medication records for this child
+                {translate.totalDosesLoggedDesc}
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">
-                Most used medication
+                {translate.mostUsedMedicationTitle}
               </p>
               <p className="mt-2 truncate text-2xl font-semibold">
                 {mostUsedMedication?.name ?? "-"}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
                 {mostUsedMedication
-                  ? `${mostUsedMedication.count} doses`
-                  : "No medication records yet"}
+                  ? withParams(translate.dosesCountValue, {
+                      count: mostUsedMedication.count,
+                    })
+                  : translate.noMedicationRecords}
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">
-                Days with medication
+                {translate.daysWithMedication}
               </p>
               <p className="mt-2 text-2xl font-semibold">
                 {medicationPerDay.length}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
-                Unique treatment days
+                {translate.daysWithMedicationDesc}
               </p>
             </div>
           </div>
           <BarMiniChart
             data={medicationPerDay}
-            emptyLabel="Add medication logs to see daily activity"
+            emptyLabel={translate.medicationActivityEmpty}
           />
         </CardContent>
       </Card>
 
       <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
         <CardHeader className="flex-row items-center justify-between">
-          <CardTitle>Medication logs</CardTitle>
+          <CardTitle>{translate.medicationLogs}</CardTitle>
           <Button onClick={onCreate}>
             <HugeiconsIcon
               icon={Add01Icon}
@@ -111,18 +116,18 @@ export function MedicationTab({
               strokeWidth={2}
               className="size-4"
             />
-            Add medication
+            {translate.addMedication}
           </Button>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>When</TableHead>
-                <TableHead>Medication</TableHead>
-                <TableHead>Dose</TableHead>
-                <TableHead>Notes</TableHead>
-                <TableHead className="w-32">Actions</TableHead>
+                <TableHead>{translate.when}</TableHead>
+                <TableHead>{translate.medication}</TableHead>
+                <TableHead>{translate.dose}</TableHead>
+                <TableHead>{translate.notes}</TableHead>
+                <TableHead className="w-32">{translate.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

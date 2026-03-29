@@ -22,6 +22,7 @@ import {
 import type { GrowthRecord, KidProfile } from "@/features/health/types"
 import type { MiniChartPoint } from "@/pages/kid-page/utils"
 import { renderDateTime } from "@/pages/kid-page/utils"
+import { translate, withParams } from "@/lib/translate"
 
 type GrowthTabProps = {
   kid: KidProfile
@@ -50,41 +51,54 @@ export function GrowthTab({
     <div className="space-y-3">
       <Card className="hidden border-primary/25 bg-linear-to-br from-primary/10 to-card md:block">
         <CardHeader>
-          <CardTitle>Growth data</CardTitle>
+          <CardTitle>{translate.growthDataTitle}</CardTitle>
           <CardDescription>
-            Most recent height and weight trends. Growth checkpoints:{" "}
-            {growthRecords.length}.
+            {withParams(translate.growthDataDescFull, {
+              total: growthRecords.length,
+            })}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 pb-4 sm:grid-cols-3">
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Latest height</p>
+              <p className="text-sm text-muted-foreground">
+                {translate.latestHeight}
+              </p>
               <p className="mt-2 text-2xl font-semibold">
-                {kid.currentHeightCm ?? latestGrowth?.heightCm ?? "-"} cm
+                {withParams(translate.heightValue, {
+                  value: String(
+                    kid.currentHeightCm ?? latestGrowth?.heightCm ?? "-"
+                  ),
+                })}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
-                From profile or latest growth row
-              </p>
-            </div>
-            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Latest weight</p>
-              <p className="mt-2 text-2xl font-semibold">
-                {kid.currentWeightKg ?? latestGrowth?.weightKg ?? "-"} kg
-              </p>
-              <p className="mt-2 text-xs text-muted-foreground">
-                Most recent known measurement
+                {translate.latestHeightDesc}
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <p className="text-sm text-muted-foreground">
-                Growth checkpoints
+                {translate.latestWeight}
+              </p>
+              <p className="mt-2 text-2xl font-semibold">
+                {withParams(translate.weightValue, {
+                  value: String(
+                    kid.currentWeightKg ?? latestGrowth?.weightKg ?? "-"
+                  ),
+                })}
+              </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                {translate.latestWeightDesc}
+              </p>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-background/80 p-4">
+              <p className="text-sm text-muted-foreground">
+                {translate.growthCheckpoints}
               </p>
               <p className="mt-2 text-2xl font-semibold">
                 {growthRecords.length}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
-                Historical growth entries
+                {translate.growthCheckpointsDesc}
               </p>
             </div>
           </div>
@@ -92,28 +106,28 @@ export function GrowthTab({
           <div className="grid gap-3 lg:grid-cols-2">
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <div className="pb-4">
-                <p className="font-medium">Height trend</p>
+                <p className="font-medium">{translate.heightTrend}</p>
                 <p className="text-sm text-muted-foreground">
-                  Most recent 10 height values
+                  {translate.heightTrendDesc}
                 </p>
               </div>
               <LineMiniChart
                 data={growthHeightTrend}
-                emptyLabel="Add growth records with height to see a trend"
+                emptyLabel={translate.heightTrendEmpty}
               />
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
               <div className="pb-4">
-                <p className="font-medium">Weight trend</p>
+                <p className="font-medium">{translate.weightTrend}</p>
                 <p className="text-sm text-muted-foreground">
-                  Most recent 10 weight values
+                  {translate.weightTrendDesc}
                 </p>
               </div>
               <LineMiniChart
                 data={growthWeightTrend}
                 strokeClassName="text-chart-3"
                 areaClassName="text-chart-3/15"
-                emptyLabel="Add growth records with weight to see a trend"
+                emptyLabel={translate.weightTrendEmpty}
               />
             </div>
           </div>
@@ -122,7 +136,7 @@ export function GrowthTab({
 
       <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
         <CardHeader className="flex-row items-center justify-between">
-          <CardTitle>Growth history</CardTitle>
+          <CardTitle>{translate.growthHistory}</CardTitle>
           <Button onClick={onCreate}>
             <HugeiconsIcon
               icon={Add01Icon}
@@ -134,18 +148,18 @@ export function GrowthTab({
               strokeWidth={2}
               className="size-4"
             />
-            Add growth measurement
+            {translate.addGrowthMeasurement}
           </Button>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>When</TableHead>
-                <TableHead>Height (cm)</TableHead>
-                <TableHead>Weight (kg)</TableHead>
-                <TableHead>Notes</TableHead>
-                <TableHead className="w-32">Actions</TableHead>
+                <TableHead>{translate.when}</TableHead>
+                <TableHead>{translate.heightCm}</TableHead>
+                <TableHead>{translate.weightKg}</TableHead>
+                <TableHead>{translate.notes}</TableHead>
+                <TableHead className="w-32">{translate.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

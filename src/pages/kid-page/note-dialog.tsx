@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import type { NoteFormInput } from "@/features/health/schemas"
+import { translate } from "@/lib/translate"
 
 type NoteDialogProps = {
   open: boolean
@@ -39,16 +40,18 @@ export function NoteDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{editingId ? "Edit note" : "Add note"}</DialogTitle>
+          <DialogTitle>
+            {editingId ? translate.editNote : translate.addNote}
+          </DialogTitle>
           <DialogDescription>
             {editingId
-              ? "Update an existing note for this child."
-              : "Record a new note for this child."}
+              ? translate.noteDialogEditDesc
+              : translate.noteDialogAddDesc}
           </DialogDescription>
         </DialogHeader>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-1.5">
-            <Label htmlFor="note-time">Date and time</Label>
+            <Label htmlFor="note-time">{translate.dateTime}</Label>
             <Input
               id="note-time"
               type="datetime-local"
@@ -59,7 +62,7 @@ export function NoteDialog({
             </p>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="note-content">Content</Label>
+            <Label htmlFor="note-content">{translate.content}</Label>
             <Textarea
               id="note-content"
               rows={4}
@@ -86,11 +89,11 @@ export function NoteDialog({
               )}
               {form.formState.isSubmitting
                 ? editingId
-                  ? "Updating..."
-                  : "Adding..."
+                  ? translate.updating
+                  : translate.adding
                 : editingId
-                  ? "Update"
-                  : "Add"}
+                  ? translate.update
+                  : translate.add}
             </Button>
           </DialogFooter>
         </form>

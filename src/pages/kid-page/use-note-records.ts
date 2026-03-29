@@ -12,6 +12,7 @@ import {
 } from "@/features/sheets/health-repository"
 import type { KidAuth, LockHelpers } from "@/pages/kid-page/types"
 import { toInputDateTime, toIso } from "@/pages/kid-page/utils"
+import { translate } from "@/lib/translate"
 
 type NoteControllerArgs = {
   auth: KidAuth | null
@@ -39,7 +40,7 @@ export function useNoteRecords({
       editingNoteId: string | null
     }) => {
       if (!kid || !auth) {
-        throw new Error("Failed to save note")
+        throw new Error(translate.failedToSaveNote)
       }
 
       if (payload.editingNoteId) {
@@ -88,10 +89,10 @@ export function useNoteRecords({
             )
             .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))
         )
-        toast.success("Note updated")
+        toast.success(translate.noteUpdated)
       } else {
         setNotes((current) => [result.record, ...current])
-        toast.success("Note added")
+        toast.success(translate.noteAdded)
       }
 
       setIsNoteOpen(false)
@@ -103,8 +104,8 @@ export function useNoteRecords({
         saveError instanceof Error
           ? saveError.message
           : editingNoteId
-            ? "Failed to update note"
-            : "Failed to add note"
+            ? translate.failedToUpdateNote
+            : translate.failedToAddNote
       )
     },
   })
@@ -112,7 +113,7 @@ export function useNoteRecords({
   const deleteNoteMutation = useMutation({
     mutationFn: async (record: NoteRecord) => {
       if (!auth) {
-        throw new Error("Failed to delete note")
+        throw new Error(translate.failedToDeleteNote)
       }
 
       await deleteNote(
@@ -130,13 +131,13 @@ export function useNoteRecords({
         setIsNoteOpen(false)
         resetForm()
       }
-      toast.success("Note deleted")
+      toast.success(translate.noteDeleted)
     },
     onError: (deleteError) => {
       toast.error(
         deleteError instanceof Error
           ? deleteError.message
-          : "Failed to delete note"
+          : translate.failedToDeleteNote
       )
     },
     onSettled: () => {
@@ -170,7 +171,7 @@ export function useNoteRecords({
 
     const parsed = noteSchema.safeParse(values)
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Invalid note input")
+      toast.error(parsed.error.issues[0]?.message ?? translate.invalidNoteInput)
       locks.releaseActionLock(actionKey)
       return
     }

@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import type { KidFormInput } from "@/features/health/schemas"
+import { translate } from "@/lib/translate"
 
 type KidFormDialogProps = {
   form: UseFormReturn<KidFormInput>
@@ -37,12 +38,12 @@ export function KidFormDialog({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            Add core profile details and update height or weight anytime.
+            {translate.kidFormDialogDescription}
           </DialogDescription>
         </DialogHeader>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-1.5">
-            <Label htmlFor="kid-name">Name</Label>
+            <Label htmlFor="kid-name">{translate.name}</Label>
             <Input id="kid-name" {...form.register("name")} />
             <p className="text-xs text-destructive">
               {form.formState.errors.name?.message}
@@ -50,7 +51,7 @@ export function KidFormDialog({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="kid-birthday">Birthday</Label>
+            <Label htmlFor="kid-birthday">{translate.birthday}</Label>
             <Input
               id="kid-birthday"
               type="date"
@@ -63,7 +64,7 @@ export function KidFormDialog({
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1.5">
-              <Label htmlFor="kid-height">Height (cm)</Label>
+              <Label htmlFor="kid-height">{translate.heightCm}</Label>
               <Input
                 id="kid-height"
                 type="number"
@@ -75,7 +76,7 @@ export function KidFormDialog({
               </p>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="kid-weight">Weight (kg)</Label>
+              <Label htmlFor="kid-weight">{translate.weightKg}</Label>
               <Input
                 id="kid-weight"
                 type="number"
@@ -89,7 +90,7 @@ export function KidFormDialog({
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="kid-notes">Notes</Label>
+            <Label htmlFor="kid-notes">{translate.notes}</Label>
             <Textarea id="kid-notes" rows={3} {...form.register("notes")} />
             <p className="text-xs text-destructive">
               {form.formState.errors.notes?.message}
@@ -111,7 +112,7 @@ export function KidFormDialog({
                   className="size-4"
                 />
               )}
-              {form.formState.isSubmitting ? "Saving..." : "Save"}
+              {form.formState.isSubmitting ? translate.saving : translate.save}
             </Button>
           </DialogFooter>
         </form>

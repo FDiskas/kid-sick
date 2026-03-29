@@ -27,6 +27,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { TEMPERATURE_UNIT_OPTIONS } from "@/features/health/temperature-unit-preference"
 import type { TemperatureFormInput } from "@/features/health/schemas"
+import { translate } from "@/lib/translate"
 
 type TemperatureDialogProps = {
   open: boolean
@@ -50,17 +51,19 @@ export function TemperatureDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {editingId ? "Edit temperature" : "Add temperature"}
+            {editingId
+              ? translate.editTemperatureRecord
+              : translate.addTemperatureRecord}
           </DialogTitle>
           <DialogDescription>
             {editingId
-              ? "Update the body temperature measurement."
-              : "Record a new body temperature measurement."}
+              ? translate.temperatureDialogEditDesc
+              : translate.temperatureDialogAddDesc}
           </DialogDescription>
         </DialogHeader>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-1.5">
-            <Label htmlFor="temp-time">Date and time</Label>
+            <Label htmlFor="temp-time">{translate.dateTime}</Label>
             <Input
               id="temp-time"
               type="datetime-local"
@@ -72,7 +75,7 @@ export function TemperatureDialog({
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1.5">
-              <Label htmlFor="temp-value">Value</Label>
+              <Label htmlFor="temp-value">{translate.value}</Label>
               <Input
                 id="temp-value"
                 type="number"
@@ -84,7 +87,7 @@ export function TemperatureDialog({
               </p>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="temp-unit">Unit</Label>
+              <Label htmlFor="temp-unit">{translate.unit}</Label>
               <Select
                 value={unitValue}
                 onValueChange={(nextValue) => {
@@ -100,7 +103,7 @@ export function TemperatureDialog({
                 }}
               >
                 <SelectTrigger id="temp-unit" className="w-full">
-                  <SelectValue placeholder="Select temperature unit" />
+                  <SelectValue placeholder={translate.selectTemperatureUnit} />
                 </SelectTrigger>
                 <SelectContent>
                   {TEMPERATURE_UNIT_OPTIONS.map((option) => (
@@ -116,15 +119,15 @@ export function TemperatureDialog({
             </div>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="temp-method">Method</Label>
+            <Label htmlFor="temp-method">{translate.method}</Label>
             <Input
               id="temp-method"
-              placeholder="Oral / ear / forehead"
+              placeholder={translate.methodPlaceholder}
               {...form.register("method")}
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="temp-notes">Notes</Label>
+            <Label htmlFor="temp-notes">{translate.notes}</Label>
             <Textarea id="temp-notes" rows={3} {...form.register("notes")} />
           </div>
           <DialogFooter>
@@ -144,11 +147,11 @@ export function TemperatureDialog({
               )}
               {form.formState.isSubmitting
                 ? editingId
-                  ? "Updating..."
-                  : "Adding..."
+                  ? translate.updating
+                  : translate.adding
                 : editingId
-                  ? "Update"
-                  : "Add"}
+                  ? translate.update
+                  : translate.add}
             </Button>
           </DialogFooter>
         </form>

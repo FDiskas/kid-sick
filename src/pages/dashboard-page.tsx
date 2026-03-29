@@ -1,4 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { translate } from "@/lib/translate"
 import { useAuth } from "@/features/auth/auth-context"
 import { DashboardHeader } from "@/pages/dashboard/dashboard-header"
 import { KidFormDialog } from "@/pages/dashboard/kid-form-dialog"
@@ -19,13 +20,15 @@ export function DashboardPage() {
 
       {controller.error ? (
         <Alert variant="destructive">
-          <AlertTitle>Could not load dashboard</AlertTitle>
+          <AlertTitle>{translate.dashboardLoadError}</AlertTitle>
           <AlertDescription>{controller.error}</AlertDescription>
         </Alert>
       ) : null}
 
       {controller.isLoading ? (
-        <div className="text-sm text-muted-foreground">Loading data...</div>
+        <div className="text-sm text-muted-foreground">
+          {translate.loadingData}
+        </div>
       ) : (
         <KidsGrid
           kids={controller.kids}

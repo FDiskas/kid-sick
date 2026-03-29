@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table"
 import type { NoteRecord } from "@/features/health/types"
 import { renderDateTime } from "@/pages/kid-page/utils"
+import { translate, withParams } from "@/lib/translate"
 
 type NotesTabProps = {
   notes: NoteRecord[]
@@ -42,40 +43,46 @@ export function NotesTab({
     <div className="space-y-3">
       <Card className="hidden border-primary/25 bg-linear-to-br from-primary/10 to-card md:block">
         <CardHeader>
-          <CardTitle>Notes data</CardTitle>
+          <CardTitle>{translate.notesDataTitle}</CardTitle>
           <CardDescription>
-            Total notes: {notes.length}. Latest note:{" "}
-            {latestNote
-              ? renderDateTime(latestNote.recordedAt)
-              : "No notes yet"}
-            .
+            {withParams(translate.notesDataDescFull, {
+              total: notes.length,
+              latest: latestNote
+                ? renderDateTime(latestNote.recordedAt)
+                : translate.noNotesYet,
+            })}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Total notes</p>
+              <p className="text-sm text-muted-foreground">
+                {translate.totalNotes}
+              </p>
               <p className="mt-2 text-2xl font-semibold">{notes.length}</p>
               <p className="mt-2 text-xs text-muted-foreground">
-                Logged observations and reminders
+                {translate.totalNotesDesc}
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Latest note</p>
+              <p className="text-sm text-muted-foreground">
+                {translate.latestNote}
+              </p>
               <p className="mt-2 text-sm font-semibold">
                 {latestNote
                   ? renderDateTime(latestNote.recordedAt)
-                  : "No notes yet"}
+                  : translate.noNotesYet}
               </p>
               <p className="mt-2 text-xs text-muted-foreground">
-                Most recent entry time
+                {translate.latestNoteDesc}
               </p>
             </div>
             <div className="rounded-lg border border-border/60 bg-background/80 p-4">
-              <p className="text-sm text-muted-foreground">Recent preview</p>
+              <p className="text-sm text-muted-foreground">
+                {translate.recentPreview}
+              </p>
               <p className="mt-2 line-clamp-3 text-sm font-medium">
-                {latestNote?.content ??
-                  "Add a note to keep recent observations visible here."}
+                {latestNote?.content ?? translate.recentPreviewEmpty}
               </p>
             </div>
           </div>
@@ -84,7 +91,7 @@ export function NotesTab({
 
       <Card className="border-primary/25 bg-linear-to-br from-primary/10 to-card">
         <CardHeader className="flex-row items-center justify-between">
-          <CardTitle>Note logs</CardTitle>
+          <CardTitle>{translate.noteLogs}</CardTitle>
           <Button onClick={onCreate}>
             <HugeiconsIcon
               icon={Add01Icon}
@@ -96,16 +103,16 @@ export function NotesTab({
               strokeWidth={2}
               className="size-4"
             />
-            Add note
+            {translate.addNote}
           </Button>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>When</TableHead>
-                <TableHead>Content</TableHead>
-                <TableHead className="w-32">Actions</TableHead>
+                <TableHead>{translate.when}</TableHead>
+                <TableHead>{translate.content}</TableHead>
+                <TableHead className="w-32">{translate.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

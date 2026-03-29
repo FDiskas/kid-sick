@@ -12,6 +12,7 @@ import {
   updateKid,
 } from "@/features/sheets/health-repository"
 import { sheetsQueryKeys } from "@/features/sheets/query-keys"
+import { translate, withParams } from "@/lib/translate"
 
 export const defaultKidValues: KidFormInput = {
   name: "",
@@ -44,7 +45,7 @@ export function useDashboardController(
     queryKey: sheetsQueryKeys.kids(spreadsheetId),
     queryFn: async () => {
       if (!auth) {
-        throw new Error("Unable to load kids")
+        throw new Error(translate.unableToLoadKids)
       }
 
       return listKids(auth.accessToken, auth.spreadsheet.spreadsheetId)
@@ -58,7 +59,7 @@ export function useDashboardController(
       editingKid: KidProfile | null
     }) => {
       if (!auth) {
-        throw new Error("Failed to save kid profile")
+        throw new Error(translate.failedToSaveKid)
       }
 
       if (payload.editingKid) {
@@ -100,7 +101,9 @@ export function useDashboardController(
       )
 
       toast.success(
-        result.kind === "create" ? "Kid profile created" : "Kid profile updated"
+        result.kind === "create"
+          ? translate.kidProfileCreated
+          : translate.kidProfileUpdated
       )
       setIsDialogOpen(false)
       setEditingKid(null)
@@ -110,7 +113,7 @@ export function useDashboardController(
       toast.error(
         saveError instanceof Error
           ? saveError.message
-          : "Failed to save kid profile"
+          : translate.failedToSaveKid
       )
     },
   })
@@ -118,7 +121,7 @@ export function useDashboardController(
   const deleteKidMutation = useMutation({
     mutationFn: async (kid: KidProfile) => {
       if (!auth) {
-        throw new Error("Failed to delete kid")
+        throw new Error(translate.failedToDeleteKid)
       }
 
       await deleteKidCascade(
@@ -143,13 +146,13 @@ export function useDashboardController(
         setIsDialogOpen(false)
       }
 
-      toast.success("Kid and related records deleted")
+      toast.success(translate.kidDeleted)
     },
     onError: (deleteError) => {
       toast.error(
         deleteError instanceof Error
           ? deleteError.message
-          : "Failed to delete kid"
+          : translate.failedToDeleteKid
       )
     },
     onSettled: () => {
@@ -158,7 +161,7 @@ export function useDashboardController(
   })
 
   const dialogTitle = useMemo(
-    () => (editingKid ? "Edit kid profile" : "Add kid profile"),
+    () => (editingKid ? translate.editKidProfile : translate.addKidProfile),
     [editingKid]
   )
 
@@ -187,9 +190,7 @@ export function useDashboardController(
 
     const parsed = kidSchema.safeParse(values)
     if (!parsed.success) {
-      toast.error(
-        parsed.error.issues[0]?.message ?? "Invalid kid profile input"
-      )
+      toast.error(parsed.error.issues[0]?.message ?? translate.invalidKidInput)
       return
     }
 
@@ -211,7 +212,7 @@ export function useDashboardController(
 
     deleteLocksRef.current.add(actionKey)
     const confirmed = window.confirm(
-      `Delete ${kid.name}? This will permanently remove the kid profile and all related temperature, medication, and growth records.`
+      withParams(translate.deleteKidConfirm, { name: kid.name })
     )
 
     if (!confirmed) {

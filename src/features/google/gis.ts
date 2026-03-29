@@ -1,3 +1,5 @@
+import { translate } from "@/lib/translate"
+
 let gisScriptPromise: Promise<void> | null = null
 
 declare global {
@@ -38,7 +40,7 @@ export async function loadGoogleIdentityScript() {
         existingScript.addEventListener("load", () => resolve(), { once: true })
         existingScript.addEventListener(
           "error",
-          () => reject(new Error("Failed to load Google Identity Services")),
+          () => reject(new Error(translate.failedToLoadGIS)),
           { once: true }
         )
         return
@@ -49,8 +51,7 @@ export async function loadGoogleIdentityScript() {
       script.async = true
       script.defer = true
       script.onload = () => resolve()
-      script.onerror = () =>
-        reject(new Error("Failed to load Google Identity Services"))
+      script.onerror = () => reject(new Error(translate.failedToLoadGIS))
       document.head.appendChild(script)
     })
   }

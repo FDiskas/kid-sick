@@ -27,6 +27,7 @@ import { useMedicationRecords } from "@/pages/kid-page/use-medication-records"
 import { useNoteRecords } from "@/pages/kid-page/use-note-records"
 import { useTemperatureRecords } from "@/pages/kid-page/use-temperature-records"
 import { cn } from "@/lib/utils"
+import { translate, withParams } from "@/lib/translate"
 
 export function KidPage() {
   const { auth } = useAuth()
@@ -95,37 +96,45 @@ export function KidPage() {
               strokeWidth={2}
               className="size-4"
             />
-            Back to dashboard
+            {translate.backToDashboard}
           </Link>
           <h1 className="text-2xl font-semibold">
-            {data.kid?.name ?? "Kid details"}
+            {data.kid?.name ?? translate.kidDetails}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Birthday {data.kid?.birthDate ?? "-"} • Latest{" "}
-            {data.kid?.currentHeightCm ?? data.latestGrowth?.heightCm ?? "-"} cm
-            / {data.kid?.currentWeightKg ?? data.latestGrowth?.weightKg ?? "-"}{" "}
-            kg
+            {withParams(translate.birthdayValue, {
+              date: data.kid?.birthDate ?? "-",
+            })}{" "}
+            •{" "}
+            {withParams(translate.latestMeasurements, {
+              height: String(
+                data.kid?.currentHeightCm ?? data.latestGrowth?.heightCm ?? "-"
+              ),
+              weight: String(
+                data.kid?.currentWeightKg ?? data.latestGrowth?.weightKg ?? "-"
+              ),
+            })}
           </p>
         </div>
       </div>
 
       {data.isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading records...</p>
+        <p className="text-sm text-muted-foreground">
+          {translate.loadingRecords}
+        </p>
       ) : null}
 
       {data.error ? (
         <Alert variant="destructive">
-          <AlertTitle>Error loading kid data</AlertTitle>
+          <AlertTitle>{translate.kidLoadError}</AlertTitle>
           <AlertDescription>{data.error}</AlertDescription>
         </Alert>
       ) : null}
 
       {!data.isLoading && !data.kid ? (
         <Alert>
-          <AlertTitle>Kid not found</AlertTitle>
-          <AlertDescription>
-            The selected kid profile no longer exists.
-          </AlertDescription>
+          <AlertTitle>{translate.kidNotFound}</AlertTitle>
+          <AlertDescription>{translate.kidProfileMissing}</AlertDescription>
         </Alert>
       ) : null}
 
@@ -138,7 +147,7 @@ export function KidPage() {
                 strokeWidth={2}
                 className="size-4"
               />
-              Temperature
+              {translate.temperatureTitle}
             </TabsTrigger>
             <TabsTrigger value="medication">
               <HugeiconsIcon
@@ -146,7 +155,7 @@ export function KidPage() {
                 strokeWidth={2}
                 className="size-4"
               />
-              Medication
+              {translate.medications}
             </TabsTrigger>
             <TabsTrigger value="growth">
               <HugeiconsIcon
@@ -154,7 +163,7 @@ export function KidPage() {
                 strokeWidth={2}
                 className="size-4"
               />
-              Growth
+              {translate.growth}
             </TabsTrigger>
             <TabsTrigger value="notes">
               <HugeiconsIcon
@@ -162,7 +171,7 @@ export function KidPage() {
                 strokeWidth={2}
                 className="size-4"
               />
-              Notes
+              {translate.notes}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="temperature">

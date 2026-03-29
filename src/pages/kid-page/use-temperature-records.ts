@@ -16,6 +16,7 @@ import {
 } from "@/features/sheets/health-repository"
 import type { KidAuth, LockHelpers } from "@/pages/kid-page/types"
 import { toInputDateTime, toIso } from "@/pages/kid-page/utils"
+import { translate } from "@/lib/translate"
 
 type TemperatureControllerArgs = {
   auth: KidAuth | null
@@ -55,7 +56,7 @@ export function useTemperatureRecords({
       editingTemperatureId: string | null
     }) => {
       if (!kid || !auth) {
-        throw new Error("Failed to save temperature")
+        throw new Error(translate.failedToSaveTemperature)
       }
 
       if (payload.editingTemperatureId) {
@@ -112,10 +113,10 @@ export function useTemperatureRecords({
             )
             .sort((a, b) => b.measuredAt.localeCompare(a.measuredAt))
         )
-        toast.success("Temperature updated")
+        toast.success(translate.temperatureUpdated)
       } else {
         setTemperatures((current) => [result.record, ...current])
-        toast.success("Temperature added")
+        toast.success(translate.temperatureAdded)
       }
 
       setIsTempOpen(false)
@@ -127,8 +128,8 @@ export function useTemperatureRecords({
         saveError instanceof Error
           ? saveError.message
           : editingTemperatureId
-            ? "Failed to update temperature"
-            : "Failed to add temperature"
+            ? translate.failedToUpdateTemperature
+            : translate.failedToAddTemperature
       )
     },
   })
@@ -136,7 +137,7 @@ export function useTemperatureRecords({
   const deleteTemperatureMutation = useMutation({
     mutationFn: async (record: TemperatureRecord) => {
       if (!auth) {
-        throw new Error("Failed to delete temperature")
+        throw new Error(translate.failedToDeleteTemperature)
       }
 
       await deleteTemperatureRecord(
@@ -156,13 +157,13 @@ export function useTemperatureRecords({
         setIsTempOpen(false)
         resetForm()
       }
-      toast.success("Temperature deleted")
+      toast.success(translate.temperatureDeleted)
     },
     onError: (deleteError) => {
       toast.error(
         deleteError instanceof Error
           ? deleteError.message
-          : "Failed to delete temperature"
+          : translate.failedToDeleteTemperature
       )
     },
     onSettled: () => {
@@ -194,7 +195,7 @@ export function useTemperatureRecords({
     const parsed = temperatureSchema.safeParse(values)
     if (!parsed.success) {
       toast.error(
-        parsed.error.issues[0]?.message ?? "Invalid temperature input"
+        parsed.error.issues[0]?.message ?? translate.invalidTemperatureInput
       )
       locks.releaseActionLock(actionKey)
       return

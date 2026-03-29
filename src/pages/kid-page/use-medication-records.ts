@@ -15,6 +15,7 @@ import {
 } from "@/features/sheets/health-repository"
 import type { KidAuth, LockHelpers } from "@/pages/kid-page/types"
 import { toInputDateTime, toIso } from "@/pages/kid-page/utils"
+import { translate } from "@/lib/translate"
 
 type MedicationControllerArgs = {
   auth: KidAuth | null
@@ -44,7 +45,7 @@ export function useMedicationRecords({
       editingMedicationId: string | null
     }) => {
       if (!kid || !auth) {
-        throw new Error("Failed to save medication")
+        throw new Error(translate.failedToSaveMedication)
       }
 
       if (payload.editingMedicationId) {
@@ -101,10 +102,10 @@ export function useMedicationRecords({
             )
             .sort((a, b) => b.takenAt.localeCompare(a.takenAt))
         )
-        toast.success("Medication updated")
+        toast.success(translate.medicationUpdated)
       } else {
         setMedications((current) => [result.record, ...current])
-        toast.success("Medication added")
+        toast.success(translate.medicationAdded)
       }
 
       setIsMedOpen(false)
@@ -116,8 +117,8 @@ export function useMedicationRecords({
         saveError instanceof Error
           ? saveError.message
           : editingMedicationId
-            ? "Failed to update medication"
-            : "Failed to add medication"
+            ? translate.failedToUpdateMedication
+            : translate.failedToAddMedication
       )
     },
   })
@@ -125,7 +126,7 @@ export function useMedicationRecords({
   const deleteMedicationMutation = useMutation({
     mutationFn: async (record: MedicationRecord) => {
       if (!auth) {
-        throw new Error("Failed to delete medication")
+        throw new Error(translate.failedToDeleteMedication)
       }
 
       await deleteMedicationRecord(
@@ -145,13 +146,13 @@ export function useMedicationRecords({
         setIsMedOpen(false)
         resetForm()
       }
-      toast.success("Medication deleted")
+      toast.success(translate.medicationDeleted)
     },
     onError: (deleteError) => {
       toast.error(
         deleteError instanceof Error
           ? deleteError.message
-          : "Failed to delete medication"
+          : translate.failedToDeleteMedication
       )
     },
     onSettled: () => {
@@ -191,7 +192,9 @@ export function useMedicationRecords({
 
     const parsed = medicationSchema.safeParse(values)
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Invalid medication input")
+      toast.error(
+        parsed.error.issues[0]?.message ?? translate.invalidMedicationInput
+      )
       locks.releaseActionLock(actionKey)
       return
     }

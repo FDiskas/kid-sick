@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { translate, withParams } from "@/lib/translate"
 
 const optionalPositiveNumber = (
   fieldName: string,
@@ -15,25 +16,28 @@ const optionalPositiveNumber = (
     },
     z.coerce
       .number()
-      .positive(`${fieldName} must be positive`)
+      .positive(withParams(translate.mustBePositive, { field: fieldName }))
       .max(max, tooLargeMessage)
       .optional()
   )
 
 export const kidSchema = z.object({
-  name: z.string().min(1, "Name is required").max(80, "Name is too long"),
-  birthDate: z.string().min(1, "Birthday is required"),
+  name: z
+    .string()
+    .min(1, translate.nameRequired)
+    .max(80, translate.nameTooLong),
+  birthDate: z.string().min(1, translate.birthdayRequired),
   currentHeightCm: optionalPositiveNumber(
     "Height",
     250,
-    "Height seems invalid"
+    translate.heightInvalid
   ),
   currentWeightKg: optionalPositiveNumber(
     "Weight",
     300,
-    "Weight seems invalid"
+    translate.weightInvalid
   ),
-  notes: z.string().max(500, "Notes are too long").optional(),
+  notes: z.string().max(500, translate.notesTooLong).optional(),
 })
 
 const TEMPERATURE_RANGE_BY_UNIT = {
@@ -43,11 +47,11 @@ const TEMPERATURE_RANGE_BY_UNIT = {
 
 export const temperatureSchema = z
   .object({
-    measuredAt: z.string().min(1, "Measurement date/time is required"),
+    measuredAt: z.string().min(1, translate.datetimeRequired),
     value: z.coerce.number(),
     unit: z.enum(["C", "F"]),
-    method: z.string().max(80, "Method is too long").optional(),
-    notes: z.string().max(500, "Notes are too long").optional(),
+    method: z.string().max(80, translate.methodTooLong).optional(),
+    notes: z.string().max(500, translate.notesTooLong).optional(),
   })
   .superRefine((value, context) => {
     const range = TEMPERATURE_RANGE_BY_UNIT[value.unit]
@@ -56,7 +60,7 @@ export const temperatureSchema = z
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["value"],
-        message: "Temperature is too low",
+        message: translate.temperatureTooLow,
       })
     }
 
@@ -64,48 +68,51 @@ export const temperatureSchema = z
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["value"],
-        message: "Temperature is too high",
+        message: translate.temperatureTooHigh,
       })
     }
   })
 
 export const noteSchema = z.object({
-  recordedAt: z.string().min(1, "Date and time is required"),
+  recordedAt: z.string().min(1, translate.datetimeRequired),
   content: z
     .string()
-    .min(1, "Note content is required")
-    .max(1000, "Note is too long"),
+    .min(1, translate.noteContentRequired)
+    .max(1000, translate.noteTooLong),
 })
 
 export type NoteFormInput = z.infer<typeof noteSchema>
 
 export const medicationSchema = z.object({
-  takenAt: z.string().min(1, "Medication time is required"),
+  takenAt: z.string().min(1, translate.medicationTimeRequired),
   medicationName: z
     .string()
-    .min(1, "Medication name is required")
-    .max(120, "Medication name is too long"),
+    .min(1, translate.medicationNameRequired)
+    .max(120, translate.medicationNameTooLong),
   dose: z.coerce
     .number()
-    .positive("Dose must be positive")
-    .max(10000, "Dose seems invalid"),
-  unit: z.string().min(1, "Dose unit is required").max(30, "Unit is too long"),
-  notes: z.string().max(500, "Notes are too long").optional(),
+    .positive(translate.dosePositive)
+    .max(10000, translate.doseInvalid),
+  unit: z
+    .string()
+    .min(1, translate.doseUnitRequired)
+    .max(30, translate.unitTooLong),
+  notes: z.string().max(500, translate.notesTooLong).optional(),
 })
 
 export const growthSchema = z
   .object({
-    measuredAt: z.string().min(1, "Measurement date/time is required"),
-    heightCm: optionalPositiveNumber("Height", 250, "Height seems invalid"),
-    weightKg: optionalPositiveNumber("Weight", 300, "Weight seems invalid"),
-    notes: z.string().max(500, "Notes are too long").optional(),
+    measuredAt: z.string().min(1, translate.datetimeRequired),
+    heightCm: optionalPositiveNumber("Height", 250, translate.heightInvalid),
+    weightKg: optionalPositiveNumber("Weight", 300, translate.weightInvalid),
+    notes: z.string().max(500, translate.notesTooLong).optional(),
   })
   .superRefine((value, context) => {
     if (value.heightCm === undefined && value.weightKg === undefined) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["heightCm"],
-        message: "Provide at least height or weight",
+        message: translate.provideHeightOrWeight,
       })
     }
   })

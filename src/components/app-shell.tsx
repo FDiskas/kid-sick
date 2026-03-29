@@ -3,6 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { Heart, Logout01Icon, Settings01Icon } from "@hugeicons/core-free-icons"
 
 import { GitHubFooter } from "./github-footer"
+import { translate } from "@/lib/translate"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/features/auth/auth-context"
@@ -25,7 +26,7 @@ export function AppShell() {
                 className="size-6 text-white"
               />
             </div>
-            <div>Kid Sick Tracker</div>
+            <div>{translate.title}</div>
           </Link>
           <div className="flex items-center gap-2">
             {auth ? (
@@ -37,7 +38,7 @@ export function AppShell() {
                   className="size-2 rounded-full bg-emerald-500"
                   aria-hidden="true"
                 />
-                Google Connected
+                {translate.googleConnected}
               </Badge>
             ) : null}
             {auth ? (
@@ -47,14 +48,14 @@ export function AppShell() {
                   strokeWidth={2}
                   className="size-4"
                 />
-                Logout
+                {translate.logout}
               </Button>
             ) : null}
             <Link
               to="/settings"
               className={buttonVariants({ variant: "outline", size: "icon" })}
-              aria-label="Open settings"
-              title="Open settings"
+              aria-label={translate.openSettings}
+              title={translate.openSettings}
             >
               <HugeiconsIcon
                 icon={Settings01Icon}

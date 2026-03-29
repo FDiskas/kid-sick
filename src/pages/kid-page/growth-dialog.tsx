@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import type { GrowthFormInput } from "@/features/health/schemas"
+import { translate } from "@/lib/translate"
 
 type GrowthDialogProps = {
   open: boolean
@@ -40,17 +41,19 @@ export function GrowthDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {editingId ? "Edit growth measurement" : "Add growth measurement"}
+            {editingId
+              ? translate.editGrowthMeasurement
+              : translate.addGrowthMeasurement}
           </DialogTitle>
           <DialogDescription>
             {editingId
-              ? "Update historical growth values for this child."
-              : "Save historical growth and refresh profile latest values."}
+              ? translate.growthDialogEditDesc
+              : translate.growthDialogAddDesc}
           </DialogDescription>
         </DialogHeader>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-1.5">
-            <Label htmlFor="growth-time">Date and time</Label>
+            <Label htmlFor="growth-time">{translate.dateTime}</Label>
             <Input
               id="growth-time"
               type="datetime-local"
@@ -62,7 +65,7 @@ export function GrowthDialog({
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1.5">
-              <Label htmlFor="growth-height">Height (cm)</Label>
+              <Label htmlFor="growth-height">{translate.heightCm}</Label>
               <Input
                 id="growth-height"
                 type="number"
@@ -74,7 +77,7 @@ export function GrowthDialog({
               </p>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="growth-weight">Weight (kg)</Label>
+              <Label htmlFor="growth-weight">{translate.weightKg}</Label>
               <Input
                 id="growth-weight"
                 type="number"
@@ -87,7 +90,7 @@ export function GrowthDialog({
             </div>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="growth-notes">Notes</Label>
+            <Label htmlFor="growth-notes">{translate.notes}</Label>
             <Textarea id="growth-notes" rows={3} {...form.register("notes")} />
           </div>
           <DialogFooter>
@@ -107,11 +110,11 @@ export function GrowthDialog({
               )}
               {form.formState.isSubmitting
                 ? editingId
-                  ? "Updating..."
-                  : "Adding..."
+                  ? translate.updating
+                  : translate.adding
                 : editingId
-                  ? "Update"
-                  : "Add"}
+                  ? translate.update
+                  : translate.add}
             </Button>
           </DialogFooter>
         </form>

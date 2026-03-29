@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import type { MedicationFormInput } from "@/features/health/schemas"
+import { translate } from "@/lib/translate"
 
 type MedicationDialogProps = {
   open: boolean
@@ -40,17 +41,19 @@ export function MedicationDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {editingId ? "Edit medication record" : "Add medication record"}
+            {editingId
+              ? translate.editMedicationRecord
+              : translate.addMedicationRecord}
           </DialogTitle>
           <DialogDescription>
             {editingId
-              ? "Update meds taken and dosage for this child."
-              : "Track meds taken and dosage for this child."}
+              ? translate.medicationDialogEditDesc
+              : translate.medicationDialogAddDesc}
           </DialogDescription>
         </DialogHeader>
         <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-1.5">
-            <Label htmlFor="med-time">Date and time</Label>
+            <Label htmlFor="med-time">{translate.dateTime}</Label>
             <Input
               id="med-time"
               type="datetime-local"
@@ -61,7 +64,7 @@ export function MedicationDialog({
             </p>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="med-name">Medication</Label>
+            <Label htmlFor="med-name">{translate.medication}</Label>
             <Input id="med-name" {...form.register("medicationName")} />
             <p className="text-xs text-destructive">
               {form.formState.errors.medicationName?.message}
@@ -69,7 +72,7 @@ export function MedicationDialog({
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1.5">
-              <Label htmlFor="med-dose">Dose</Label>
+              <Label htmlFor="med-dose">{translate.dose}</Label>
               <Input
                 id="med-dose"
                 type="number"
@@ -81,7 +84,7 @@ export function MedicationDialog({
               </p>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="med-unit">Unit</Label>
+              <Label htmlFor="med-unit">{translate.unit}</Label>
               <Input id="med-unit" {...form.register("unit")} />
               <p className="text-xs text-destructive">
                 {form.formState.errors.unit?.message}
@@ -89,7 +92,7 @@ export function MedicationDialog({
             </div>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="med-notes">Notes</Label>
+            <Label htmlFor="med-notes">{translate.notes}</Label>
             <Textarea id="med-notes" rows={3} {...form.register("notes")} />
           </div>
           <DialogFooter>
@@ -109,11 +112,11 @@ export function MedicationDialog({
               )}
               {form.formState.isSubmitting
                 ? editingId
-                  ? "Updating..."
-                  : "Adding..."
+                  ? translate.updating
+                  : translate.adding
                 : editingId
-                  ? "Update"
-                  : "Add"}
+                  ? translate.update
+                  : translate.add}
             </Button>
           </DialogFooter>
         </form>

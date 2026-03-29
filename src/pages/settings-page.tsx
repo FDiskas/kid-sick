@@ -1,5 +1,13 @@
 import { useState } from "react"
-import { translate, setTranslateLanguage, type LanguageCode } from "@/lib/translate"
+import {
+  translate,
+  setTranslateLanguage,
+  type LanguageCode,
+} from "@/lib/translate"
+import {
+  getLanguagePreference,
+  setLanguagePreference,
+} from "@/features/language/language-preference"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   GoogleSheetIcon,
@@ -40,7 +48,7 @@ const LANGUAGE_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 ]
 
 export function SettingsPage() {
-  const [language, setLanguage] = useState<LanguageCode>("en")
+  const [language, setLanguage] = useState<LanguageCode>(getLanguagePreference)
   const { auth, signOut } = useAuth()
   const { theme, setTheme } = useTheme()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
@@ -105,12 +113,16 @@ export function SettingsPage() {
             <label className="text-sm font-medium" htmlFor="language-select">
               {translate.languageLabel}
             </label>
-            <Select value={language} onValueChange={(value) => {
-              if (value) {
-                setLanguage(value)
-                setTranslateLanguage(value)
-              }
-            }}>
+            <Select
+              value={language}
+              onValueChange={(value) => {
+                if (value) {
+                  setLanguage(value as LanguageCode)
+                  setTranslateLanguage(value as LanguageCode)
+                  setLanguagePreference(value as LanguageCode)
+                }
+              }}
+            >
               <SelectTrigger id="language-select" className="w-full">
                 <SelectValue placeholder={translate.languagePlaceholder} />
               </SelectTrigger>
@@ -142,7 +154,9 @@ export function SettingsPage() {
               onValueChange={handleTemperatureUnitChange}
             >
               <SelectTrigger id="temperature-unit" className="w-full">
-                <SelectValue placeholder={translate.temperatureUnitPlaceholder} />
+                <SelectValue
+                  placeholder={translate.temperatureUnitPlaceholder}
+                />
               </SelectTrigger>
               <SelectContent>
                 {TEMPERATURE_UNIT_OPTIONS.map((option) => (
@@ -208,7 +222,9 @@ export function SettingsPage() {
                   className="size-4"
                 />
               )}
-              {isDisconnecting ? translate.disconnecting : translate.disconnectGoogle}
+              {isDisconnecting
+                ? translate.disconnecting
+                : translate.disconnectGoogle}
             </Button>
           </div>
         </CardContent>

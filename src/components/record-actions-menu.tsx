@@ -6,6 +6,8 @@ import {
   MoreVerticalCircle01Icon,
 } from "@hugeicons/core-free-icons"
 
+import { translate } from "@/lib/translate"
+
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -37,7 +39,7 @@ export function RecordActionsMenu({
               strokeWidth={2}
               className="size-4 animate-spin"
             />
-            Deleting...
+            {translate.deleting}
           </>
         ) : (
           <>
@@ -52,7 +54,7 @@ export function RecordActionsMenu({
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onEdit}>
           <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
-          Edit
+          {translate.edit}
         </DropdownMenuItem>
         <DropdownMenuItem variant="destructive" onClick={onDelete}>
           <HugeiconsIcon
@@ -60,7 +62,7 @@ export function RecordActionsMenu({
             strokeWidth={2}
             className="size-4"
           />
-          Delete
+          {translate.delete}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
