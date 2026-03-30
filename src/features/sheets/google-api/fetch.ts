@@ -1,3 +1,5 @@
+import { AUTH_ERROR_EVENT } from "@/features/auth/auth-utils"
+
 export async function googleFetch<T>(
   token: string,
   url: string,
@@ -13,6 +15,9 @@ export async function googleFetch<T>(
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      window.dispatchEvent(new CustomEvent(AUTH_ERROR_EVENT))
+    }
     const body = await response.text()
     throw new Error(`Google API error ${response.status}: ${body}`)
   }

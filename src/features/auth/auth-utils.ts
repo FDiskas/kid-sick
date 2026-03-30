@@ -14,6 +14,7 @@ const SCOPES = [
 ].join(" ")
 
 export const AUTH_STORAGE_KEY = "kid-sick.auth"
+export const AUTH_ERROR_EVENT = "google-api-401"
 
 export function readPersistedAuth(): AuthState | null {
   const raw = localStorage.getItem(AUTH_STORAGE_KEY)

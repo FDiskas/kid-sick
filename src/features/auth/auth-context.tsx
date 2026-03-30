@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 
 import {
   AUTH_STORAGE_KEY,
+  AUTH_ERROR_EVENT,
   readPersistedAuth,
   requestAccessToken,
   type AuthState,
@@ -58,6 +59,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(AUTH_STORAGE_KEY)
     setAuth(null)
   }, [auth])
+
+  React.useEffect(() => {
+    const handle401 = () => signOut()
+    window.addEventListener(AUTH_ERROR_EVENT, handle401)
+    return () => window.removeEventListener(AUTH_ERROR_EVENT, handle401)
+  }, [signOut])
 
   React.useEffect(() => {
     if (!auth) {
