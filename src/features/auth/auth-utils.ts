@@ -51,7 +51,7 @@ export function readPersistedAuth(): AuthState | null {
   }
 }
 
-export async function requestAccessToken(prompt: "consent" | "") {
+export async function requestAccessToken(prompt: "consent" | "none") {
   await loadGoogleIdentityScript()
 
   if (!window.google?.accounts?.oauth2) {
@@ -93,7 +93,7 @@ export async function requestAccessToken(prompt: "consent" | "") {
         },
       })
 
-      tokenClient.requestAccessToken({ prompt })
+      tokenClient.requestAccessToken(prompt === "none" ? { prompt: "none" } : { prompt })
     }
   )
 }

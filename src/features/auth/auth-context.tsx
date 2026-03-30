@@ -48,6 +48,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
   })
 
+  const refreshMutation = useMutation({
+    mutationFn: async () => {
+      const tokenResult = await requestAccessToken("none")
+      return {
+        ...auth!,
+        accessToken: tokenResult.accessToken,
+        expiresAt: Date.now() + tokenResult.expiresIn * 1000,
+      }
+    },
+    onSuccess: (nextAuth) => {
+      setAuth(nextAuth)
+    },
+    onError: () => {
+      signOut()
+    },
+  })
+
   const signIn = React.useCallback(async () => {
     await signInMutation.mutateAsync()
   }, [signInMutation])
@@ -80,23 +97,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const timeoutMs = auth.expiresAt - Date.now() - 60_000
+    // Refresh 1 minute before expiration
+    const refreshBufferMs = 60_000
+    const timeoutMs = auth.expiresAt - Date.now() - refreshBufferMs
 
     if (timeoutMs <= 0) {
-      localStorage.removeItem(AUTH_STORAGE_KEY)
-      setAuth(null)
+      refreshMutation.mutate()
       return
     }
 
     const timeout = window.setTimeout(() => {
-      localStorage.removeItem(AUTH_STORAGE_KEY)
-      setAuth(null)
+      refreshMutation.mutate()
     }, timeoutMs)
 
     return () => {
       window.clearTimeout(timeout)
     }
-  }, [auth])
+  }, [auth, refreshMutation])
 
   const value = React.useMemo(
     () => ({
