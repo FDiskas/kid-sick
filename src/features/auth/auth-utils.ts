@@ -9,8 +9,7 @@ export type AuthState = {
 }
 
 const SCOPES = [
-  "https://www.googleapis.com/auth/drive.file",
-  "https://www.googleapis.com/auth/spreadsheets",
+  "https://www.googleapis.com/auth/drive.file"
 ].join(" ")
 
 export const AUTH_STORAGE_KEY = "kid-sick.auth"
