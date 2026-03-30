@@ -1,6 +1,5 @@
 import { Link, Outlet } from "react-router-dom"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Heart, Logout01Icon, Settings01Icon } from "@hugeicons/core-free-icons"
+import { Heart, LogOut, Settings } from "lucide-react"
 
 import { GitHubFooter } from "./github-footer"
 import { translate } from "@/lib/translate"
@@ -20,11 +19,7 @@ export function AppShell() {
             className="flex flex-row items-center gap-2 text-lg font-semibold tracking-tight"
           >
             <div className="mx-auto flex size-9 flex-row items-center justify-center rounded-full bg-linear-to-br from-pink-500 to-red-500">
-              <HugeiconsIcon
-                icon={Heart}
-                strokeWidth={2}
-                className="size-6 text-white"
-              />
+              <Heart className="size-6 text-white" />
             </div>
             <div>{translate.title}</div>
           </Link>
@@ -43,11 +38,7 @@ export function AppShell() {
             ) : null}
             {auth ? (
               <Button variant="outline" onClick={signOut}>
-                <HugeiconsIcon
-                  icon={Logout01Icon}
-                  strokeWidth={2}
-                  className="size-4"
-                />
+                <LogOut className="size-4" />
                 {translate.logout}
               </Button>
             ) : null}
@@ -57,11 +48,7 @@ export function AppShell() {
               aria-label={translate.openSettings}
               title={translate.openSettings}
             >
-              <HugeiconsIcon
-                icon={Settings01Icon}
-                strokeWidth={2}
-                className="size-4"
-              />
+              <Settings className="size-4" />
             </Link>
           </div>
         </div>

@@ -42,7 +42,7 @@ export function buildTemperatureTrend(temperatures: TemperatureRecord[]) {
     .sort((a, b) => a.measuredAt.localeCompare(b.measuredAt))
     .slice(-12)
     .map((entry) => ({
-      label: format(new Date(entry.measuredAt), "MM/dd"),
+      label: entry.measuredAt,
       value: Number(
         normalizeTemperatureToCelsius(entry.value, entry.unit).toFixed(2)
       ),
@@ -52,16 +52,30 @@ export function buildTemperatureTrend(temperatures: TemperatureRecord[]) {
 export function buildMedicationPerDay(medications: MedicationRecord[]) {
   const countByDay = new Map<string, number>()
 
+  // Get the last 10 days to ensure we always show a timeline
+  const today = new Date()
+  for (let i = 9; i >= 0; i--) {
+    const date = new Date(today)
+    date.setDate(date.getDate() - i)
+    const dayKey = format(date, "yyyy-MM-dd")
+    countByDay.set(dayKey, 0)
+  }
+
   for (const entry of medications) {
-    const dayKey = entry.takenAt.slice(0, 10)
-    countByDay.set(dayKey, (countByDay.get(dayKey) ?? 0) + 1)
+    try {
+      const dayKey = format(new Date(entry.takenAt), "yyyy-MM-dd")
+      if (countByDay.has(dayKey)) {
+        countByDay.set(dayKey, (countByDay.get(dayKey) ?? 0) + 1)
+      }
+    } catch {
+      // Skip invalid dates
+    }
   }
 
   return Array.from(countByDay.entries())
     .sort((a, b) => a[0].localeCompare(b[0]))
-    .slice(-10)
     .map(([day, value]) => ({
-      label: format(new Date(day), "MM/dd"),
+      label: day,
       value,
     }))
 }
@@ -96,7 +110,7 @@ export function buildGrowthTrend(
     .filter((entry) => typeof entry[key] === "number")
     .slice(-10)
     .map((entry) => ({
-      label: format(new Date(entry.measuredAt), "MM/dd"),
+      label: entry.measuredAt,
       value: entry[key] ?? 0,
     }))
 }

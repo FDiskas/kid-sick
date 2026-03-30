@@ -1,15 +1,14 @@
 import { useState } from "react"
 import { Navigate } from "react-router-dom"
-import { HugeiconsIcon } from "@hugeicons/react"
 import {
-  GoogleDriveIcon,
-  Loading03Icon,
+  Cloud,
+  Loader2,
   Heart,
-  Shield01Icon,
-  Task01Icon,
-  Chart01Icon,
-  InformationCircleIcon,
-} from "@hugeicons/core-free-icons"
+  ShieldCheck,
+  ClipboardList,
+  LineChart,
+  Info,
+} from "lucide-react"
 
 import { GitHubFooter } from "../components/github-footer"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -56,9 +55,7 @@ export function AuthPage() {
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-pink-500 to-red-500 shadow-lg shadow-red-500/20">
-              <HugeiconsIcon
-                icon={Heart}
-                strokeWidth={2}
+              <Heart
                 className="size-5 text-white"
               />
             </div>
@@ -127,15 +124,13 @@ export function AuthPage() {
                 </p>
                 <div className="mt-10 flex flex-wrap gap-4">
                   <div className="flex items-center gap-2 rounded-full border bg-background/50 px-4 py-2 text-sm font-medium backdrop-blur-sm">
-                    <HugeiconsIcon
-                      icon={Shield01Icon}
+                    <ShieldCheck
                       className="size-4 text-green-500"
                     />
                     {translate.featurePrivacyTitle}
                   </div>
                   <div className="flex items-center gap-2 rounded-full border bg-background/50 px-4 py-2 text-sm font-medium backdrop-blur-sm">
-                    <HugeiconsIcon
-                      icon={Chart01Icon}
+                    <LineChart
                       className="size-4 text-blue-500"
                     />
                     {translate.featureChartsTitle}
@@ -173,15 +168,11 @@ export function AuthPage() {
                       className="h-12 w-full text-base font-semibold transition-all hover:shadow-lg active:scale-[0.98]"
                     >
                       {isLoading ? (
-                        <HugeiconsIcon
-                          icon={Loading03Icon}
-                          strokeWidth={2}
+                        <Loader2
                           className="size-5 animate-spin"
                         />
                       ) : (
-                        <HugeiconsIcon
-                          icon={GoogleDriveIcon}
-                          strokeWidth={2}
+                        <Cloud
                           className="size-5"
                         />
                       )}
@@ -191,8 +182,7 @@ export function AuthPage() {
                     </Button>
 
                     <Alert className="border-primary/20 bg-primary/5 p-4 text-sm">
-                      <HugeiconsIcon
-                        icon={InformationCircleIcon}
+                      <Info
                         className="size-4 translate-y-0.5 text-primary"
                       />
                       <div className="ml-2">
@@ -240,10 +230,8 @@ export function AuthPage() {
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
               <div className="group rounded-2xl border bg-card p-8 transition-all hover:border-primary/30 hover:shadow-xl hover:-translate-y-1">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-500/10 text-green-600 transition-colors group-hover:bg-green-500/20">
-                  <HugeiconsIcon
-                    icon={Shield01Icon}
+                  <ShieldCheck
                     className="size-6"
-                    strokeWidth={2}
                   />
                 </div>
                 <h3 className="mt-6 text-xl font-bold">
@@ -256,10 +244,8 @@ export function AuthPage() {
 
               <div className="group rounded-2xl border bg-card p-8 transition-all hover:border-primary/30 hover:shadow-xl hover:-translate-y-1">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 transition-colors group-hover:bg-blue-500/20">
-                  <HugeiconsIcon
-                    icon={Task01Icon}
+                  <ClipboardList
                     className="size-6"
-                    strokeWidth={2}
                   />
                 </div>
                 <h3 className="mt-6 text-xl font-bold">
@@ -272,10 +258,8 @@ export function AuthPage() {
 
               <div className="group rounded-2xl border bg-card p-8 transition-all hover:border-primary/30 hover:shadow-xl hover:-translate-y-1">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 transition-colors group-hover:bg-purple-500/20">
-                  <HugeiconsIcon
-                    icon={Chart01Icon}
+                  <LineChart
                     className="size-6"
-                    strokeWidth={2}
                   />
                 </div>
                 <h3 className="mt-6 text-xl font-bold">

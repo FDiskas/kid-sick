@@ -3,8 +3,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Cancel01Icon } from "@hugeicons/core-free-icons"
+import { X } from "lucide-react"
 import { translate } from "@/lib/translate"
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
@@ -70,7 +69,7 @@ function DialogContent({
               />
             }
           >
-            <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />
+            <X className="size-4" />
             <span className="sr-only">{translate.close}</span>
           </DialogPrimitive.Close>
         )}

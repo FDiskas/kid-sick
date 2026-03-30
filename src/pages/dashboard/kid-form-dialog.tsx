@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import { FloppyDiskIcon, Loading03Icon } from "@hugeicons/core-free-icons"
+import { Save, Loader2 } from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
 
 import {
@@ -100,17 +99,9 @@ export function KidFormDialog({
           <DialogFooter>
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? (
-                <HugeiconsIcon
-                  icon={Loading03Icon}
-                  strokeWidth={2}
-                  className="size-4 animate-spin"
-                />
+                <Loader2 className="size-4 animate-spin" />
               ) : (
-                <HugeiconsIcon
-                  icon={FloppyDiskIcon}
-                  strokeWidth={2}
-                  className="size-4"
-                />
+                <Save className="size-4" />
               )}
               {form.formState.isSubmitting ? translate.saving : translate.save}
             </Button>

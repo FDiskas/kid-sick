@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Add01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import { Plus, ArrowRight } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -25,7 +24,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
       <AlertDescription>{translate.noKidsDescription}</AlertDescription>
       <div className="mt-3">
         <Button onClick={onCreate}>
-          <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" />
+          <Plus className="size-4" />
           {translate.addFirstKid}
         </Button>
       </div>
@@ -84,9 +83,7 @@ export function KidsGrid({
                   "inline-flex items-center gap-2"
                 )}
               >
-                <HugeiconsIcon
-                  icon={ArrowRight01Icon}
-                  strokeWidth={2}
+                <ArrowRight
                   className="size-4"
                 />
                 {translate.openDetails}

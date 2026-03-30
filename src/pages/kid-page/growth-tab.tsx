@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Add01Icon, RulerIcon } from "@hugeicons/core-free-icons"
+import { Plus, Ruler } from "lucide-react"
 
 import { RecordActionsMenu } from "@/components/record-actions-menu"
 import { Button } from "@/components/ui/button"
@@ -113,6 +112,7 @@ export function GrowthTab({
               </div>
               <LineMiniChart
                 data={growthHeightTrend}
+                className="w-full h-64 mt-2"
                 emptyLabel={translate.heightTrendEmpty}
               />
             </div>
@@ -125,8 +125,7 @@ export function GrowthTab({
               </div>
               <LineMiniChart
                 data={growthWeightTrend}
-                strokeClassName="text-chart-3"
-                areaClassName="text-chart-3/15"
+                className="w-full h-64 mt-2"
                 emptyLabel={translate.weightTrendEmpty}
               />
             </div>
@@ -138,14 +137,10 @@ export function GrowthTab({
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>{translate.growthHistory}</CardTitle>
           <Button onClick={onCreate}>
-            <HugeiconsIcon
-              icon={Add01Icon}
-              strokeWidth={2}
+            <Plus
               className="size-4"
             />
-            <HugeiconsIcon
-              icon={RulerIcon}
-              strokeWidth={2}
+            <Ruler
               className="size-4"
             />
             {translate.addGrowthMeasurement}

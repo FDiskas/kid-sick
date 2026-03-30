@@ -1,3 +1,22 @@
+import { format } from "date-fns"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+} from "recharts"
+
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
+import { cn } from "@/lib/utils"
+
 type ChartPoint = {
   label: string
   value: number
@@ -7,126 +26,103 @@ type BaseChartProps = {
   data: ChartPoint[]
   className?: string
   emptyLabel?: string
+  showTime?: boolean
 }
 
-type LineChartProps = BaseChartProps & {
-  strokeClassName?: string
-  areaClassName?: string
-}
-
-type BarChartProps = BaseChartProps & {
-  barClassName?: string
-}
-
-function normalizeRange(min: number, max: number) {
-  if (min === max) {
-    return {
-      min: min - 1,
-      max: max + 1,
-    }
-  }
-
-  return { min, max }
-}
-
-function linePath(points: Array<{ x: number; y: number }>) {
-  return points
-    .map((point, index) => `${index === 0 ? "M" : "L"}${point.x},${point.y}`)
-    .join(" ")
-}
+const chartConfig = {
+  value: {
+    label: "Value",
+    color: "var(--primary)",
+  },
+} satisfies ChartConfig
 
 export function LineMiniChart({
   data,
   className,
   emptyLabel = "No data yet",
-  strokeClassName = "text-primary",
-  areaClassName = "text-primary/10",
-}: LineChartProps) {
+  showTime = false,
+}: BaseChartProps) {
   if (data.length === 0) {
     return (
-      <div className={className}>
-        <div className="flex h-36 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-          {emptyLabel}
-        </div>
+      <div
+        className={cn(
+          "flex h-64 items-center justify-center rounded-xl border border-dashed text-sm text-muted-foreground",
+          className
+        )}
+      >
+        {emptyLabel}
       </div>
     )
   }
 
-  const width = 360
-  const height = 140
-  const horizontalPadding = 16
-  const verticalPadding = 14
-
-  const values = data.map((item) => item.value)
-  const rawMin = Math.min(...values)
-  const rawMax = Math.max(...values)
-  const { min, max } = normalizeRange(rawMin, rawMax)
-
-  const points = data.map((item, index) => {
-    const x =
-      data.length === 1
-        ? width / 2
-        : horizontalPadding +
-          (index * (width - horizontalPadding * 2)) / (data.length - 1)
-    const y =
-      height -
-      verticalPadding -
-      ((item.value - min) / (max - min)) * (height - verticalPadding * 2)
-
-    return { x, y }
-  })
-
-  const areaPath = `${linePath(points)} L${points[points.length - 1]?.x},${height - verticalPadding} L${points[0]?.x},${height - verticalPadding} Z`
+  // Find min/max for better Y axis scaling
+  const values = data.map((d) => d.value)
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const margin = (max - min) * 0.1 || 1
 
   return (
-    <div className={className}>
-      <div className="h-36 rounded-lg border bg-card/30 p-2">
-        <svg
-          viewBox={`0 0 ${width} ${height}`}
-          className="size-full"
-          role="img"
-          aria-label="line chart"
-        >
-          <line
-            x1={horizontalPadding}
-            y1={height - verticalPadding}
-            x2={width - horizontalPadding}
-            y2={height - verticalPadding}
-            className="stroke-border"
-            strokeWidth="1"
-          />
-          <line
-            x1={horizontalPadding}
-            y1={verticalPadding}
-            x2={horizontalPadding}
-            y2={height - verticalPadding}
-            className="stroke-border"
-            strokeWidth="1"
-          />
-
-          <path d={areaPath} className={`fill-current ${areaClassName}`} />
-          <path
-            d={linePath(points)}
-            className={`fill-none stroke-current ${strokeClassName}`}
-            strokeWidth="2"
-          />
-
-          {points.map((point, index) => (
-            <circle
-              key={`${data[index]?.label}-${point.x}`}
-              cx={point.x}
-              cy={point.y}
-              r="2.5"
-              className={`fill-current ${strokeClassName}`}
+    <ChartContainer
+      config={chartConfig}
+      className={cn("aspect-auto h-64 w-full", className)}
+    >
+      <LineChart
+        data={data}
+        margin={{ top: 20, right: 20, left: 10, bottom: 60 }}
+      >
+        <CartesianGrid vertical={false} strokeDasharray="3 3" opacity={0.4} />
+        <XAxis
+          dataKey="label"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          interval={0}
+          angle={-45}
+          textAnchor="end"
+          height={60}
+          tickFormatter={(value) => {
+            try {
+              const date = new Date(value)
+              if (showTime) {
+                return format(date, "MM/dd HH:mm")
+              }
+              return format(date, "MM/dd")
+            } catch {
+              return value
+            }
+          }}
+        />
+        <YAxis
+          hide
+          domain={[min - margin, max + margin]}
+          allowDecimals={true}
+        />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              indicator="line"
+              labelFormatter={(value) => {
+                try {
+                  return format(new Date(value), "yyyy-MM-dd HH:mm")
+                } catch {
+                  return value
+                }
+              }}
             />
-          ))}
-        </svg>
-      </div>
-      <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-        <span>{data[0]?.label}</span>
-        <span>{data[data.length - 1]?.label}</span>
-      </div>
-    </div>
+          }
+        />
+        <Line
+          type="monotone"
+          dataKey="value"
+          stroke="var(--color-value)"
+          strokeWidth={2.5}
+          dot={{ r: 4, fill: "var(--color-value)", strokeWidth: 0 }}
+          activeDot={{ r: 6, strokeWidth: 0 }}
+          animationDuration={1000}
+        />
+      </LineChart>
+    </ChartContainer>
   )
 }
 
@@ -134,43 +130,77 @@ export function BarMiniChart({
   data,
   className,
   emptyLabel = "No data yet",
-  barClassName = "bg-primary/75",
-}: BarChartProps) {
+  showTime = false,
+}: BaseChartProps) {
   if (data.length === 0) {
     return (
-      <div className={className}>
-        <div className="flex h-36 items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-          {emptyLabel}
-        </div>
+      <div
+        className={cn(
+          "flex h-64 items-center justify-center rounded-xl border border-dashed text-sm text-muted-foreground",
+          className
+        )}
+      >
+        {emptyLabel}
       </div>
     )
   }
 
-  const maxValue = Math.max(...data.map((item) => item.value), 1)
-
   return (
-    <div className={className}>
-      <div className="flex h-36 items-end gap-2 rounded-lg border bg-card/30 p-3">
-        {data.map((item) => {
-          const heightPercent = Math.max((item.value / maxValue) * 100, 6)
-
-          return (
-            <div
-              key={item.label}
-              className="flex min-w-0 flex-1 flex-col items-center gap-2"
-            >
-              <div
-                className={`w-full rounded-t-sm transition-all ${barClassName}`}
-                style={{ height: `${heightPercent}%` }}
-                title={`${item.label}: ${item.value}`}
-              />
-              <span className="truncate text-[10px] text-muted-foreground">
-                {item.label}
-              </span>
-            </div>
-          )
-        })}
-      </div>
-    </div>
+    <ChartContainer
+      config={chartConfig}
+      className={cn("aspect-auto h-64 w-full", className)}
+    >
+      <BarChart
+        data={data}
+        margin={{ top: 20, right: 10, left: 10, bottom: 60 }}
+      >
+        <CartesianGrid vertical={false} strokeDasharray="3 3" opacity={0.4} />
+        <XAxis
+          dataKey="label"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          interval={0}
+          angle={-45}
+          textAnchor="end"
+          height={60}
+          tickFormatter={(value) => {
+            try {
+              const date = new Date(value)
+              if (showTime) {
+                return format(date, "MM/dd HH:mm")
+              }
+              return format(date, "MM/dd")
+            } catch {
+              return value
+            }
+          }}
+        />
+        <YAxis domain={[0, (dataMax: number) => Math.max(dataMax + 1, 5)]} hide />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              hideLabel={false}
+              indicator="dashed"
+              labelFormatter={(value) => {
+                try {
+                  return format(new Date(value), "yyyy-MM-dd")
+                } catch {
+                  return value
+                }
+              }}
+            />
+          }
+        />
+        <Bar
+          dataKey="value"
+          fill="var(--color-value)"
+          radius={[4, 4, 0, 0]}
+          maxBarSize={45}
+          animationDuration={1000}
+        />
+      </BarChart>
+    </ChartContainer>
   )
 }

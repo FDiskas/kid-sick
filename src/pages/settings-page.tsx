@@ -8,12 +8,11 @@ import {
   getLanguagePreference,
   setLanguagePreference,
 } from "@/features/language/language-preference"
-import { HugeiconsIcon } from "@hugeicons/react"
 import {
-  GoogleSheetIcon,
-  Loading03Icon,
-  Logout01Icon,
-} from "@hugeicons/core-free-icons"
+  FileSpreadsheet,
+  Loader2,
+  LogOut,
+} from "lucide-react"
 
 import { useTheme } from "@/components/theme-provider"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -192,9 +191,7 @@ export function SettingsPage() {
                 "inline-flex items-center gap-2"
               )}
             >
-              <HugeiconsIcon
-                icon={GoogleSheetIcon}
-                strokeWidth={2}
+              <FileSpreadsheet
                 className="size-4"
               />
               {translate.openMySheet}
@@ -215,15 +212,11 @@ export function SettingsPage() {
               }}
             >
               {isDisconnecting ? (
-                <HugeiconsIcon
-                  icon={Loading03Icon}
-                  strokeWidth={2}
+                <Loader2
                   className="size-4 animate-spin"
                 />
               ) : (
-                <HugeiconsIcon
-                  icon={Logout01Icon}
-                  strokeWidth={2}
+                <LogOut
                   className="size-4"
                 />
               )}

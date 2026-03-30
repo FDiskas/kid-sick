@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Add01Icon, ThermometerIcon } from "@hugeicons/core-free-icons"
+import { Plus, Thermometer } from "lucide-react"
 
 import { RecordActionsMenu } from "@/components/record-actions-menu"
 import { Badge } from "@/components/ui/badge"
@@ -135,6 +134,8 @@ export function TemperatureTab({
           </div>
           <LineMiniChart
             data={temperatureTrend}
+            className="w-full h-64 mt-4"
+            showTime={true}
             emptyLabel={translate.temperatureTrendEmpty}
           />
         </CardContent>
@@ -144,14 +145,10 @@ export function TemperatureTab({
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>{translate.temperatureLogs}</CardTitle>
           <Button onClick={onCreate}>
-            <HugeiconsIcon
-              icon={Add01Icon}
-              strokeWidth={2}
+            <Plus
               className="size-4"
             />
-            <HugeiconsIcon
-              icon={ThermometerIcon}
-              strokeWidth={2}
+            <Thermometer
               className="size-4"
             />
             {translate.addTemperatureRecord}

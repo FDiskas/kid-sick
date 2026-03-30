@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Add01Icon, NoteAddIcon } from "@hugeicons/core-free-icons"
+import { Plus, FilePlus } from "lucide-react"
 
 import { RecordActionsMenu } from "@/components/record-actions-menu"
 import { Button } from "@/components/ui/button"
@@ -93,14 +92,10 @@ export function NotesTab({
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>{translate.noteLogs}</CardTitle>
           <Button onClick={onCreate}>
-            <HugeiconsIcon
-              icon={Add01Icon}
-              strokeWidth={2}
+            <Plus
               className="size-4"
             />
-            <HugeiconsIcon
-              icon={NoteAddIcon}
-              strokeWidth={2}
+            <FilePlus
               className="size-4"
             />
             {translate.addNote}

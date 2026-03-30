@@ -4,14 +4,13 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom"
-import { HugeiconsIcon } from "@hugeicons/react"
 import {
-  ArrowLeft01Icon,
-  Note04Icon,
-  PillIcon,
-  ThermometerIcon,
-  WeightScale01Icon,
-} from "@hugeicons/core-free-icons"
+  ArrowLeft,
+  FileText,
+  Pill,
+  Thermometer,
+  Scale,
+} from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { buttonVariants } from "@/components/ui/button"
@@ -98,9 +97,7 @@ export function KidPage() {
               "mb-2 inline-flex items-center gap-2 px-0 text-muted-foreground"
             )}
           >
-            <HugeiconsIcon
-              icon={ArrowLeft01Icon}
-              strokeWidth={2}
+            <ArrowLeft
               className="size-4"
             />
             {translate.backToDashboard}
@@ -153,33 +150,25 @@ export function KidPage() {
         >
           <TabsList variant="line">
             <TabsTrigger value="temperature">
-              <HugeiconsIcon
-                icon={ThermometerIcon}
-                strokeWidth={2}
+              <Thermometer
                 className="size-4"
               />
               {translate.temperatureTitle}
             </TabsTrigger>
             <TabsTrigger value="medication">
-              <HugeiconsIcon
-                icon={PillIcon}
-                strokeWidth={2}
+              <Pill
                 className="size-4"
               />
               {translate.medications}
             </TabsTrigger>
             <TabsTrigger value="growth">
-              <HugeiconsIcon
-                icon={WeightScale01Icon}
-                strokeWidth={2}
+              <Scale
                 className="size-4"
               />
               {translate.growth}
             </TabsTrigger>
             <TabsTrigger value="notes">
-              <HugeiconsIcon
-                icon={Note04Icon}
-                strokeWidth={2}
+              <FileText
                 className="size-4"
               />
               {translate.notes}

@@ -1,10 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import {
-  Delete02Icon,
-  Edit01Icon,
-  Loading03Icon,
-  MoreVerticalCircle01Icon,
-} from "@hugeicons/core-free-icons"
+import { Trash2, Pencil, Loader2, MoreVertical } from "lucide-react"
 
 import { translate } from "@/lib/translate"
 
@@ -34,34 +28,22 @@ export function RecordActionsMenu({
       >
         {isDeleting ? (
           <>
-            <HugeiconsIcon
-              icon={Loading03Icon}
-              strokeWidth={2}
-              className="size-4 animate-spin"
-            />
+            <Loader2 className="size-4 animate-spin" />
             {translate.deleting}
           </>
         ) : (
           <>
-            <HugeiconsIcon
-              icon={MoreVerticalCircle01Icon}
-              strokeWidth={2}
-              className="size-4"
-            />
+            <MoreVertical className="size-4" />
           </>
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onEdit}>
-          <HugeiconsIcon icon={Edit01Icon} strokeWidth={2} className="size-4" />
+          <Pencil className="size-4" />
           {translate.edit}
         </DropdownMenuItem>
         <DropdownMenuItem variant="destructive" onClick={onDelete}>
-          <HugeiconsIcon
-            icon={Delete02Icon}
-            strokeWidth={2}
-            className="size-4"
-          />
+          <Trash2 className="size-4" />
           {translate.delete}
         </DropdownMenuItem>
       </DropdownMenuContent>

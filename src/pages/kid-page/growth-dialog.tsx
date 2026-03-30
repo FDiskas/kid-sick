@@ -1,9 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import {
-  Add01Icon,
-  FloppyDiskIcon,
-  Loading03Icon,
-} from "@hugeicons/core-free-icons"
+import { Plus, Save, Loader2 } from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
@@ -96,17 +91,11 @@ export function GrowthDialog({
           <DialogFooter>
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? (
-                <HugeiconsIcon
-                  icon={Loading03Icon}
-                  strokeWidth={2}
+                <Loader2
                   className="size-4 animate-spin"
                 />
               ) : (
-                <HugeiconsIcon
-                  icon={editingId ? FloppyDiskIcon : Add01Icon}
-                  strokeWidth={2}
-                  className="size-4"
-                />
+                editingId ? <Save className="size-4" /> : <Plus className="size-4" />
               )}
               {form.formState.isSubmitting
                 ? editingId

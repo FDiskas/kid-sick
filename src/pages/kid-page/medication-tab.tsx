@@ -1,5 +1,4 @@
-import { HugeiconsIcon } from "@hugeicons/react"
-import { Add01Icon, MedicineBottleIcon } from "@hugeicons/core-free-icons"
+import { Plus, Pill } from "lucide-react"
 
 import { RecordActionsMenu } from "@/components/record-actions-menu"
 import { Button } from "@/components/ui/button"
@@ -97,6 +96,7 @@ export function MedicationTab({
           </div>
           <BarMiniChart
             data={medicationPerDay}
+            className="w-full mt-4"
             emptyLabel={translate.medicationActivityEmpty}
           />
         </CardContent>
@@ -106,14 +106,10 @@ export function MedicationTab({
         <CardHeader className="flex-row items-center justify-between">
           <CardTitle>{translate.medicationLogs}</CardTitle>
           <Button onClick={onCreate}>
-            <HugeiconsIcon
-              icon={Add01Icon}
-              strokeWidth={2}
+            <Plus
               className="size-4"
             />
-            <HugeiconsIcon
-              icon={MedicineBottleIcon}
-              strokeWidth={2}
+            <Pill
               className="size-4"
             />
             {translate.addMedication}
